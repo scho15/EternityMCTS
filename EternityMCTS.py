@@ -1,10 +1,16 @@
 import time
 import random
-import CreateTile
+from CreateTile import CreateTile
 
-class EternityMCTS:
+class EternityMCTS():
 
     def startMatching(cutoff):
+        consecutivePatterns = [] # List of tiles with two consecutive patterns
+        unexploredTiles = [] # List of tiles which have not been explored
+        exploredTiles = [] # List of tiles which have been explored
+        usedTiles = [] # List of tiles used in current sequence
+
+
         start = time.time()
         # Need 3 different elements - unexplored path, explored path and currentPath/usedtiles        
 
@@ -18,38 +24,38 @@ class EternityMCTS:
             count += 1
             if (iteration <= 16):
                 if (iteration == 1):
-                    consecutivePatterns = findConsecutivePatternMatches(0,0)
+                    consecutivePatterns = CreateTile.findConsecutivePatternMatches(0,0)
                 else:
-                    consecutivePatterns = findConsecutivePatternMatches(0,tileList[usedTiles[iteration-2]][1])
+                    consecutivePatterns = CreateTile.findConsecutivePatternMatches(0,CreateTile.tileList[usedTiles[iteration-2]][1])
                 # Temporary - to avoid getting stuck on iteration 34 for first choice model
                 #if ((iteration == 6) and (16 in consecutivePatterns)):
                 #    consecutivePatterns.remove(16)
                 #    print(F"Temporary: Tile 16 has been removed at iteration 6 to avoid getting stuck")
             if (iteration == 16):
-                consecutivePatterns = findThreeConsecutivePatternMatches(0, 0, tileList[usedTiles[iteration-2]][1])
+                consecutivePatterns = CreateTile.findThreeConsecutivePatternMatches(0, 0, CreateTile.tileList[usedTiles[iteration-2]][1])
                 #print(f"Matching tile list at corner is {consecutivePatterns}") # Optional Line 1
             if (iteration > 16 and iteration%16 == 1):
-                consecutivePatterns = findConsecutivePatternMatches(tileList[usedTiles[iteration-17]][0],0)
+                consecutivePatterns = CreateTile.findConsecutivePatternMatches(CreateTile.tileList[usedTiles[iteration-17]][0],0)
             if (iteration > 16 and iteration%16 != 0 and iteration%16 != 1):
-                firstMatch = tileList[usedTiles[iteration - 17]][0]
+                firstMatch = CreateTile.tileList[usedTiles[iteration - 17]][0]
                 #print(f'Edge to match on the South is {firstMatch}') # Optional Line 2
-                secondMatch = tileList[usedTiles[iteration - 2]][1]
+                secondMatch = CreateTile.tileList[usedTiles[iteration - 2]][1]
                 #print(f'Edge to match on the West is {secondMatch}') # Optional Line 3
                 # Introducing constraints on hint on level lower. Arguable whether this is good for upper hint tiles
                 if (iteration != 19 and iteration !=30 and iteration != 104 and iteration != 195 and iteration != 206):
-                    consecutivePatterns = findConsecutivePatternMatches(firstMatch,secondMatch)
+                    consecutivePatterns = CreateTile.findConsecutivePatternMatches(firstMatch,secondMatch)
                 elif (iteration == 19):
                     # ensuring iteration 19 has Northern tile of 15 as well as matching S and W
-                    consecutivePatterns = findThreeConsecutivePatternMatches(firstMatch, secondMatch, 15)
+                    consecutivePatterns = CreateTile.findThreeConsecutivePatternMatches(firstMatch, secondMatch, 15)
                 elif (iteration == 30):
                     # ensuring iteration 30 has Northern tile of 18 as well as matching S and W
-                    consecutivePatterns = findThreeConsecutivePatternMatches(firstMatch, secondMatch, 18)
+                    consecutivePatterns = CreateTile.findThreeConsecutivePatternMatches(firstMatch, secondMatch, 18)
                 elif (iteration == 104):
-                    consecutivePatterns = findThreeConsecutivePatternMatches(firstMatch, secondMatch, 17)
+                    consecutivePatterns = CreateTile.findThreeConsecutivePatternMatches(firstMatch, secondMatch, 17)
                 elif (iteration == 195):
-                    consecutivePatterns = findThreeConsecutivePatternMatches(firstMatch, secondMatch, 10)
+                    consecutivePatterns = CreateTile.findThreeConsecutivePatternMatches(firstMatch, secondMatch, 10)
                 elif (iteration == 206):
-                    consecutivePatterns = findThreeConsecutivePatternMatches(firstMatch, secondMatch, 7)
+                    consecutivePatterns = CreateTile.findThreeConsecutivePatternMatches(firstMatch, secondMatch, 7)
                 # Adding hints for centre tile
                 if (iteration == 120):
                     if (firstMatch != 17) and (secondMatch != 10):
@@ -102,13 +108,13 @@ class EternityMCTS:
                 if (255 in consecutivePatterns and iteration != 222):
                     consecutivePatterns.remove(255)
             if (iteration > 16 and iteration%16 == 0):
-                firstMatch = tileList[usedTiles[iteration - 17]][0]
+                firstMatch = CreateTile.tileList[usedTiles[iteration - 17]][0]
                 #print(f'Edge to match on the South is {firstMatch}') # Optional Line 4
-                secondMatch = tileList[usedTiles[iteration - 2]][1]
+                secondMatch = CreateTile.tileList[usedTiles[iteration - 2]][1]
                 #print(f'Edge to match on the West is {secondMatch}') # Optional Line 5
                 thirdMatch = 0
                 #print(f"Need to match outside edge {thirdMatch} as well") # Optional Line 6
-                consecutivePatterns = findThreeConsecutivePatternMatches(0,firstMatch,secondMatch)
+                consecutivePatterns = CreateTile.findThreeConsecutivePatternMatches(0,firstMatch,secondMatch)
             # Remove items in usedTiles that have already been used
             for item in usedTiles:
                 if item in consecutivePatterns[:]:
@@ -138,36 +144,36 @@ class EternityMCTS:
                 matchTile = consecutivePatterns[choice]
                 consecutivePatterns.pop(choice)
                 unexploredTiles.append(consecutivePatterns.copy())
-                matchConfiguration = tileList[matchTile]
+                matchConfiguration = CreateTile.tileList[matchTile]
                 #print(f"Selecting tile {matchTile} which currently has NESW configuration of {matchConfiguration}") # Optional Line 9
                 # Rotate tile to ensure edges are correctly aligned - originally screwed up as used AND rather than OR below
                 if (iteration < 16):
                     if (iteration != 1):
-                        while (tileList[matchTile][2] != 0):
-                            rotateTile(matchTile)
-                            #print(f"Rotation to ensure edges aligned so we have tile {matchTile} now at {tileList[matchTile]}")
+                        while (CreateTile.tileList[matchTile][2] != 0):
+                            CreateTile.rotateTile(matchTile)
+                            #print(f"Rotation to ensure edges aligned so we have tile {matchTile} now at {CreateTile.tileList[matchTile]}")
                     else:
-                        while (tileList[matchTile][2] != 0 or tileList[matchTile][3] != 0):
-                            rotateTile(matchTile)
+                        while (CreateTile.tileList[matchTile][2] != 0 or CreateTile.tileList[matchTile][3] != 0):
+                            CreateTile.rotateTile(matchTile)
                 if (iteration == 16):
-                    #print(f"\nConsidering the rotation of {matchTile} at iteration {iteration} which is currently {tileList[matchTile]}")
-                    while (tileList[matchTile][2] != 0 or tileList[matchTile][1] != 0):
-                        rotateTile(matchTile)
-                        #print(f"Rotation to ensure corners aligned so we have tile {matchTile} now at {tileList[matchTile]}")
+                    #print(f"\nConsidering the rotation of {matchTile} at iteration {iteration} which is currently {CreateTile.tileList[matchTile]}")
+                    while (CreateTile.tileList[matchTile][2] != 0 or CreateTile.tileList[matchTile][1] != 0):
+                        CreateTile.rotateTile(matchTile)
+                        #print(f"Rotation to ensure corners aligned so we have tile {matchTile} now at {CreateTile.tileList[matchTile]}")
                 if (iteration > 16 and iteration%16 == 1):
-                    while (tileList[matchTile][3] != 0):
-                        rotateTile(matchTile)
-                        #print(f"Rotation to ensure edge aligned so we have tile {matchTile} now at {tileList[matchTile]}")
+                    while (CreateTile.tileList[matchTile][3] != 0):
+                        CreateTile.rotateTile(matchTile)
+                        #print(f"Rotation to ensure edge aligned so we have tile {matchTile} now at {CreateTile.tileList[matchTile]}")
                 elif (iteration > 16 and iteration%16 == 0):
-                    while (tileList[matchTile][1] != 0):
-                        rotateTile(matchTile)
-                        #print(f"Rotation to ensure edge aligned so we have tile {matchTile} now at {tileList[matchTile]}")
+                    while (CreateTile.tileList[matchTile][1] != 0):
+                        CreateTile.rotateTile(matchTile)
+                        #print(f"Rotation to ensure edge aligned so we have tile {matchTile} now at {CreateTile.tileList[matchTile]}")
                 # 31.5.20: Changed 1 to 3 below which is a big change
                 elif (iteration > 16):
-                    while (tileList[matchTile][2] != firstMatch or tileList[matchTile][3] != secondMatch):
-                        #print(f'Relevant match is at {tileList[matchTile][2]}')
-                        rotateTile(matchTile)
-                        #print(f"Rotation to ensure tiles aligned so we have tile {matchTile} now at {tileList[matchTile]}") #Optional Line 10
+                    while (CreateTile.tileList[matchTile][2] != firstMatch or CreateTile.tileList[matchTile][3] != secondMatch):
+                        #print(f'Relevant match is at {CreateTile.tileList[matchTile][2]}')
+                        CreateTile.rotateTile(matchTile)
+                        #print(f"Rotation to ensure tiles aligned so we have tile {matchTile} now at {CreateTile.tileList[matchTile]}") #Optional Line 10
                 # Adding to used tile list
                 usedTiles.append(matchTile)
                 if (iteration > maxIteration):
@@ -215,13 +221,3 @@ class EternityMCTS:
         print(f"Unexplored tiles at iteration {iteration - 1} are \n{unexploredTiles}")
         print(f"Explored tiles at iteration {iteration - 1} are \n{exploredTiles}")
         print(f"Time taken in seconds was {end - start:.3f}\n")
-
-
-    def eternityStart():
-        # Input iteration at which cutoff should occur
-        cut = 220
-        createTile()
-        findPatternMatches()
-        startMatching(cut)
-
-eternityStart()
