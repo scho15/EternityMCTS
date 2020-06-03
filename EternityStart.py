@@ -3,6 +3,7 @@ from EternityMCTS import EternityMCTS
 from collections import Counter
 import numpy as np
 import time
+import random
 
 class EternityStart():
     def main():
@@ -18,13 +19,14 @@ class EternityStart():
         CreateTile.findPatternMatches()
         while (len(MCTSList) <= cutoff and term == False):
             options = EternityMCTS.findNextMatches(MCTSList,True)
+            random.shuffle(options)
             print(f"The new options would be {options} and the length is {len(options)}")
             for tile in options:
                 testList.append(tile)
                 print(f"\nThe test list is {testList}")
                 tilePositions = EternityMCTS.tileAlignment(testList)
                 #print(f"TEMP: The tile positions are {tilePositions}")
-                for count in range(1000):
+                for count in range(100000):
                     runLength = EternityMCTS.startMatching(testList)
                     a.append(runLength)
                     testList = MCTSList.copy()
@@ -50,7 +52,7 @@ class EternityStart():
                 testList = MCTSList.copy()
                 #print(f"The maximum AVERAGE was {max(averageList)} so option {maxOption} was chosen and tree search is {MCTSList}\n")
                 print(f"The maximum VALUE was {max(maxList)} so option {maxOption} was chosen and tree search is {MCTSList}\n")
-                print(f"The length of the tree search is {len(MCTSList}")
+                print(f"The length of the tree search is {len(MCTSList)}")
             else:
                 term = True
             tilePositions = EternityMCTS.tileAlignment(testList)
