@@ -213,7 +213,7 @@ class EternityMCTS():
             consecutivePatterns = EternityMCTS.findNextMatches(usedTiles,True)
 
         run = iteration - 1
-        if (run >= 50):
+        if (run >= 150):
             print(f"The length of the run is exceptional at {run}")
             print(f"usedTiles is at {usedTiles}")
 
