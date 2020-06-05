@@ -1,0 +1,8 @@
+May need to implement UCB method and propogation for better selection
+UCB taken ia normally average value plus 2 x square root of log visits at parent node/visits at child node
+normally would expand node, calculate value for one of the nodes (UCB is infinite if no visits made) so select at random, perform simulations
+to calculate average value, backpropogate to all nodes including parent, then start at top of tree again and re-determine state to visit
+based on UCB of child nodes to see if same action would be taken. The issue may be that lots of early states are explored 
+but at least exploration is being encouraged
+
+Tried average and maximum values as alternatives for "value" and need to implement Q table to record values and number of visits
