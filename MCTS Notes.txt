@@ -1,8 +1,10 @@
-May need to implement UCB method and propogation for better selection
-UCB taken ia normally average value plus 2 x square root of log visits at parent node/visits at child node
-normally would expand node, calculate value for one of the nodes (UCB is infinite if no visits made) so select at random, perform simulations
-to calculate average value, backpropogate to all nodes including parent, then start at top of tree again and re-determine state to visit
-based on UCB of child nodes to see if same action would be taken. The issue may be that lots of early states are explored 
-but at least exploration is being encouraged
+Implemented with tree policy of sampling if epsilon < state visit count and greedy max if epsilon is small
+state visit counts will need to be big (1000) before epsilon comes easily into play [e = 1000/(1000+svc)]
+Tried average and maximum values as alternatives for "value" but decided that as "values" are meant to represent the most accurate final value, it was better using maximum rather than average
+This is an "unusual" implementation for MCTS but hoping it works!!
 
-Tried average and maximum values as alternatives for "value" and need to implement Q table to record values and number of visits
+Points to Try:
+- Longer sampling times vs more episodes
+- Smaller epsilons
+- Terminal values fully solved for trees > 96 or 100 [should help a lot]
+- Quicker algorithm - using matching tile not full tile set
