@@ -8,3 +8,11 @@ Points to Try:
 - Smaller epsilons
 - Terminal values fully solved for trees > 96 or 100 [should help a lot]
 - Quicker algorithm - using matching tile not full tile set
+- Q table reduction probably through using terminal values
+- Need to determine how triple pattern tiles are dealt with (have 2 rotation positions) [tile alignment needs work]
+
+Notes
+- 5 10K sample runs took 22500s (6 hours) 42350s for 2 x 50K
+- With 50K can see about 30 ahead at some points - useful for avoiding challenging areas (but still ran into 119 wall!)
+- 10K lengths: 127, 142, 170, 143, 143
+- 50K lengths: 119, 166

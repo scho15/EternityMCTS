@@ -10,8 +10,8 @@ import os.path
 class EternityStart():
     def main():
         start = time.time()
-        maxEpisodes = 5
-        sampleSize = 250
+        maxEpisodes = 1
+        sampleSize = 100000 #(250x5 is 5 mins;10K=22s per step
         episode = 1
         cutoff = 256
         Q = [] # Q list table with state and maximum amount for that state [1] and number of visits [2]
@@ -35,28 +35,31 @@ class EternityStart():
             terminalState = False
             while (len(MCTSList) <= cutoff and terminalState == False):
                 options = EternityMCTS.findNextMatches(MCTSList,True)
+                if len(options) != len(set(options)):
+                    print("There are DUPLICATE options to deal with NOT YET PROGRAMMED")
+                    duplicate = True
                 random.shuffle(options)
                 print(f"The new options would be {options} and the length is {len(options)}")
                 file1.write(f"{options}\n")
-                # Decide whether random or sample based decision
                 for item in Q:
                     if MCTSList == item[0]:
                         currentVisitCount = item[2]
                 epsilon = 1000/ (1000 + currentVisitCount)		
-                print(f"Epsilon is set at {epsilon:.5f} and visitCount at {currentVisitCount} for {MCTSList}")
+                print(f"Epsilon is set at {epsilon:.5f} and visitCount at {currentVisitCount}")
 			    #epsilon = 1 #test out completely random policy
                 # Three options - random, sample maximum or current largest maximum as tree policy
                 # In order to learn, using sample maximum and largest maximum for tree policy and avoiding random
                 if (random.random() < epsilon):
-                    print(f"Proceeding with sample testing and using results of sample")
+                    print(f"SAMPLE: Proceeding with sample testing and using results of sample")
                     sampleMax = True
                 else:
-                    print(f"Taking the current largest maximum value including this sample test")
+                    print(f"GREEDY: Taking the current largest maximum value including this sample test")
                     sampleMax = False
                 for tile in options:
                     itemFound = False
                     testList.append(tile)
                     print(f"\nThe test list is {testList}")
+                    # Implicitly does not deal with tiles that can have two positions
                     tilePositions = EternityMCTS.tileAlignment(testList)
                     #print(f"TEMP: The tile positions are {tilePositions}")
                     # 250 = 2m 250k likely a day
@@ -85,7 +88,7 @@ class EternityStart():
                             itemFound = True
                             break;
                     if (itemFound == False):
-                        print(f"testlist {testList} is not in Q")
+                        #print(f"testlist {testList} is not in Q")
                         Q.append([testList.copy(), maximum, 1])
                         epsilonMaxList.append(maximum)
                     testList = MCTSList.copy()
@@ -108,17 +111,20 @@ class EternityStart():
                     #print(f"The maximum AVERAGE was {max(averageList)} so option {maxOption} was chosen and tree search is {MCTSList}\n")
                     if (sampleMax == True):
                         print(f"The maximum VALUE using SAMPLING was {max(maxList)} so option {maxOption} was chosen and tree search is {MCTSList}")
-                        file1.write(f"\nThe maximum VALUE using SAMPLING was {max(maxList)} so option {maxOption} was chosen\n\n")
+                        file1.write(f"\nThe maximum VALUE using SAMPLING was {max(maxList)} so option {maxOption} was chosen\n")
                     else:
                         print(f"The maximum VALUE using GREEDY MAX was {max(epsilonMaxList)} so option {epsilonMaxOption} was chosen and tree search is {MCTSList}")
-                        file1.write(f"\nThe maximum VALUE using GREEDY MAX was {max(epsilonMaxList)} so option {epsilonMaxOption} was chosen\n\n")
+                        file1.write(f"\nThe maximum VALUE using GREEDY MAX was {max(epsilonMaxList)} so option {epsilonMaxOption} was chosen\n")
                     print(f"The length of the tree search is {len(MCTSList)}")
+                    file1.write(f"The length of the tree search is {len(MCTSList)}\n")
+                    file1.write(f"{MCTSList}\n\n")
                 else:
                     terminalState = True
                     print(f"\nFinal tree length was {len(MCTSList)} which was \n{MCTSList}")
                     file1.write(f"\nFinal tree length was: {len(MCTSList)}\n")
                     finalLength = len(MCTSList)
                 tilePositions = EternityMCTS.tileAlignment(testList)
+                currentVisitCount = 0
                 averageList.clear()
                 maxList.clear()
                 epsilonMaxList.clear()

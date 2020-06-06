@@ -30,6 +30,7 @@
   <ItemGroup>
     <Content Include="MCTS Notes.txt" />
     <Content Include="MCTS.txt" />
+    <Content Include="MCTS5x10K.txt" />
     <Content Include="MCTS250KRun1.txt" />
     <Content Include="Q-table.txt" />
   </ItemGroup>
