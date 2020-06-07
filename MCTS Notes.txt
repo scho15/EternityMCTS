@@ -13,6 +13,8 @@ Points to Try:
 
 Notes
 - 5 10K sample runs took 22500s (6 hours) 42350s for 2 x 50K
-- With 50K can see about 30 ahead at some points - useful for avoiding challenging areas (but still ran into 119 wall!)
+- 100K is 237s (4 mins) per steps - likely 10-12 hrs
+- With 50K can see about 30 ahead at some points - useful for avoiding challenging areas (but still hard to see past hint or centre tiles)
+- 100K looks to improve this to 35 but again blocks at 35, 45, 119 etc so backtrack is almost certainly helpful
 - 10K lengths: 127, 142, 170, 143, 143
 - 50K lengths: 119, 166
