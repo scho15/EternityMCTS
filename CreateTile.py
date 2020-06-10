@@ -5,6 +5,10 @@ class CreateTile():
     tileList = [] # Create list of tiles with index tilenumber and edges as 4 properties
     tilePatternList = [] # List of tiles with tile patterns
     tilePatternSet = set()
+    twoTilePatternList = []
+    twoTilePatternSet = set()
+    twoPatternList = []
+    detailedPatternList = []
 
     def createTile():       
         # 0: Grey edge tile
@@ -299,17 +303,41 @@ class CreateTile():
                         CreateTile.tilePatternSet.add(y)
             CreateTile.tilePatternList.append(CreateTile.tilePatternSet.copy())
             CreateTile.tilePatternSet.clear()
-            # print(f"Set of tiles with tile pattern {x} is {tilePatternList[x]}")
+            #print(f"Set of tiles with tile pattern {x} is {CreateTile.tilePatternList[x]} and length {len(CreateTile.tilePatternList[x])}")
+        for w in range(CreateTile.PATTERN_TYPES + 1):
+            for x in range(CreateTile.PATTERN_TYPES + 1):
+                for y in range(CreateTile.TILE_SET_SIZE + 1):
+                    for z in range( 4 ):
+                        if(CreateTile.tileList[y][z] == w and CreateTile.tileList[y][(z+1)%4] == x):
+                            CreateTile.twoTilePatternList.append(y)
+                CreateTile.twoPatternList.append(CreateTile.twoTilePatternList.copy())
+                CreateTile.twoTilePatternList.clear()
+            CreateTile.detailedPatternList.append(CreateTile.twoPatternList.copy())
+            CreateTile.twoPatternList.clear()
+        #print(f"Set of tiles with tile pattern {0} is {CreateTile.detailedPatternList[0]} and length {len(CreateTile.detailedPatternList[0])}\n")
+        #print(f"Test example for patterns 0 and 4 would be [0][4] {CreateTile.detailedPatternList[0][4]}")
 
+    # May be able to greatly simplify to return CreateTile.detailedPatternList[x][y]
     def findConsecutivePatternMatches(x, y):
         # Return the tile number of matching patterns not the whole tile
-            twoPatterns = []
-            for a in range(CreateTile.TILE_SET_SIZE + 1):
-                for b in range( 4 ):
-                    if(CreateTile.tileList[a][b] == x and CreateTile.tileList[a][(b+1)%4] == y):
-                        twoPatterns.append(a)
-            #print(f"Set of tiles with two consecutive tile patterns {x} and {y} is {twoPatterns}")
-            return twoPatterns
+        #    twoPatterns = []
+        #    for a in CreateTile.tilePatternList[x]:
+        #        for b in range( 4 ):
+        #            if(CreateTile.tileList[a][b] == x and CreateTile.tileList[a][(b+1)%4] == y):
+        #                twoPatterns.append(a)
+        #    #print(f"Set of tiles with two consecutive tile patterns {x} and {y} is {twoPatterns}")
+        #    return twoPatterns
+            return CreateTile.detailedPatternList[x][y].copy()
+
+    #def findConsecutivePatternMatches(x, y):
+    #    # Return the tile number of matching patterns not the whole tile
+    #        twoPatterns = []
+    #        for a in range(CreateTile.TILE_SET_SIZE + 1):
+    #            for b in range( 4 ):
+    #                if(CreateTile.tileList[a][b] == x and CreateTile.tileList[a][(b+1)%4] == y):
+    #                    twoPatterns.append(a)
+    #        #print(f"Set of tiles with two consecutive tile patterns {x} and {y} is {twoPatterns}")
+    #        return twoPatterns
 
     ## Tiles must be in clockwise order
     def findThreeConsecutivePatternMatches(x, y, z):

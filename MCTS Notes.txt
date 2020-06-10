@@ -13,8 +13,11 @@ Points to Try:
 
 Notes
 - 5 10K sample runs took 22500s (6 hours) 42350s for 2 x 50K
-- 100K is 237s (4 mins) per steps - likely 10-12 hrs
+- 100K is 237s (4 mins) per steps and 39659s (11 hours) overall 
+- 100K reduced to 14.3s per step and 7527s (2 hours 5m) through pre-loading matches for 2 tile patterms
+- With improvement on consec pattern matches to 85s per steps. Vast improvement expected with next iteration.
 - With 50K can see about 30 ahead at some points - useful for avoiding challenging areas (but still hard to see past hint or centre tiles)
 - 100K looks to improve this to 35 but again blocks at 35, 45, 119 etc so backtrack is almost certainly helpful
-- 10K lengths: 127, 142, 170, 143, 143
+- 10K lengths: 127, 142, 170, 143, 143, 159
 - 50K lengths: 119, 166
+- 100K lengths: 163, 159, 169
