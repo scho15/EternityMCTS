@@ -1,3 +1,5 @@
+import random
+
 class CreateTile():
     TILE_SET_SIZE = 256
     EDGE_SET_SIZE = 60
@@ -304,13 +306,16 @@ class CreateTile():
             CreateTile.tilePatternList.append(CreateTile.tilePatternSet.copy())
             CreateTile.tilePatternSet.clear()
             #print(f"Set of tiles with tile pattern {x} is {CreateTile.tilePatternList[x]} and length {len(CreateTile.tilePatternList[x])}")
+       # Using set rather than list to avoid duplicates (normally 173, 199 and 233 which are now specifically catered for) 
         for w in range(CreateTile.PATTERN_TYPES + 1):
             for x in range(CreateTile.PATTERN_TYPES + 1):
                 for y in range(CreateTile.TILE_SET_SIZE + 1):
                     for z in range( 4 ):
                         if(CreateTile.tileList[y][z] == w and CreateTile.tileList[y][(z+1)%4] == x):
-                            CreateTile.twoTilePatternList.append(y)
+                            CreateTile.twoTilePatternSet.add(y)
+                CreateTile.twoTilePatternList.extend(CreateTile.twoTilePatternSet.copy())
                 CreateTile.twoPatternList.append(CreateTile.twoTilePatternList.copy())
+                CreateTile.twoTilePatternSet.clear()
                 CreateTile.twoTilePatternList.clear()
             CreateTile.detailedPatternList.append(CreateTile.twoPatternList.copy())
             CreateTile.twoPatternList.clear()
@@ -319,15 +324,8 @@ class CreateTile():
 
     # May be able to greatly simplify to return CreateTile.detailedPatternList[x][y]
     def findConsecutivePatternMatches(x, y):
-        # Return the tile number of matching patterns not the whole tile
-        #    twoPatterns = []
-        #    for a in CreateTile.tilePatternList[x]:
-        #        for b in range( 4 ):
-        #            if(CreateTile.tileList[a][b] == x and CreateTile.tileList[a][(b+1)%4] == y):
-        #                twoPatterns.append(a)
-        #    #print(f"Set of tiles with two consecutive tile patterns {x} and {y} is {twoPatterns}")
-        #    return twoPatterns
-            return CreateTile.detailedPatternList[x][y].copy()
+            output = CreateTile.detailedPatternList[x][y].copy()            
+            return output
 
     #def findConsecutivePatternMatches(x, y):
     #    # Return the tile number of matching patterns not the whole tile
@@ -362,4 +360,9 @@ class CreateTile():
         CreateTile.tileList[x][0] = CreateTile.tileList[x][3]
         CreateTile.tileList[x][3] = CreateTile.tileList[x][2]
         CreateTile.tileList[x][2] = CreateTile.tileList[x][1]
+        CreateTile.tileList[x][1] = temp
+
+    def swapPosition(x):
+        temp = CreateTile.tileList[x][0]
+        CreateTile.tileList[x][0] = CreateTile.tileList[x][1]
         CreateTile.tileList[x][1] = temp

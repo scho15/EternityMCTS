@@ -31,7 +31,7 @@
     <Content Include="MCTS Notes.txt" />
     <Content Include="MCTS.txt" />
     <Content Include="MCTS5x10K.txt" />
-    <Content Include="MCTS250KRun1.txt" />
+    <Content Include="MCTSRunSummary.txt" />
     <Content Include="Q-table.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />

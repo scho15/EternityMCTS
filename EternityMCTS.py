@@ -121,7 +121,16 @@ class EternityMCTS():
                 consecutivePatterns.remove(item)
             elif (item <=4 and iteration != 1 and iteration != 16 and iteration != 241 and iteration != 256):
                 consecutivePatterns.remove(item)
-                
+
+        for item in consecutivePatterns[:]:
+            if (item == 173 or item == 199 or item == 233):
+                event = random.randint(0,1)
+                westMatch = CreateTile.tileList[item][3]
+                southMatch = CreateTile.tileList[item][2]
+                if (westMatch == southMatch and event == 1):
+                    CreateTile.swapPosition(item)
+                    #print(f"{item} swap occurred")
+
         return consecutivePatterns
 
     # Input: usedTileList (list of integers)

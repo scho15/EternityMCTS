@@ -10,27 +10,30 @@ import os.path
 class EternityStart():
     def main():
         start = time.time()
-        maxEpisodes = 1
+        maxEpisodes = 5
         sampleSize = 250000 #(100K: 14s/step 2hrs 250K
         episode = 1
         cutoff = 256
         Q = [] # Q list table with state and maximum amount for that state [1] and number of visits [2]
         currentVisitCount = 0
         terminalState = False # graceful way to end program where empty list
-        file1 = open("MCTS.txt", "w") # normally append "a" but overwriting for one turn  
+        file1 = open("MCTS.txt", "w") # detail for each episode (overwritten each time)
+        file2 = open("MCTSRunSummary.txt", "a") # summary of tree and lookahead info
         if (os.path.isfile('Q-Table.txt') == True):
             with open("Q-table.txt", "r") as QTablefile:
                 Q = json.load(QTablefile)
             print(f"Q-table uploaded with {len(Q)} lines")
         CreateTile.createTile()
         CreateTile.findPatternMatches()
-        episodeList = [] # list if episode lengths
+        episodeList = [] # list of episode lengths
+        maximaList = [] # list of maxima at each iteration 
         while episode <= maxEpisodes:
             MCTSList = []
             testList = []
             averageList = []
             maxList = []
             epsilonMaxList = []
+            maximaList = [] # depth of lookahead at each iteration
             a = []
             terminalState = False
             while (len(MCTSList) <= cutoff and terminalState == False):
@@ -183,20 +186,23 @@ class EternityStart():
                     #print(f"The maximum AVERAGE was {max(averageList)} so option {maxOption} was chosen and tree search is {MCTSList}\n")
                     if (sampleMax == True):
                         print(f"The maximum VALUE using SAMPLING was {max(maxList)} so option {maxOption} was chosen and tree search is {MCTSList}")
-                        file1.write(f"\nThe maximum VALUE using SAMPLING was {max(maxList)} so option {maxOption} was chosen\n")
+                        file1.write(f"\nThe maximum VALUE using SAMPLING was {max(maxList)} so option {maxOption} was chosen\n")                        
                     else:
                         print(f"The maximum VALUE using GREEDY MAX was {max(epsilonMaxList)} so option {epsilonMaxOption} was chosen and tree search is {MCTSList}")
                         file1.write(f"\nThe maximum VALUE using GREEDY MAX was {max(epsilonMaxList)} so option {epsilonMaxOption} was chosen\n")
                     print(f"The length of the tree search is {len(MCTSList)}\n")
                     file1.write(f"The length of the tree search is {len(MCTSList)}\n")
                     file1.write(f"{MCTSList}\n\n")
+                    maximaList.append(max(maxList)-len(MCTSList)) # work out look ahead value
                 elif (len(options) == 1):
                     MCTSList.append(options[0])
                     testList = MCTSList.copy()
                     print(f"Only a single option {options[0]} so no random samples undertaken\n")
+                    maximaList.append(maximaList[-1] - 1)
                 elif (maxList == []):
                     terminalState = True
                     print(f"\nFinal tree length was {len(MCTSList)} which was \n{MCTSList}")
+                    file2.write(f"\nFinal tree length was {len(MCTSList)} which was \n{MCTSList}")
                     file1.write(f"\nFinal tree length was: {len(MCTSList)}\n")
                     finalLength = len(MCTSList)
                 tilePositions = EternityMCTS.tileAlignment(testList)
@@ -204,8 +210,14 @@ class EternityStart():
                 maxList.clear()
                 epsilonMaxList.clear()
             #print(f"\nFinal Q-table with state, maximum, visitcount was\n {Q}")
-            print(f"The length of the final Q-table with state, maximum, visitcount was {len(Q)}")
+            print(f"The length of the final Q-table with state, maximum, visitcount was {len(Q)}\n")
+            print(f"The lookahead for each iteration for sample size {sampleSize} was {maximaList} and maximum was {max(maximaList)} with average {sum(maximaList)/len(maximaList):.3f}\n")
+            file1.write(f"The lookahead for each iteration for sample size {sampleSize} was {maximaList} and maximum was {max(maximaList)} with average {sum(maximaList)/len(maximaList):.3f}\n")
             file1.write(f"Final Q-table length: {len(Q)}\n\n\n")
+            file2.write(f"The lookahead for each iteration for sample size {sampleSize} was {maximaList} and maximum was {max(maximaList)} with average {sum(maximaList)/len(maximaList):.3f}\n")
+            end = time.time()
+            file2.write(f"Time taken for the complete run was: {end - start:.3f} seconds\n")
+            file2.write(f"Final Q-table length: {len(Q)}\n\n")
             episodeList.append(len(MCTSList))
             while(MCTSList != []):
                 for item in Q:                   

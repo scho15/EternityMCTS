@@ -4,20 +4,26 @@ Tried average and maximum values as alternatives for "value" but decided that as
 This is an "unusual" implementation for MCTS but hoping it works!!
 
 Points to Try:
-- Longer sampling times vs more episodes
-- Smaller epsilons
-- Terminal values fully solved for trees > 96 or 100 [should help a lot]
-- Quicker algorithm - using matching tile not full tile set
+- Have used tiles checked once when MCST is appended rather than each time on consecutive matches
+- Instead of random use backtracking and run for a particular count length
+- Terminal values fully solved for trees > 85 or 96 [should help a lot]
 - Q table reduction probably through using terminal values
-- Need to determine how triple pattern tiles are dealt with (have 2 rotation positions) [tile alignment needs work]
 
 Notes
 - 5 10K sample runs took 22500s (6 hours) 42350s for 2 x 50K
-- 100K is 237s (4 mins) per steps and 39659s (11 hours) overall 
+- 100K is 237s (4 mins) per steps and 39659s (11 hours) overall in OLD version
 - 100K reduced to 14.3s per step and 7527s (2 hours 5m) through pre-loading matches for 2 tile patterms
-- With improvement on consec pattern matches to 85s per steps. Vast improvement expected with next iteration.
 - With 50K can see about 30 ahead at some points - useful for avoiding challenging areas (but still hard to see past hint or centre tiles)
 - 100K looks to improve this to 35 but again blocks at 35, 45, 119 etc so backtrack is almost certainly helpful
-- 10K lengths: 127, 142, 170, 143, 143, 159
+- 250K took 19301s for 175 length run with early matches taking 1 minute but quicker for later iterations
+- 500K was 33579s for 174 length (121s for early matches) and 39348s with average lookahead of 39.058 [locked on to 173 25 out]
+- 10K lengths: 127, 142, 170, 143, 143, 159, 156
 - 50K lengths: 119, 166
 - 100K lengths: 163, 159, 169
+- 250K length: 175, 169
+- 500K length: 174, 173
+with tweak on double rotation tiles
+- 10K lengths: 47, 148, 159, 119, 149, (average lookahead 22.532, 33.838, 30.038, 30.958, 30.799)
+- 50K: 121,127 (average lookahead 34.543, 37.438)
+- 100K: 149, 157, 175, 179, 172 (av 36.732, 34.643, 36.309, 36.737, 36.744)
+- 250K: 179, 163, 159, 167, 174 (av 37.978, 39.264, 39,560, 37.323, 37.989) [5 hrs each]
