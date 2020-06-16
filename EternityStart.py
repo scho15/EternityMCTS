@@ -10,8 +10,8 @@ import os.path
 class EternityStart():
     def main():
         start = time.time()
-        maxEpisodes = 5
-        sampleSize = 250000 #(100K: 14s/step 2hrs 250K
+        maxEpisodes = 1
+        sampleSize = 10000 #(100K: 14s/step 2hrs 250K
         episode = 1
         cutoff = 256
         Q = [] # Q list table with state and maximum amount for that state [1] and number of visits [2]
@@ -53,8 +53,13 @@ class EternityStart():
                 file1.write(f"{options}\n")
                 if (len(options) > 1 or 173 in options or 233 in options or 199 in options):
                     for item in Q:
-                        if MCTSList == item[0]:
-                            currentVisitCount = item[2]
+                        if MCTSList == item[0]: 
+                            #print(f"MCTS is {MCTSList} and item[0] is {item[0]}\n")
+                            currentVisitCount = item[2] - 1 # Adjusting so epsilon is 1 unless previous sample taken
+                    #if (currentVisitCount >= 1):
+                    #    epsilon = 0.1
+                    #else:
+                    #    epsilon = 1.0
                     epsilon = 1000/ (1000 + currentVisitCount)		
                     print(f"Epsilon is set at {epsilon:.5f} and visitCount at {currentVisitCount}")
                     currentVisitCount = 0
@@ -65,8 +70,8 @@ class EternityStart():
                         print(f"SAMPLE: Proceeding with sample testing and using results of sample")
                         sampleMax = True
                     else:
-                        print(f"GREEDY: Taking the current largest maximum value including this sample test")
-                        file1.write(f"GREEDY: Taking the current largest maximum value including this sample test\n")
+                        print(f"GREEDY: Taking the current largest maximum value without another sample test")
+                        file1.write(f"GREEDY: Taking the current largest maximum value without another sample test\n")
                         sampleMax = False
                     for tile in options:
                         itemFound = False
@@ -76,89 +81,92 @@ class EternityStart():
                         tilePositions = EternityMCTS.tileAlignment(testList)
                         #print(f"TEMP: The tile positions are {tilePositions}")
                         # 250 = 2m 250k likely a day
-                        for count in range(sampleSize):
-                            runLength = EternityMCTS.startMatching(testList)
-                            a.append(runLength)
-                            testList = MCTSList.copy()
-                            testList.append(tile)
-                        print("The distribution for runs is as follows:")
-                        print(sorted(Counter(a).items())) # See if this works
-                        #print(Counter(a)) # plain Counter
-                        file1.write(f"{Counter(a)}\n")
-                        average = sum(a)/len(a)
-                        maximum = max(Counter(a))
-                        print(f"The average is {average:.5f} and maximum was {maximum}")
-                        # Extremely long section to deal with 173 and 233 edge cases of double rotation
-                        # As these tiles are not rotated yet, it's taking default position which is misleading
-                        # Need to force alignment first
-                        if (tile == 173 or tile == 233 or tile == 199):
-                            tilePositions = EternityMCTS.tileAlignment(testList)
-                            northMatch = CreateTile.tileList[tile][0]
-                            eastMatch = CreateTile.tileList[tile][1]
-                            southMatch = CreateTile.tileList[tile][2]
-                            westMatch = CreateTile.tileList[tile][3]
-                            print(f"Current tile is {tile} with position {CreateTile.tileList[tile]}")
-                            file1.write(f"Current tile is {tile} with position {CreateTile.tileList[tile]}\n")
-                            if (southMatch == westMatch):
-                                print("Second potential rotation needs to be tested\n")
-                                file1.write("Second potential rotation needs to be tested\n")
-                                # Rotation is clockwise
-                                if (southMatch == eastMatch):
-                                    CreateTile.rotateTile(tile)
-                                else:
-                                    CreateTile.rotateTile(tile)
-                                    CreateTile.rotateTile(tile)
-                                    CreateTile.rotateTile(tile)
-                                print(f"The new position is {CreateTile.tileList[tile]}\n")
-                                file1.write(f"The new position is {CreateTile.tileList[tile]}\n")
-                                b = []
-                                for count in range(sampleSize):
-                                    runLength = EternityMCTS.startMatching(testList)
-                                    b.append(runLength)
-                                    testList = MCTSList.copy()
-                                    testList.append(tile)
-                                print("The distribution for the second run is as follows:")
-                                print(sorted(Counter(b).items())) # See if this works
-                                file1.write(f"{Counter(b)}\n")
-                                average2 = sum(b)/len(b)
-                                maximum2 = max(Counter(b))
-                                print(f"The average is {average2:.5f} and maximum was {maximum2}")
-                                if (maximum2 > maximum):
-                                    print(f"The second rotation was better and is being used")
-                                    maximum = maximum2
-                                    average = average2
-                                else:
-                                    print(f"The first rotation was better or the same and is being used")
-                                    maximum2 = maximum
-                                    average2 = average
-                                    eastMatch = CreateTile.tileList[tile][1]
-                                    southMatch = CreateTile.tileList[tile][2]
-                                    # better to use revised S and E here - less confusing
-                                    if (southMatch == eastMatch):
-                                        CreateTile.rotateTile(tile) 
-                                    else:
-                                        CreateTile.rotateTile(tile)  
-                                        CreateTile.rotateTile(tile)
-                                        CreateTile.rotateTile(tile)
-                                b = []
+                        if (sampleMax == True):
+                            for count in range(sampleSize):
+                                runLength = EternityMCTS.startMatching(testList)
+                                a.append(runLength)
+                                testList = MCTSList.copy()
+                                testList.append(tile)
+                            print("The distribution for runs is as follows:")
+                            print(sorted(Counter(a).items())) # See if this works
+                            #print(Counter(a)) # plain Counter
+                            file1.write(f"{Counter(a)}\n")
+                            average = sum(a)/len(a)
+                            maximum = max(Counter(a))
+                            print(f"The average is {average:.5f} and maximum was {maximum}")
+                            # Extremely long section to deal with 173 and 233 edge cases of double rotation
+                            # As these tiles are not rotated yet, it's taking default position which is misleading
+                            # Need to force alignment first
+                            if (tile == 173 or tile == 233 or tile == 199):
+                                tilePositions = EternityMCTS.tileAlignment(testList)
                                 northMatch = CreateTile.tileList[tile][0]
                                 eastMatch = CreateTile.tileList[tile][1]
                                 southMatch = CreateTile.tileList[tile][2]
                                 westMatch = CreateTile.tileList[tile][3]
-                                print(f"Final rotation used was {northMatch} {eastMatch} {southMatch} {westMatch}\n")
-                                file1.write(f"Final rotation used was {northMatch} {eastMatch} {southMatch} {westMatch}\n")
-                            else:
-                                print("No further rotations need to be tested as W and S are different\n")
-                        averageList.append(average)
-                        maxList.append(maximum)
-                        if len(Q) == 0:
-                            Q.append([MCTSList.copy(),maximum,0])
+                                print(f"Current tile is {tile} with position {CreateTile.tileList[tile]}")
+                                file1.write(f"Current tile is {tile} with position {CreateTile.tileList[tile]}\n")
+                                if (southMatch == westMatch):
+                                    print("Second potential rotation needs to be tested\n")
+                                    file1.write("Second potential rotation needs to be tested\n")
+                                    # Rotation is clockwise
+                                    if (southMatch == eastMatch):
+                                        CreateTile.rotateTile(tile)
+                                    else:
+                                        CreateTile.rotateTile(tile)
+                                        CreateTile.rotateTile(tile)
+                                        CreateTile.rotateTile(tile)
+                                    print(f"The new position is {CreateTile.tileList[tile]}\n")
+                                    file1.write(f"The new position is {CreateTile.tileList[tile]}\n")
+                                    b = []
+                                    for count in range(sampleSize):
+                                        runLength = EternityMCTS.startMatching(testList)
+                                        b.append(runLength)
+                                        testList = MCTSList.copy()
+                                        testList.append(tile)
+                                    print("The distribution for the second run is as follows:")
+                                    print(sorted(Counter(b).items())) # See if this works
+                                    file1.write(f"{Counter(b)}\n")
+                                    average2 = sum(b)/len(b)
+                                    maximum2 = max(Counter(b))
+                                    print(f"The average is {average2:.5f} and maximum was {maximum2}")
+                                    if (maximum2 > maximum):
+                                        print(f"The second rotation was better and is being used")
+                                        maximum = maximum2
+                                        average = average2
+                                    else:
+                                        print(f"The first rotation was better or the same and is being used")
+                                        maximum2 = maximum
+                                        average2 = average
+                                        eastMatch = CreateTile.tileList[tile][1]
+                                        southMatch = CreateTile.tileList[tile][2]
+                                        # better to use revised S and E here - less confusing
+                                        if (southMatch == eastMatch):
+                                            CreateTile.rotateTile(tile) 
+                                        else:
+                                            CreateTile.rotateTile(tile)  
+                                            CreateTile.rotateTile(tile)
+                                            CreateTile.rotateTile(tile)
+                                    b = []
+                                    northMatch = CreateTile.tileList[tile][0]
+                                    eastMatch = CreateTile.tileList[tile][1]
+                                    southMatch = CreateTile.tileList[tile][2]
+                                    westMatch = CreateTile.tileList[tile][3]
+                                    print(f"Final rotation used was {northMatch} {eastMatch} {southMatch} {westMatch}\n")
+                                    file1.write(f"Final rotation used was {northMatch} {eastMatch} {southMatch} {westMatch}\n")
+                                else:
+                                    print("No further rotations need to be tested as W and S are different\n")
+                            averageList.append(average)
+                            maxList.append(maximum)
+                            if len(Q) == 0:
+                                Q.append([MCTSList.copy(),maximum,0])
+                        # Should be done for greedy and non-greedy
                         for item in Q:  
                             #print(f"Item is {item}")
                             if testList == item[0]:
                                 #print(f"item[0] is {item[0]}")
                                 item[2] = item[2] + 1
-                                item[1] = max(item[1],maximum)
+                                if (sampleMax == True):
+                                    item[1] = max(item[1],maximum)
                                 epsilonMaxList.append(item[1])
                                 itemFound = True
                                 break;
@@ -172,15 +180,19 @@ class EternityStart():
                         print(f"Time taken so far is: {end - start:.3f} seconds")
                     print(f"\nFor options {options}")
                     # Choice of using average list or maximum list
-                    print(f"The averages were {averageList}, sample maxima were {maxList} and greedy maxima were {epsilonMaxList}")
-                    file1.write(f"Average List:\n{averageList}\nSample Maxima:\n{maxList}\nGreedy Maxima:\n{epsilonMaxList}\n\n")
-                if (len(options) > 1 or maxList != []):
-                    maxOption = options[maxList.index(max(maxList))]
-                    epsilonMaxOption = options[epsilonMaxList.index(max(epsilonMaxList))]
+                    if (sampleMax == True):
+                        print(f"The averages were {averageList}, sample maxima were {maxList} and greedy maxima were {epsilonMaxList}")
+                        file1.write(f"Average List:\n{averageList}\nSample Maxima:\n{maxList}\nGreedy Maxima:\n{epsilonMaxList}\n\n")
+                    else:
+                        print(f"GREEDY RUN: The greedy maxima were {epsilonMaxList}")
+                        file1.write(f"GREEDY RUN: Greedy Maxima:\n{epsilonMaxList}\n\n")
+                if (len(options) > 1 or maxList != []):                    
                     #maxOption = options[averageList.index(max(averageList))]
                     if (sampleMax == True):
+                        maxOption = options[maxList.index(max(maxList))]
                         MCTSList.append(maxOption)
                     else:
+                        epsilonMaxOption = options[epsilonMaxList.index(max(epsilonMaxList))]
                         MCTSList.append(epsilonMaxOption)
                     testList = MCTSList.copy()
                     #print(f"The maximum AVERAGE was {max(averageList)} so option {maxOption} was chosen and tree search is {MCTSList}\n")
@@ -193,7 +205,10 @@ class EternityStart():
                     print(f"The length of the tree search is {len(MCTSList)}\n")
                     file1.write(f"The length of the tree search is {len(MCTSList)}\n")
                     file1.write(f"{MCTSList}\n\n")
-                    maximaList.append(max(maxList)-len(MCTSList)) # work out look ahead value
+                    if (sampleMax == True):
+                        maximaList.append(max(maxList)-len(MCTSList)) # work out look ahead value
+                    elif (maximaList != []):
+                        maximaList.append(maximaList[-1] - 1)
                 elif (len(options) == 1):
                     MCTSList.append(options[0])
                     testList = MCTSList.copy()
@@ -228,13 +243,13 @@ class EternityStart():
             # Final update for original leaf
             Q[0][1] = max(Q[0][1],finalLength)
             Q[0][2] = Q[0][2] + 1
-            with open("Q-table.txt","w") as handler:
-                json.dump(Q,handler)           
+            #with open("Q-table.txt","w") as handler:
+            #    json.dump(Q,handler)           
             episode += 1
         print(f"\nFor the {episode - 1} episodes run with sample size {sampleSize} the longest run was {max(episodeList)}")
         print(f"\nThe longest recorded run in the Q-Table is {Q[0][1]}")
         file1.close()
-        handler.close()
+        #handler.close()
 
     main()
 
