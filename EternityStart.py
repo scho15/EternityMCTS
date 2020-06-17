@@ -11,7 +11,7 @@ class EternityStart():
     def main():
         start = time.time()
         maxEpisodes = 1
-        sampleSize = 10000 #(100K: 14s/step 2hrs 250K
+        sampleSize = 500000 #(100K: 14s/step 2hrs 250K
         episode = 1
         cutoff = 256
         Q = [] # Q list table with state and maximum amount for that state [1] and number of visits [2]
@@ -217,7 +217,7 @@ class EternityStart():
                 elif (maxList == []):
                     terminalState = True
                     print(f"\nFinal tree length was {len(MCTSList)} which was \n{MCTSList}")
-                    file2.write(f"\nFinal tree length was {len(MCTSList)} which was \n{MCTSList}")
+                    file2.write(f"\nFinal tree length was {len(MCTSList)} which was \n{MCTSList}\n")
                     file1.write(f"\nFinal tree length was: {len(MCTSList)}\n")
                     finalLength = len(MCTSList)
                 tilePositions = EternityMCTS.tileAlignment(testList)
@@ -243,13 +243,13 @@ class EternityStart():
             # Final update for original leaf
             Q[0][1] = max(Q[0][1],finalLength)
             Q[0][2] = Q[0][2] + 1
-            #with open("Q-table.txt","w") as handler:
-            #    json.dump(Q,handler)           
+            with open("Q-table.txt","w") as handler:
+                json.dump(Q,handler)           
             episode += 1
         print(f"\nFor the {episode - 1} episodes run with sample size {sampleSize} the longest run was {max(episodeList)}")
         print(f"\nThe longest recorded run in the Q-Table is {Q[0][1]}")
         file1.close()
-        #handler.close()
+        handler.close()
 
     main()
 
