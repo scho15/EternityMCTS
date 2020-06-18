@@ -9,9 +9,10 @@ import os.path
 
 class EternityStart():
     def main():
+        #random.seed(0)
         start = time.time()
         maxEpisodes = 1
-        sampleSize = 500000 #(100K: 14s/step 2hrs 250K
+        sampleSize = 1000 #(250K 5 hrs 500K 11 hrs)
         episode = 1
         cutoff = 256
         Q = [] # Q list table with state and maximum amount for that state [1] and number of visits [2]
@@ -56,11 +57,11 @@ class EternityStart():
                         if MCTSList == item[0]: 
                             #print(f"MCTS is {MCTSList} and item[0] is {item[0]}\n")
                             currentVisitCount = item[2] - 1 # Adjusting so epsilon is 1 unless previous sample taken
-                    #if (currentVisitCount >= 1):
-                    #    epsilon = 0.1
-                    #else:
-                    #    epsilon = 1.0
-                    epsilon = 1000/ (1000 + currentVisitCount)		
+                    if (currentVisitCount >= 1):
+                        epsilon = 0.0
+                    else:
+                        epsilon = 1.0
+                    #epsilon = 1000/ (1000 + currentVisitCount)		
                     print(f"Epsilon is set at {epsilon:.5f} and visitCount at {currentVisitCount}")
                     currentVisitCount = 0
 			        #epsilon = 1 #test out completely random policy
@@ -213,7 +214,8 @@ class EternityStart():
                     MCTSList.append(options[0])
                     testList = MCTSList.copy()
                     print(f"Only a single option {options[0]} so no random samples undertaken\n")
-                    maximaList.append(maximaList[-1] - 1)
+                    if (maximaList != []):
+                        maximaList.append(maximaList[-1] - 1)
                 elif (maxList == []):
                     terminalState = True
                     print(f"\nFinal tree length was {len(MCTSList)} which was \n{MCTSList}")
@@ -233,7 +235,8 @@ class EternityStart():
             end = time.time()
             file2.write(f"Time taken for the complete run was: {end - start:.3f} seconds\n")
             file2.write(f"Final Q-table length: {len(Q)}\n\n")
-            episodeList.append(len(MCTSList))
+            episodeList.append(len(MCTSList)) 
+            verificationList = MCTSList.copy()
             while(MCTSList != []):
                 for item in Q:                   
                     if MCTSList == item[0]:
@@ -243,13 +246,19 @@ class EternityStart():
             # Final update for original leaf
             Q[0][1] = max(Q[0][1],finalLength)
             Q[0][2] = Q[0][2] + 1
-            with open("Q-table.txt","w") as handler:
-                json.dump(Q,handler)           
-            episode += 1
+            #with open("Q-table.txt","w") as handler:
+            #    json.dump(Q,handler) 
+            #handler.close() 
+            # New sense check - will become alternate full solution test after iteration 88 but not working atm
+            if (len(verificationList) >= 88):
+                cutoff = 256
+                print (f"Undertaking full solution sense check with cutoff of {cutoff}\n") 
+                EternityMCTS.fullSolutionCheck(cutoff, verificationList[:88])
+                cutoff = 256
+            episode += 1    
         print(f"\nFor the {episode - 1} episodes run with sample size {sampleSize} the longest run was {max(episodeList)}")
         print(f"\nThe longest recorded run in the Q-Table is {Q[0][1]}")
         file1.close()
-        handler.close()
 
     main()
 
