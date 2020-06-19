@@ -12,7 +12,7 @@ class EternityStart():
         #random.seed(0)
         start = time.time()
         maxEpisodes = 1
-        sampleSize = 1000 #(250K 5 hrs 500K 11 hrs)
+        sampleSize = 250000 #(250K 5 hrs 500K 11 hrs)
         episode = 1
         cutoff = 256
         Q = [] # Q list table with state and maximum amount for that state [1] and number of visits [2]
@@ -57,11 +57,11 @@ class EternityStart():
                         if MCTSList == item[0]: 
                             #print(f"MCTS is {MCTSList} and item[0] is {item[0]}\n")
                             currentVisitCount = item[2] - 1 # Adjusting so epsilon is 1 unless previous sample taken
-                    if (currentVisitCount >= 1):
-                        epsilon = 0.0
-                    else:
-                        epsilon = 1.0
-                    #epsilon = 1000/ (1000 + currentVisitCount)		
+                    #if (currentVisitCount >= 1):
+                    #    epsilon = 0.0
+                    #else:
+                    #    epsilon = 1.0
+                    epsilon = 1000/ (1000 + currentVisitCount)		
                     print(f"Epsilon is set at {epsilon:.5f} and visitCount at {currentVisitCount}")
                     currentVisitCount = 0
 			        #epsilon = 1 #test out completely random policy
@@ -90,7 +90,6 @@ class EternityStart():
                                 testList.append(tile)
                             print("The distribution for runs is as follows:")
                             print(sorted(Counter(a).items())) # See if this works
-                            #print(Counter(a)) # plain Counter
                             file1.write(f"{Counter(a)}\n")
                             average = sum(a)/len(a)
                             maximum = max(Counter(a))
@@ -226,7 +225,7 @@ class EternityStart():
                 averageList.clear()
                 maxList.clear()
                 epsilonMaxList.clear()
-            #print(f"\nFinal Q-table with state, maximum, visitcount was\n {Q}")
+
             print(f"The length of the final Q-table with state, maximum, visitcount was {len(Q)}\n")
             print(f"The lookahead for each iteration for sample size {sampleSize} was {maximaList} and maximum was {max(maximaList)} with average {sum(maximaList)/len(maximaList):.3f}\n")
             file1.write(f"The lookahead for each iteration for sample size {sampleSize} was {maximaList} and maximum was {max(maximaList)} with average {sum(maximaList)/len(maximaList):.3f}\n")
@@ -242,19 +241,23 @@ class EternityStart():
                     if MCTSList == item[0]:
                         item[1] = max(item[1],finalLength)
                 MCTSList.pop()
-            print(f"The final length has been used to update all prior Q table values")
+            print(f"The final length has been used to update all prior Q table values\n")
             # Final update for original leaf
             Q[0][1] = max(Q[0][1],finalLength)
             Q[0][2] = Q[0][2] + 1
-            #with open("Q-table.txt","w") as handler:
-            #    json.dump(Q,handler) 
-            #handler.close() 
+            with open("Q-table.txt","w") as handler:
+                json.dump(Q,handler) 
+            handler.close() 
             # New sense check - will become alternate full solution test after iteration 88 but not working atm
             if (len(verificationList) >= 88):
                 cutoff = 256
-                print (f"Undertaking full solution sense check with cutoff of {cutoff}\n") 
-                EternityMCTS.fullSolutionCheck(cutoff, verificationList[:88])
+                print (f"\nUndertaking full solution sense check with cutoff of {cutoff}\n") 
+                maxMCTS = EternityMCTS.fullSolutionCheck(cutoff, verificationList[:88])
                 cutoff = 256
+                print("FINAL RESULTS")
+                print(f"Length of final solution was {len(maxMCTS)}\n")
+                print(f"The solution was\n{maxMCTS}")
+                file2.write(f"Final solution from 88 iteration was of length {len(maxMCTS)} and the solution itself was:\n{maxMCTS}\n")
             episode += 1    
         print(f"\nFor the {episode - 1} episodes run with sample size {sampleSize} the longest run was {max(episodeList)}")
         print(f"\nThe longest recorded run in the Q-Table is {Q[0][1]}")

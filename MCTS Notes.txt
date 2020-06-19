@@ -6,7 +6,6 @@ This is an "unusual" implementation for MCTS but hoping it works!!
 Points to Try:
 - Have used tiles checked once when MCST is appended rather than each time on consecutive matches
 - Instead of random use backtracking and run for a particular count length
-- Terminal values fully solved for trees > 85 or 96 [should help a lot]
 - Q table reduction probably through using terminal values
 
 Notes
