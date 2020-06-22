@@ -406,7 +406,9 @@ class EternityMCTS():
                 inputSolution.append(matchTile)
                 if (iteration > maxIteration):
                     maxIteration = iteration
-                    #print(f"\nIteration is {iteration} and count is {count} with maximum iteration reached of {maxIteration}")
+                    if (maxIteration >= 190):
+                        print(f"Iteration is {iteration} and count is {count} with maximum iteration reached of {maxIteration}")
+                        print(f"Latest solution is\n{inputSolution}")
                     maxCheck = True
                     maxMCTS = inputSolution.copy()
                 iteration +=1
@@ -439,12 +441,13 @@ class EternityMCTS():
                     #print(f"Replacing empty option with unexplored options {consecutivePatterns}") # Optional Line 17
                     #unexploredTiles[-1].clear() 
             # Originally add if iteration == maxIteration and maxCheck == True
-            #if (count%100000000 == 0 or (iteration <= 90 and count > 500000)):
-            #    print(f"\nUsed tiles list at count {count} is now \n{inputSolution}\n and iteration reached was {maxIteration}")
-            #    print(f"Unexplored tiles at iteration {iteration} are \n{unexploredTiles}")
-            #    print(f"Explored tiles at iteration {iteration} are \n{exploredTiles}")
-            #    for i, val in enumerate(unexploredTiles):
-            #        if (minimumLength + i) <= 100:
-            #            print(f"{minimumLength+i}\t{inputSolution[i+minimumLength-1]} {val} {exploredTiles[i]}")                
-            #    maxCheck = False # Optional Insert Line 18 to get all iterations           
+            if (count%25000000 == 0 or (iteration <= 91 and count > 500000)):
+                print(f"\nUsed tiles list at count {count} is now \n{inputSolution}\n and iteration reached was {maxIteration}")
+                print(f"Unexplored tiles at iteration {iteration} are \n{unexploredTiles}")
+                print(f"Explored tiles at iteration {iteration} are \n{exploredTiles}")
+                if (unexploredTiles != []):
+                    for i, val in enumerate(unexploredTiles):
+                        if (minimumLength + i <= minimumLength + 10 and len(inputSolution) > i+minimumLength):
+                            print(f"{minimumLength+i+1}\t{inputSolution[i+minimumLength]} {val} {exploredTiles[i]}")                
+                    maxCheck = False # Optional Insert Line 18 to get all iterations           
         return maxMCTS

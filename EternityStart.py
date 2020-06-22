@@ -14,7 +14,7 @@ class EternityStart():
         maxEpisodes = 1
         sampleSize = 250000 #(250K 5 hrs 500K 11 hrs)
         episode = 1
-        cutoff = 256
+        cutoff = 90 # Point at which we move from sample check to full solution
         Q = [] # Q list table with state and maximum amount for that state [1] and number of visits [2]
         currentVisitCount = 0
         terminalState = False # graceful way to end program where empty list
@@ -218,6 +218,7 @@ class EternityStart():
                 elif (maxList == []):
                     terminalState = True
                     print(f"\nFinal tree length was {len(MCTSList)} which was \n{MCTSList}")
+                    maxMCTS = MCTSList.copy() # just in case MCTS does not reach 88
                     file2.write(f"\nFinal tree length was {len(MCTSList)} which was \n{MCTSList}\n")
                     file1.write(f"\nFinal tree length was: {len(MCTSList)}\n")
                     finalLength = len(MCTSList)
@@ -225,7 +226,18 @@ class EternityStart():
                 averageList.clear()
                 maxList.clear()
                 epsilonMaxList.clear()
-
+            # New sense check - will become alternate full solution test after iteration 88 but not working atm
+            verificationList = MCTSList.copy()
+            if (len(verificationList) >= cutoff):
+                cutoff = 256 # full solution test
+                print (f"\nUndertaking full solution sense check with cutoff of {cutoff}\n") 
+                maxMCTS = EternityMCTS.fullSolutionCheck(cutoff, verificationList[:88])
+                cutoff = 90# back to sample check for future episodes
+                finalLength = len(maxMCTS)
+                print("FINAL RESULTS")
+                print(f"Length of final solution was {finalLength}\n")
+                print(f"The solution was\n{maxMCTS}")
+                file2.write(f"Final solution from {cutoff} iteration was of length {finalLength} and the solution itself was:\n{maxMCTS}\n")
             print(f"The length of the final Q-table with state, maximum, visitcount was {len(Q)}\n")
             print(f"The lookahead for each iteration for sample size {sampleSize} was {maximaList} and maximum was {max(maximaList)} with average {sum(maximaList)/len(maximaList):.3f}\n")
             file1.write(f"The lookahead for each iteration for sample size {sampleSize} was {maximaList} and maximum was {max(maximaList)} with average {sum(maximaList)/len(maximaList):.3f}\n")
@@ -234,30 +246,20 @@ class EternityStart():
             end = time.time()
             file2.write(f"Time taken for the complete run was: {end - start:.3f} seconds\n")
             file2.write(f"Final Q-table length: {len(Q)}\n\n")
-            episodeList.append(len(MCTSList)) 
-            verificationList = MCTSList.copy()
+            episodeList.append(len(maxMCTS)) 
+            MCTSList = verificationList.copy()
             while(MCTSList != []):
                 for item in Q:                   
                     if MCTSList == item[0]:
                         item[1] = max(item[1],finalLength)
                 MCTSList.pop()
-            print(f"The final length has been used to update all prior Q table values\n")
+            print(f"The final length of {finalLength} has been used to update all prior Q table values\n")
             # Final update for original leaf
             Q[0][1] = max(Q[0][1],finalLength)
             Q[0][2] = Q[0][2] + 1
             with open("Q-table.txt","w") as handler:
                 json.dump(Q,handler) 
-            handler.close() 
-            # New sense check - will become alternate full solution test after iteration 88 but not working atm
-            if (len(verificationList) >= 88):
-                cutoff = 256
-                print (f"\nUndertaking full solution sense check with cutoff of {cutoff}\n") 
-                maxMCTS = EternityMCTS.fullSolutionCheck(cutoff, verificationList[:88])
-                cutoff = 256
-                print("FINAL RESULTS")
-                print(f"Length of final solution was {len(maxMCTS)}\n")
-                print(f"The solution was\n{maxMCTS}")
-                file2.write(f"Final solution from 88 iteration was of length {len(maxMCTS)} and the solution itself was:\n{maxMCTS}\n")
+            handler.close()             
             episode += 1    
         print(f"\nFor the {episode - 1} episodes run with sample size {sampleSize} the longest run was {max(episodeList)}")
         print(f"\nThe longest recorded run in the Q-Table is {Q[0][1]}")
