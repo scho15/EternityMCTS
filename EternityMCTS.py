@@ -441,7 +441,7 @@ class EternityMCTS():
                     #print(f"Replacing empty option with unexplored options {consecutivePatterns}") # Optional Line 17
                     #unexploredTiles[-1].clear() 
             # Originally add if iteration == maxIteration and maxCheck == True
-            if (count%25000000 == 0 or (iteration <= 91 and count > 500000)):
+            if (count%250000000 == 0 or (iteration <= 91 and count > 500000)):
                 print(f"\nUsed tiles list at count {count} is now \n{inputSolution}\n and iteration reached was {maxIteration}")
                 print(f"Unexplored tiles at iteration {iteration} are \n{unexploredTiles}")
                 print(f"Explored tiles at iteration {iteration} are \n{exploredTiles}")

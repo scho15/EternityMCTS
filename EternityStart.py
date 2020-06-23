@@ -249,9 +249,14 @@ class EternityStart():
             episodeList.append(len(maxMCTS)) 
             MCTSList = verificationList.copy()
             while(MCTSList != []):
+                itemFound = False
                 for item in Q:                   
                     if MCTSList == item[0]:
                         item[1] = max(item[1],finalLength)
+                        itemFound = True
+                # Should add to Q even for single options where no sampling was previously done
+                if (itemFound == False):
+                    Q.append([MCTSList.copy(), finalLength, 1])
                 MCTSList.pop()
             print(f"The final length of {finalLength} has been used to update all prior Q table values\n")
             # Final update for original leaf
