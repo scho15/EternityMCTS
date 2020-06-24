@@ -30,4 +30,4 @@ with tweak on double rotation tiles
 - 500K: 167, 173, 180, 161, 173 (av 38.850, 41.809, 42.367, 38.932, 38.127) [11 hrs each]
 - 1m: 171, 185 (av 42.713, 41.243) [81886s or 22 hours, 78198s]
 Using full solution at 90 - will move away from sample check shortly to count cutoff method
-- 250K 200,197 (59147,33944s)
+- 250K 200,197, 196 (59147,33944,15698s)

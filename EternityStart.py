@@ -12,7 +12,8 @@ class EternityStart():
         #random.seed(0)
         start = time.time()
         maxEpisodes = 1
-        sampleSize = 250000 #(250K 5 hrs 500K 11 hrs)
+        sampleSize = 10000 #(250K 5 hrs 500K 11 hrs)
+        countLimit = 5000000000 # will eventually be used for early iterations - keeping high for terminal solution (1m for test)
         episode = 1
         cutoff = 90 # Point at which we move from sample check to full solution
         Q = [] # Q list table with state and maximum amount for that state [1] and number of visits [2]
@@ -231,7 +232,7 @@ class EternityStart():
             if (len(verificationList) >= cutoff):
                 cutoff = 256 # full solution test
                 print (f"\nUndertaking full solution sense check with cutoff of {cutoff}\n") 
-                maxMCTS = EternityMCTS.fullSolutionCheck(cutoff, verificationList[:88])
+                maxMCTS = EternityMCTS.fullSolutionCheck(cutoff, countLimit, verificationList[:88])
                 cutoff = 90# back to sample check for future episodes
                 finalLength = len(maxMCTS)
                 print("FINAL RESULTS")
