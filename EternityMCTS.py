@@ -237,6 +237,7 @@ class EternityMCTS():
         minimumLength = len(inputSolution) 
         count = 0
         maxIteration = 0
+        maxMCTS = inputSolution
         termination = False # check to see if unexploredtiles are empty i.e. = [] at end
         #Seeing if lengths can start from input solution
         #while (len(exploredTiles) <= iteration):
@@ -307,7 +308,7 @@ class EternityMCTS():
                 inputSolution.append(matchTile)
                 if (iteration > maxIteration):
                     maxIteration = iteration
-                    if (maxIteration >= 190):
+                    if (maxIteration >= 190 and count > 1000000):
                         print(f"Iteration is {iteration} and count is {count} with maximum iteration reached of {maxIteration}")
                         print(f"Latest solution is\n{inputSolution}")
                     maxCheck = True
@@ -341,8 +342,8 @@ class EternityMCTS():
                     #consecutivePatterns.extend(unexploredTiles[-1]) - deleted as consec re-determined at start of loop
                     #print(f"Replacing empty option with unexplored options {consecutivePatterns}") # Optional Line 17
                     #unexploredTiles[-1].clear() 
-            # Originally add if iteration == maxIteration and maxCheck == True
-            if (count%250000000 == 0 or (iteration <= 91 and count > 500000)):
+            # Originally add if iteration == maxIteration and maxCheck == True or (iteration <= 91 and count > 500000)
+            if (count%250000000 == 0):
                 print(f"\nUsed tiles list at count {count} is now \n{inputSolution}\n and iteration reached was {maxIteration}")
                 print(f"Unexplored tiles at iteration {iteration} are \n{unexploredTiles}")
                 print(f"Explored tiles at iteration {iteration} are \n{exploredTiles}")

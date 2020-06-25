@@ -5,9 +5,8 @@ This is an "unusual" implementation for MCTS but hoping it works!!
 
 Points to Try:
 - Have used tiles checked once when MCST is appended rather than each time on consecutive matches
-- Instead of random use backtracking and run for a particular count length
-- Q table reduction probably through using terminal values
 - Check for double rotation/solve two position problem in complete solutions
+- run several 1m runs rather than 1 and try 5m/10m etc
 
 Notes
 - 5 10K sample runs took 22500s (6 hours) 42350s for 2 x 50K
@@ -31,3 +30,6 @@ with tweak on double rotation tiles
 - 1m: 171, 185 (av 42.713, 41.243) [81886s or 22 hours, 78198s]
 Using full solution at 90 - will move away from sample check shortly to count cutoff method
 - 250K 200,197, 196 (59147,33944,15698s)
+Migration to cutoff method of 1m yields much better values but easier to get stuck on early tiles. Could be resolved
+through several iterations. Really interesting to compare results!
+- 1m cutoff: 194, 34, 194, 200 (25s per iteration: 7393, 3281, 8625, 42188)

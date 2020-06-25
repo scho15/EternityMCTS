@@ -12,8 +12,8 @@ class EternityStart():
         #random.seed(0)
         start = time.time()
         maxEpisodes = 1
-        sampleSize = 10000 #(250K 5 hrs 500K 11 hrs)
-        countLimit = 5000000000 # will eventually be used for early iterations - keeping high for terminal solution (1m for test)
+        sampleSize = 1 #(1m is good - try several runs rather than 1 for comparison)
+        countLimit = 1000000 # will eventually be used for early iterations - keeping high for terminal solution (1m for test)
         episode = 1
         cutoff = 90 # Point at which we move from sample check to full solution
         Q = [] # Q list table with state and maximum amount for that state [1] and number of visits [2]
@@ -35,9 +35,11 @@ class EternityStart():
             averageList = []
             maxList = []
             epsilonMaxList = []
-            maximaList = [] # depth of lookahead at each iteration
+            maximaList = [] # depth of lookahead at each iteration - changed to iteration length
             a = []
+            limitedRunList = []
             terminalState = False
+            countLimit = 1000000
             while (len(MCTSList) <= cutoff and terminalState == False):
                 options = EternityMCTS.findNextMatches(MCTSList,True)
                 if len(options) != len(set(options)):
@@ -85,8 +87,9 @@ class EternityStart():
                         # 250 = 2m 250k likely a day
                         if (sampleMax == True):
                             for count in range(sampleSize):
-                                runLength = EternityMCTS.startMatching(testList)
-                                a.append(runLength)
+                                # Now working with solution list so need length
+                                limitedRunList = EternityMCTS.fullSolutionCheck(256, countLimit, testList.copy())
+                                a.append(len(limitedRunList))
                                 testList = MCTSList.copy()
                                 testList.append(tile)
                             print("The distribution for runs is as follows:")
@@ -120,8 +123,8 @@ class EternityStart():
                                     file1.write(f"The new position is {CreateTile.tileList[tile]}\n")
                                     b = []
                                     for count in range(sampleSize):
-                                        runLength = EternityMCTS.startMatching(testList)
-                                        b.append(runLength)
+                                        limitedRunList = EternityMCTS.fullSolutionCheck(256, countLimit, testList.copy())
+                                        b.append(len(limitedRunList))
                                         testList = MCTSList.copy()
                                         testList.append(tile)
                                     print("The distribution for the second run is as follows:")
@@ -207,15 +210,15 @@ class EternityStart():
                     file1.write(f"The length of the tree search is {len(MCTSList)}\n")
                     file1.write(f"{MCTSList}\n\n")
                     if (sampleMax == True):
-                        maximaList.append(max(maxList)-len(MCTSList)) # work out look ahead value
+                        maximaList.append(max(maxList)) # work out look ahead value
                     elif (maximaList != []):
-                        maximaList.append(maximaList[-1] - 1)
+                        maximaList.append(maximaList[-1])
                 elif (len(options) == 1):
                     MCTSList.append(options[0])
                     testList = MCTSList.copy()
                     print(f"Only a single option {options[0]} so no random samples undertaken\n")
                     if (maximaList != []):
-                        maximaList.append(maximaList[-1] - 1)
+                        maximaList.append(maximaList[-1])
                 elif (maxList == []):
                     terminalState = True
                     print(f"\nFinal tree length was {len(MCTSList)} which was \n{MCTSList}")
@@ -232,6 +235,7 @@ class EternityStart():
             if (len(verificationList) >= cutoff):
                 cutoff = 256 # full solution test
                 print (f"\nUndertaking full solution sense check with cutoff of {cutoff}\n") 
+                countLimit = 5000000000
                 maxMCTS = EternityMCTS.fullSolutionCheck(cutoff, countLimit, verificationList[:88])
                 cutoff = 90# back to sample check for future episodes
                 finalLength = len(maxMCTS)
@@ -255,8 +259,8 @@ class EternityStart():
                     if MCTSList == item[0]:
                         item[1] = max(item[1],finalLength)
                         itemFound = True
-                # Should add to Q even for single options where no sampling was previously done
-                if (itemFound == False):
+                # Should add to Q even for single options where no sampling was previously done (but not past cutoff)
+                if (itemFound == False and len(MCTSList) <=cutoff):
                     Q.append([MCTSList.copy(), finalLength, 1])
                 MCTSList.pop()
             print(f"The final length of {finalLength} has been used to update all prior Q table values\n")
