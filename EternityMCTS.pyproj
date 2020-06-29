@@ -26,6 +26,7 @@
     <Compile Include="EternityStart.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Q-Cleanup.py" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="MCTS Notes.txt" />

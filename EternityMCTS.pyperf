@@ -4,10 +4,5 @@
     <TargetProject>b88bb04f-e7c1-4874-b30a-3cce56071ee1</TargetProject>
     <FriendlyName>EternityMCTS</FriendlyName>
   </ProjectTarget>
-  <Reports>
-    <Report>
-      <Filename>C:\Users\scho1\AppData\Local\Temp\EternityMCTS_20200609.vsp</Filename>
-    </Report>
-  </Reports>
   <UseVTune>false</UseVTune>
 </ProfilingTarget>

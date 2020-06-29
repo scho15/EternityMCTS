@@ -10,10 +10,9 @@ import os.path
 class EternityStart():
     def main():
         #random.seed(0)
-        start = time.time()
         maxEpisodes = 1
-        sampleSize = 1 #(1m is good - try several runs rather than 1 for comparison)
-        countLimit = 1000000 # will eventually be used for early iterations - keeping high for terminal solution (1m for test)
+        sampleSize = 2 #(1m is good - try several runs rather than 1 for comparison)
+        countLimit = 5000000 # will eventually be used for early iterations - keeping high for terminal solution (1m for test)
         episode = 1
         cutoff = 90 # Point at which we move from sample check to full solution
         Q = [] # Q list table with state and maximum amount for that state [1] and number of visits [2]
@@ -30,6 +29,7 @@ class EternityStart():
         episodeList = [] # list of episode lengths
         maximaList = [] # list of maxima at each iteration 
         while episode <= maxEpisodes:
+            start = time.time()
             MCTSList = []
             testList = []
             averageList = []
@@ -38,6 +38,7 @@ class EternityStart():
             maximaList = [] # depth of lookahead at each iteration - changed to iteration length
             a = []
             limitedRunList = []
+            earlyList = []
             terminalState = False
             countLimit = 1000000
             while (len(MCTSList) <= cutoff and terminalState == False):
@@ -64,7 +65,7 @@ class EternityStart():
                     #    epsilon = 0.0
                     #else:
                     #    epsilon = 1.0
-                    epsilon = 1000/ (1000 + currentVisitCount)		
+                    epsilon = 100/ (100 + currentVisitCount)		
                     print(f"Epsilon is set at {epsilon:.5f} and visitCount at {currentVisitCount}")
                     currentVisitCount = 0
 			        #epsilon = 1 #test out completely random policy
@@ -202,10 +203,25 @@ class EternityStart():
                     #print(f"The maximum AVERAGE was {max(averageList)} so option {maxOption} was chosen and tree search is {MCTSList}\n")
                     if (sampleMax == True):
                         print(f"The maximum VALUE using SAMPLING was {max(maxList)} so option {maxOption} was chosen and tree search is {MCTSList}")
-                        file1.write(f"\nThe maximum VALUE using SAMPLING was {max(maxList)} so option {maxOption} was chosen\n")                        
+                        file1.write(f"\nThe maximum VALUE using SAMPLING was {max(maxList)} so option {maxOption} was chosen\n")    
+                        # Propogate maxes up the tree (even from earlier iterations and also to single solutions)
+                        earlyList = MCTSList.copy()
+                        maxLength = max(maxList)
+                        while(earlyList != []):
+                            itemFound = False
+                            for item in Q:                   
+                                if earlyList == item[0]:
+                                    if (item[1] < maxLength):
+                                        print(f"{earlyList} has had its maximum updated to {maxLength} from {item[1]}")
+                                    item[1] = max(item[1],maxLength)
+                                    itemFound = True
+                                    break
+                            if (itemFound == False):
+                                Q.append([earlyList.copy(), maxLength, 1])
+                            earlyList.pop()
                     else:
                         print(f"The maximum VALUE using GREEDY MAX was {max(epsilonMaxList)} so option {epsilonMaxOption} was chosen and tree search is {MCTSList}")
-                        file1.write(f"\nThe maximum VALUE using GREEDY MAX was {max(epsilonMaxList)} so option {epsilonMaxOption} was chosen\n")
+                        file1.write(f"\nThe maximum VALUE using GREEDY MAX was {max(epsilonMaxList)} so option {epsilonMaxOption} was chosen\n")                    
                     print(f"The length of the tree search is {len(MCTSList)}\n")
                     file1.write(f"The length of the tree search is {len(MCTSList)}\n")
                     file1.write(f"{MCTSList}\n\n")

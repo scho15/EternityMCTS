@@ -6,7 +6,12 @@ This is an "unusual" implementation for MCTS but hoping it works!!
 Points to Try:
 - Have used tiles checked once when MCST is appended rather than each time on consecutive matches
 - Check for double rotation/solve two position problem in complete solutions
-- run several 1m runs rather than 1 and try 5m/10m etc
+- 202 solution lost as was not part of terminal iteration - propagate maxes back along the chain!
+
+Conclusion:
+- Trial run with count cutoff work much better than sampling
+- Having 2 runs rather than 1 helps to avoid some bad runs and early cutoff
+- Completing from 90 looks good
 
 Notes
 - 5 10K sample runs took 22500s (6 hours) 42350s for 2 x 50K
@@ -21,7 +26,7 @@ Notes
 - 100K lengths: 163, 159, 169
 - 250K length: 175, 169
 - 500K length: 174, 173
-with tweak on double rotation tiles
+with tweak on double rotation tiles [Still terrible compared with backtracking version]
 - 10K lengths: 47, 148, 159, 119, 149, (average lookahead 22.532, 33.838, 30.038, 30.958, 30.799)
 - 50K: 121,127 (average lookahead 34.543, 37.438)
 - 100K: 149, 157, 175, 179, 172 (av 36.732, 34.643, 36.309, 36.737, 36.744)
@@ -31,5 +36,7 @@ with tweak on double rotation tiles
 Using full solution at 90 - will move away from sample check shortly to count cutoff method
 - 250K 200,197, 196 (59147,33944,15698s)
 Migration to cutoff method of 1m yields much better values but easier to get stuck on early tiles. Could be resolved
-through several iterations. Really interesting to compare results!
-- 1m cutoff: 194, 34, 194, 200 (25s per iteration: 7393, 3281, 8625, 42188)
+through several iterations. Really interesting to compare results! [Definitely the way to go]
+- 1m cutoff: 194, 34, 194, 200, 195 (25s per iteration: 7393, 3281, 8625, 42188, 6562)
+- 2 x 1m: 194 (12924s)
+- 2 x 5m: 196, 195, 194, 195, 194 (15513, 14959, 13828, 13610, 13709) Ave: 189.681, 193.033, 192.692, 193.363, 192.758
