@@ -90,12 +90,15 @@ class EternityStart():
                             for count in range(sampleSize):
                                 # Now working with solution list so need length
                                 limitedRunList = EternityMCTS.fullSolutionCheck(256, countLimit, testList.copy())
+                                if (len(limitedRunList) >= 200):                                    
+                                    print(f"200+ solution reached of \n{limitedRunList}")
+                                    file2.write(f"200+ solution reached of \n{limitedRunList}")
                                 a.append(len(limitedRunList))
                                 testList = MCTSList.copy()
                                 testList.append(tile)
                             print("The distribution for runs is as follows:")
                             print(sorted(Counter(a).items())) # See if this works
-                            file1.write(f"{Counter(a)}\n")
+                            #file1.write(f"{Counter(a)}\n")
                             average = sum(a)/len(a)
                             maximum = max(Counter(a))
                             print(f"The average is {average:.5f} and maximum was {maximum}")
@@ -125,12 +128,15 @@ class EternityStart():
                                     b = []
                                     for count in range(sampleSize):
                                         limitedRunList = EternityMCTS.fullSolutionCheck(256, countLimit, testList.copy())
+                                        if (len(limitedRunList) >= 200):                                    
+                                            print(f"200+ solution reached of \n{limitedRunList}")
+                                            file2.write(f"200+ solution reached of \n{limitedRunList}")
                                         b.append(len(limitedRunList))
                                         testList = MCTSList.copy()
                                         testList.append(tile)
                                     print("The distribution for the second run is as follows:")
                                     print(sorted(Counter(b).items())) # See if this works
-                                    file1.write(f"{Counter(b)}\n")
+                                    #file1.write(f"{Counter(b)}\n")
                                     average2 = sum(b)/len(b)
                                     maximum2 = max(Counter(b))
                                     print(f"The average is {average2:.5f} and maximum was {maximum2}")

@@ -6,12 +6,13 @@ This is an "unusual" implementation for MCTS but hoping it works!!
 Points to Try:
 - Have used tiles checked once when MCST is appended rather than each time on consecutive matches
 - Check for double rotation/solve two position problem in complete solutions
-- 202 solution lost as was not part of terminal iteration - propagate maxes back along the chain!
+- 202 solution lost as was not part of terminal iteration - record solns > 200 as well. Tempting to also record outputs in Q.
 
 Conclusion:
 - Trial run with count cutoff work much better than sampling
 - Having 2 runs rather than 1 helps to avoid some bad runs and early cutoff
 - Completing from 90 looks good
+- Terminal solution is not always the best so propagating early maxes up the tree
 
 Notes
 - 5 10K sample runs took 22500s (6 hours) 42350s for 2 x 50K
