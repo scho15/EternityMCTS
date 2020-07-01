@@ -308,7 +308,7 @@ class EternityMCTS():
                 inputSolution.append(matchTile)
                 if (iteration > maxIteration):
                     maxIteration = iteration
-                    if (maxIteration >= 190 and count > 1000000 or maxIteration >= 200):
+                    if (maxIteration >= 190 and count > 5000000 or maxIteration >= 200):
                         print(f"Iteration is {iteration} and count is {count} with maximum iteration reached of {maxIteration}")
                         print(f"Latest solution is\n{inputSolution}")
                     maxCheck = True

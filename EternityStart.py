@@ -12,7 +12,7 @@ class EternityStart():
         #random.seed(0)
         maxEpisodes = 1
         sampleSize = 2 #(1m is good - try several runs rather than 1 for comparison)
-        countLimit = 5000000 # will eventually be used for early iterations - keeping high for terminal solution (1m for test)
+        firstCountLimit = 5000000 # will eventually be used for early iterations - keeping high for terminal solution (1m for test)
         episode = 1
         cutoff = 90 # Point at which we move from sample check to full solution
         Q = [] # Q list table with state and maximum amount for that state [1] and number of visits [2]
@@ -40,7 +40,7 @@ class EternityStart():
             limitedRunList = []
             earlyList = []
             terminalState = False
-            countLimit = 1000000
+            countLimit = firstCountLimit
             while (len(MCTSList) <= cutoff and terminalState == False):
                 options = EternityMCTS.findNextMatches(MCTSList,True)
                 if len(options) != len(set(options)):
@@ -261,15 +261,16 @@ class EternityStart():
                 maxMCTS = EternityMCTS.fullSolutionCheck(cutoff, countLimit, verificationList[:88])
                 cutoff = 90# back to sample check for future episodes
                 finalLength = len(maxMCTS)
+                countLimit = firstCountLimit
                 print("FINAL RESULTS")
                 print(f"Length of final solution was {finalLength}\n")
                 print(f"The solution was\n{maxMCTS}")
                 file2.write(f"Final solution from {cutoff} iteration was of length {finalLength} and the solution itself was:\n{maxMCTS}\n")
             print(f"The length of the final Q-table with state, maximum, visitcount was {len(Q)}\n")
-            print(f"The lookahead for each iteration for sample size {sampleSize} was {maximaList} and maximum was {max(maximaList)} with average {sum(maximaList)/len(maximaList):.3f}\n")
-            file1.write(f"The lookahead for each iteration for sample size {sampleSize} was {maximaList} and maximum was {max(maximaList)} with average {sum(maximaList)/len(maximaList):.3f}\n")
+            print(f"The lookahead for each iteration for sample size {sampleSize} and count {countLimit} was {maximaList} and maximum was {max(maximaList)} with average {sum(maximaList)/len(maximaList):.3f}\n")
+            file1.write(f"The lookahead for each iteration for sample size {sampleSize} and count {countLimit} was {maximaList} and maximum was {max(maximaList)} with average {sum(maximaList)/len(maximaList):.3f}\n")
             file1.write(f"Final Q-table length: {len(Q)}\n\n\n")
-            file2.write(f"The lookahead for each iteration for sample size {sampleSize} was {maximaList} and maximum was {max(maximaList)} with average {sum(maximaList)/len(maximaList):.3f}\n")
+            file2.write(f"The lookahead for each iteration for sample size {sampleSize} and count {countLimit} was {maximaList} and maximum was {max(maximaList)} with average {sum(maximaList)/len(maximaList):.3f}\n")
             end = time.time()
             file2.write(f"Time taken for the complete run was: {end - start:.3f} seconds\n")
             file2.write(f"Final Q-table length: {len(Q)}\n\n")
@@ -293,7 +294,7 @@ class EternityStart():
                 json.dump(Q,handler) 
             handler.close()             
             episode += 1    
-        print(f"\nFor the {episode - 1} episodes run with sample size {sampleSize} the longest run was {max(episodeList)}")
+        print(f"\nFor the {episode - 1} episodes run with sample size {sampleSize} and count {countLimit} the longest run was {max(episodeList)}")
         print(f"\nThe longest recorded run in the Q-Table is {Q[0][1]}")
         file1.close()
 

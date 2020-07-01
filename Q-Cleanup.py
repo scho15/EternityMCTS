@@ -28,5 +28,20 @@ class QCleanup:
 		print(sorted(Counter(a).items()))
 		#with open("Q-table.txt","w") as handler:
 		#	json.dump(Q,handler) 
-		#handler.close()     
+		#handler.close()    
+	def reader(iteration):
+		Q = []
+		a = []	
+		Qdict = {}
+		if (os.path.isfile('Q-Table.txt') == True):
+			with open("Q-table.txt", "r") as QTablefile:
+				Q = json.load(QTablefile)
+				print(f"Q-table uploaded with {len(Q)} lines")
+		for item in Q:
+			length = len(item[0])
+			if (length == iteration):
+				Qdict[str(item[0])] = item[1]
+		print(sorted(Qdict.items(), key=lambda x: x[1], reverse=True))
+		
 QCleanup.cleanser()
+QCleanup.reader(2)
