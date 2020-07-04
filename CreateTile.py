@@ -11,6 +11,7 @@ class CreateTile():
     twoTilePatternSet = set()
     twoPatternList = []
     detailedPatternList = []
+    doubleRotation = [False, False, False]
 
     def createTile():       
         # 0: Grey edge tile

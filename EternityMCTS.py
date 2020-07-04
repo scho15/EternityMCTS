@@ -306,6 +306,16 @@ class EternityMCTS():
                         #print(f"Rotation to ensure tiles aligned so we have tile {matchTile} now at {CreateTile.tileList[matchTile]}") #Optional Line 10
                 # Adding to used tile list
                 inputSolution.append(matchTile)
+                # Checking for double rotation
+                #if (matchTile == 173 and CreateTile.tileList[matchTile][2] == CreateTile.tileList[matchTile][3]):
+                #    matchConfiguration = CreateTile.tileList[matchTile]
+                #    print(f"matchTile {matchTile} is in tree in position {matchConfiguration} at count {count}")
+                #elif (matchTile == 199 and CreateTile.tileList[matchTile][2] == CreateTile.tileList[matchTile][3]):
+                #    matchConfiguration = CreateTile.tileList[matchTile]
+                #    print(f"matchTile {matchTile} is in tree in position {matchConfiguration} at count {count}")
+                #elif (matchTile == 233 and CreateTile.tileList[matchTile][2] == CreateTile.tileList[matchTile][3]):
+                #    matchConfiguration = CreateTile.tileList[matchTile]
+                #    print(f"matchTile {matchTile} is in tree in position {matchConfiguration} at count {count}")
                 if (iteration > maxIteration):
                     maxIteration = iteration
                     if (maxIteration >= 190 and count > 5000000 or maxIteration >= 200):
@@ -314,11 +324,6 @@ class EternityMCTS():
                     maxCheck = True
                     maxMCTS = inputSolution.copy()
                 iteration +=1
-                # May need to change if to while
-                #if (len(unexploredTiles) <= iteration - minimumLength - 1):            
-                #    unexploredTiles.append([])
-                #if (len(exploredTiles) <= iteration - minimumLength - 1):
-                #    exploredTiles.append([])
             elif (unexploredTiles != []):
                 #print(f'Attempting backtracking!') # Optional Line 11
                 #print(f"Length of last unexplored tiles is {len(unexploredTiles[-1])}") # Optional Line 12
@@ -326,6 +331,18 @@ class EternityMCTS():
                 # attempting while rather than if
                 while (unexploredTiles!= [] and len(unexploredTiles[-1]) == 0):
                     #print(f'Removing the last iteration that was empty') # Optional Line 13
+                    #if (inputSolution[-1] == 173 and CreateTile.tileList[inputSolution[-1]][2] == CreateTile.tileList[inputSolution[-1]][3]):
+                    #    CreateTile.doubleRotation[0] = True
+                    #    matchConfiguration = CreateTile.tileList[inputSolution[-1]]
+                    #    print(f"matchTile {inputSolution[-1]} is out of tree in position {matchConfiguration} at count {count}")
+                    #elif (inputSolution[-1] == 199 and CreateTile.tileList[inputSolution[-1]][2] == CreateTile.tileList[inputSolution[-1]][3]):
+                    #    CreateTile.doubleRotation[1] = True
+                    #    matchConfiguration = CreateTile.tileList[inputSolution[-1]]
+                    #    print(f"matchTile {inputSolution[-1]} is out of tree in position {matchConfiguration} at count {count}")
+                    #elif (inputSolution[-1] == 233 and CreateTile.tileList[inputSolution[-1]][2] == CreateTile.tileList[inputSolution[-1]][3]):
+                    #    CreateTile.doubleRotation[2] = True
+                    #    matchConfiguration = CreateTile.tileList[inputSolution[-1]]
+                    #    print(f"matchTile {inputSolution[-1]} is out of tree in position {matchConfiguration} at count {count}")
                     inputSolution.pop()
                     unexploredTiles.pop()
                     exploredTiles.pop() # always reduces length by one - may also need to clear?
@@ -336,12 +353,19 @@ class EternityMCTS():
                     iteration -= 1
                     #print(f'The unexplored list is \n {unexploredTiles}') # Optional Line 15
                     # iteration - 1 is right given the zero start for exploredTiles
+                    #if (inputSolution[-1] == 173 and CreateTile.tileList[inputSolution[-1]][2] == CreateTile.tileList[inputSolution[-1]][3]):
+                    #    CreateTile.doubleRotation[0] = True
+                    #    matchConfiguration = CreateTile.tileList[inputSolution[-1]]
+                    #    print(f"matchTile {inputSolution[-1]} is out of tree in position {matchConfiguration} at count {count}")
+                    #elif (inputSolution[-1] == 199 and CreateTile.tileList[inputSolution[-1]][2] == CreateTile.tileList[inputSolution[-1]][3]):
+                    #    CreateTile.doubleRotation[1] = True
+                    #    matchConfiguration = CreateTile.tileList[inputSolution[-1]]
+                    #    print(f"matchTile {inputSolution[-1]} is out of tree in position {matchConfiguration} at count {count}")
+                    #elif (inputSolution[-1] == 233 and CreateTile.tileList[inputSolution[-1]][2] == CreateTile.tileList[inputSolution[-1]][3]):
+                    #    CreateTile.doubleRotation[2] = True
+                    #    matchConfiguration = CreateTile.tileList[inputSolution[-1]]
+                    #    print(f"matchTile {inputSolution[-1]} is out of tree in position {matchConfiguration} at count {count}")
                     exploredTiles[-1].append(inputSolution.pop()) # Only place where explored is appended
-                    #print(f'Last entry on used tile list popped and added to explored category:\n  {usedTiles}\n{exploredTiles}') #Opt Line 16
-                    #Consec tiles is re-determined for each level. Question whether to bypass this and use unexplored tiles instead
-                    #consecutivePatterns.extend(unexploredTiles[-1]) - deleted as consec re-determined at start of loop
-                    #print(f"Replacing empty option with unexplored options {consecutivePatterns}") # Optional Line 17
-                    #unexploredTiles[-1].clear() 
             # Originally add if iteration == maxIteration and maxCheck == True or (iteration <= 91 and count > 500000)
             if (count%250000000 == 0):
                 print(f"\nUsed tiles list at count {count} is now \n{inputSolution}\n and iteration reached was {maxIteration}")
