@@ -11,8 +11,8 @@ class EternityStart():
     def main():
         #random.seed(0)
         maxEpisodes = 1
-        sampleSize = 2 #(1m is good - try several runs rather than 1 for comparison)
-        CreateTile.firstCountLimit = 10000000 # will eventually be used for early iterations - keeping high for terminal solution (1m for test)
+        sampleSize = 5 #(1m is good - try several runs rather than 1 for comparison)
+        CreateTile.firstCountLimit = 2000000 # will eventually be used for early iterations - keeping high for terminal solution (1m for test)
         episode = 1
         cutoff = 90 # Point at which we move from sample check to full solution
         Q = [] # Q list table with state and maximum amount for that state [1] and number of visits [2]

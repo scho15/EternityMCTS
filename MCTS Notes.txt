@@ -39,5 +39,7 @@ Using full solution at 90 - will move away from sample check shortly to count cu
 Migration to cutoff method of 1m yields much better values but easier to get stuck on early tiles. Could be resolved
 through several iterations. Really interesting to compare results! [Definitely the way to go]
 - 1m cutoff: 194, 34, 194, 200, 195 (25s per iteration: 7393, 3281, 8625, 42188, 6562)
-- 2 x 1m: 194 (12924s)
+- 2 x 1m: 194, 194, 194, 197 (12924s, 13779, 14494, 13240, 37591)
 - 2 x 5m: 196, 195, 194, 195, 194 (15513, 14959, 13828, 13610, 13709) Ave: 189.681, 193.033, 192.692, 193.363, 192.758
+- 2 x 10m:200, 194 (147754, 134956)
+- 5 x 2m: 197, 196, 194 (71520, 61096, 60889)
