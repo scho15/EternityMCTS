@@ -44,4 +44,4 @@ class QCleanup:
 		print(sorted(Qdict.items(), key=lambda x: x[1], reverse=True))
 		
 QCleanup.cleanser()
-QCleanup.reader(3)
+QCleanup.reader(16)
