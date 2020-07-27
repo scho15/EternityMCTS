@@ -29,9 +29,11 @@ class QCleanup:
 		#with open("Q-table.txt","w") as handler:
 		#	json.dump(Q,handler) 
 		#handler.close()    
-	def reader(iteration):
+	def reader(iteration, choice):
 		Q = []
 		a = []	
+		sum = 0
+		minimum = 200
 		Qdict = {}
 		if (os.path.isfile('Q-Table.txt') == True):
 			with open("Q-table.txt", "r") as QTablefile:
@@ -39,9 +41,12 @@ class QCleanup:
 				print(f"Q-table uploaded with {len(Q)} lines")
 		for item in Q:
 			length = len(item[0])
-			if (length == iteration):
-				Qdict[str(item[0])] = item[1]
+			if (length == iteration and item[1] >= minimum):
+				Qdict[str(item[0])] = item[choice] # 1 for iteration and 2 for visit
+				sum += 1
+		print(f"Entries which are {minimum} or more are {sum}")
 		print(sorted(Qdict.items(), key=lambda x: x[1], reverse=True))
 		
 QCleanup.cleanser()
-QCleanup.reader(16)
+QCleanup.reader(2,1)
+#QCleanup.reader(2,2)
