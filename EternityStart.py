@@ -129,11 +129,11 @@ class EternityStart():
                                     file1.write("Second potential rotation needs to be tested\n")
                                     # Rotation is clockwise
                                     if (southMatch == eastMatch):
-                                        CreateTile.rotateTile(tile)
+                                        CreateTile.rotatePosition(-1, testPosition)
                                     else:
-                                        CreateTile.rotateTile(tile)
-                                        CreateTile.rotateTile(tile)
-                                        CreateTile.rotateTile(tile)
+                                        CreateTile.rotatePosition(-1, testPosition)
+                                        CreateTile.rotatePosition(-1, testPosition)
+                                        CreateTile.rotatePosition(-1, testPosition)
                                     print(f"The new position is {testPosition[-1]}\n")
                                     file1.write(f"The new position is {testPosition[-1]}\n")
                                     b = []
@@ -161,20 +161,20 @@ class EternityStart():
                                         print(f"The first rotation was better or the same and is being used")
                                         maximum2 = maximum
                                         average2 = average
-                                        eastMatch = CreateTile.tileList[tile][1]
-                                        southMatch = CreateTile.tileList[tile][2]
+                                        eastMatch = testPosition[-1][1]
+                                        southMatch = testPosition[-1][2]
                                         # better to use revised S and E here - less confusing
                                         if (southMatch == eastMatch):
-                                            CreateTile.rotateTile(tile) 
+                                            CreateTile.rotatePosition(-1, testPosition)
                                         else:
-                                            CreateTile.rotateTile(tile)  
-                                            CreateTile.rotateTile(tile)
-                                            CreateTile.rotateTile(tile)
+                                            CreateTile.rotatePosition(-1, testPosition)
+                                            CreateTile.rotatePosition(-1, testPosition)
+                                            CreateTile.rotatePosition(-1, testPosition)
                                     b = []
-                                    northMatch = CreateTile.tileList[tile][0]
-                                    eastMatch = CreateTile.tileList[tile][1]
-                                    southMatch = CreateTile.tileList[tile][2]
-                                    westMatch = CreateTile.tileList[tile][3]
+                                    northMatch = testPosition[-1][0]
+                                    eastMatch = testPosition[-1][1]
+                                    southMatch = testPosition[-1][2]
+                                    westMatch = testPosition[-1][3]
                                     print(f"Final rotation used was {northMatch} {eastMatch} {southMatch} {westMatch}\n")
                                     file1.write(f"Final rotation used was {northMatch} {eastMatch} {southMatch} {westMatch}\n")
                                 else:
@@ -311,9 +311,9 @@ class EternityStart():
             # Final update for original leaf
             Q[0][1] = max(Q[0][1],finalLength)
             Q[0][2] = Q[0][2] + 1
-            #with open("Q-table.txt","w") as handler:
-            #    json.dump(Q,handler) 
-            #handler.close()             
+            with open("Q-table.txt","w") as handler:
+                json.dump(Q,handler) 
+            handler.close()             
             episode += 1    
             optionsCount = 0
         print(f"\nFor the {episode - 1} episodes run with sample size {sampleSize} and count {countLimit} the longest run was {max(episodeList)}")
