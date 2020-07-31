@@ -364,6 +364,13 @@ class CreateTile():
         CreateTile.tileList[x][2] = CreateTile.tileList[x][1]
         CreateTile.tileList[x][1] = temp
 
+    def rotatePosition(x, position):
+        temp = position[x][0]
+        position[x][0] = position[x][3]
+        position[x][3] = position[x][2]
+        position[x][2] = position[x][1]
+        position[x][1] = temp
+
     def swapPosition(x):
         temp = CreateTile.tileList[x][0]
         CreateTile.tileList[x][0] = CreateTile.tileList[x][1]

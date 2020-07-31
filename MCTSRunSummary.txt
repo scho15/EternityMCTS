@@ -270,3 +270,59 @@ The lookahead for each iteration for sample size 2 and count 2000000 was [194, 1
 Time taken for the complete run was: 26221.388 seconds
 Final Q-table length: 44697
 
+
+Final tree length was 18 which was 
+[3, 31, 17, 50, 14, 44, 30, 57, 10, 45, 9, 36, 41, 33, 24, 2, 20, 192]
+The lookahead for each iteration for sample size 2 and count 10000 was [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 17, 18] and maximum was 18 with average 10.562
+Time taken for the complete run was: 1.296 seconds
+Final Q-table length: 44832
+
+
+Final tree length was 18 which was 
+[3, 31, 15, 5, 9, 29, 27, 30, 56, 35, 57, 7, 8, 60, 32, 4, 59, 247]
+The lookahead for each iteration for sample size 2 and count 10000 was [119, 119, 153, 181, 180, 159, 174, 183, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23] and maximum was 183 with average 83.222
+Time taken for the complete run was: 22.932 seconds
+Final Q-table length: 44815
+
+
+Final tree length was 18 which was 
+[2, 47, 41, 30, 59, 20, 25, 5, 14, 38, 53, 42, 13, 58, 57, 1, 22, 232]
+The lookahead for each iteration for sample size 2 and count 10000 was [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 15, 17, 18] and maximum was 18 with average 9.941
+Time taken for the complete run was: 1.183 seconds
+Final Q-table length: 44833
+
+
+Final tree length was 18 which was 
+[3, 31, 16, 30, 54, 47, 40, 21, 37, 14, 43, 19, 25, 8, 50, 1, 33, 120]
+The lookahead for each iteration for sample size 2 and count 10000 was [174, 153, 153, 103, 189, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 17, 17] and maximum was 189 with average 57.000
+Time taken for the complete run was: 82.033 seconds
+Final Q-table length: 44817
+
+
+Final tree length was 18 which was 
+[2, 37, 8, 52, 7, 12, 47, 39, 51, 16, 30, 60, 27, 26, 20, 3, 57, 161]
+The lookahead for each iteration for sample size 2 and count 10000 was [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 15, 17, 18] and maximum was 18 with average 10.438
+Time taken for the complete run was: 1.177 seconds
+Final Q-table length: 44819
+
+
+Final tree length was 29 which was 
+[1, 31, 17, 53, 39, 60, 26, 20, 25, 7, 14, 48, 45, 8, 51, 3, 50, 111, 194, 210, 167, 104, 63, 209, 201, 143, 144, 80, 236]
+The lookahead for each iteration for sample size 2 and count 10000 was [46, 104, 174, 178, 103, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 17, 20, 20, 20, 20, 20, 20, 32, 32, 32, 32, 29, 29] and maximum was 178 with average 39.586
+Time taken for the complete run was: 65.226 seconds
+Final Q-table length: 44854
+
+
+Final tree length was 18 which was 
+[3, 31, 16, 27, 28, 34, 44, 36, 38, 52, 14, 46, 43, 25, 5, 1, 20, 243]
+The lookahead for each iteration for sample size 2 and count 100000 was [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 17, 18] and maximum was 18 with average 11.067
+Time taken for the complete run was: 5.847 seconds
+Final Q-table length: 44819
+
+
+Final tree length was 18 which was 
+[1, 27, 32, 34, 42, 8, 49, 58, 57, 14, 37, 7, 6, 15, 11, 3, 45, 82]
+The lookahead for each iteration for sample size 2 and count 10000 was [46, 164, 164, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 18] and maximum was 164 with average 35.000
+Time taken for the complete run was: 99.654 seconds
+Final Q-table length: 44802
+
