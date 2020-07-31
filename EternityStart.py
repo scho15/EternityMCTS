@@ -10,9 +10,10 @@ import os.path
 class EternityStart():
     def main():
         #random.seed(0)
-        maxEpisodes = 5
+        maxEpisodes = 3
+        optionsCount = 0
         sampleSize = 2 #(1m is good - try several runs rather than 1 for comparison)
-        CreateTile.firstCountLimit = 1000000 # will eventually be used for early iterations - keeping high for terminal solution (1m for test)
+        CreateTile.firstCountLimit = 2000000 # will eventually be used for early iterations - keeping high for terminal solution (1m for test)
         episode = 1
         cutoff = 90 # Point at which we move from sample check to full solution
         Q = [] # Q list table with state and maximum amount for that state [1] and number of visits [2]
@@ -43,6 +44,7 @@ class EternityStart():
             countLimit = CreateTile.firstCountLimit
             while (len(MCTSList) <= cutoff and terminalState == False):
                 options = EternityMCTS.findNextMatches(MCTSList,True)
+                optionsCount += len(options)
                 if len(options) != len(set(options)):
                     print("There are DUPLICATE options to deal with that needs further testing\n")
                     file1.write("There are DUPLICATE options to deal with that needs further testing\n")
@@ -54,7 +56,7 @@ class EternityStart():
                 if (233 in options):
                     file1.write("ROTATION: This list contains tile 233 that may have two positions\n")
                 random.shuffle(options)
-                print(f"The new options would be {options} and the length is {len(options)}")
+                print(f"The new options would be {options} and the length is {len(options)} and cumulative {optionsCount}")
                 file1.write(f"{options}\n")
                 if (len(options) > 1 or 173 in options or 233 in options or 199 in options):
                     for item in Q:
@@ -294,6 +296,7 @@ class EternityStart():
                 json.dump(Q,handler) 
             handler.close()             
             episode += 1    
+            optionsCount = 0
         print(f"\nFor the {episode - 1} episodes run with sample size {sampleSize} and count {countLimit} the longest run was {max(episodeList)}")
         print(f"\nThe longest recorded run in the Q-Table is {Q[0][1]}")
         file1.close()
