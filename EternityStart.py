@@ -10,9 +10,9 @@ import os.path
 class EternityStart():
     def main():
         #random.seed(0)
-        maxEpisodes = 1
+        maxEpisodes = 3
         optionsCount = 0
-        sampleSize = 3 #(1m is good - try several runs rather than 1 for comparison)
+        sampleSize = 2 #(1m is good - try several runs rather than 1 for comparison)
         CreateTile.firstCountLimit = 20000000 # will eventually be used for early iterations - keeping high for terminal solution (1m for test)
         episode = 1
         cutoff = 90 # Point at which we move from sample check to full solution
