@@ -10,10 +10,10 @@ import os.path
 class EternityStart():
     def main():
         #random.seed(0)
-        maxEpisodes = 3
+        maxEpisodes = 5
         optionsCount = 0
         sampleSize = 2 #(1m is good - try several runs rather than 1 for comparison)
-        CreateTile.firstCountLimit = 20000000 # will eventually be used for early iterations - keeping high for terminal solution (1m for test)
+        CreateTile.firstCountLimit = 2000000 # will eventually be used for early iterations - keeping high for terminal solution (1m for test)
         episode = 1
         cutoff = 90 # Point at which we move from sample check to full solution
         Q = [] # Q list table with state and maximum amount for that state [1] and number of visits [2]
@@ -311,9 +311,10 @@ class EternityStart():
             # Final update for original leaf
             Q[0][1] = max(Q[0][1],finalLength)
             Q[0][2] = Q[0][2] + 1
-            with open("Q-table.txt","w") as handler:
-                json.dump(Q,handler) 
-            handler.close()             
+            # Do Not Use if Testing
+            #with open("Q-table.txt","w") as handler:
+            #    json.dump(Q,handler) 
+            #handler.close()             
             episode += 1    
             optionsCount = 0
         print(f"\nFor the {episode - 1} episodes run with sample size {sampleSize} and count {countLimit} the longest run was {max(episodeList)}")
