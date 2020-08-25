@@ -28,7 +28,7 @@ Longest so far is 205:
 Notes
 Migration to cutoff method of 1m yields much better values but easier to get stuck on early tiles. Could be resolved
 through several iterations. 
-Data for runs - use max pre-terminal, average, terminal, time [up to line 355 in notes]
+Data for runs - use max pre-terminal, average, terminal, time [up to line 392 in notes]
 - 2 x 1m: 196, 192,670, 194, 13779: 196, 192.330, 194, 14494: 199, 192.322, 194, 13241: 197, 193.146, 197, 37591: 
           200, 193.418, 199, 87858: 196, 189.303, 191, 11360: 201, 193.489, 198, 55025: 200, 192.385, 200, 22560:
           196, 192.557, 199, 20932: 197, 192.506, 196, 17150: 199, 188.556, 194, 12359: 198, 192.344, 196, 18270

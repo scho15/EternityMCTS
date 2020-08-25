@@ -13,7 +13,7 @@ class EternityStart():
         useHints = True # Use only centre tile or 4 corner hints as well
         maxEpisodes = 1 # number of episodes to run
         sampleSize = 2 # number of runs/samples to take - at least 2 is recommended
-        CreateTile.firstCountLimit = 2000000 # cutoff for run - normally at least 1m
+        CreateTile.firstCountLimit = 100000 # cutoff for run - normally at least 1m
         cutoff = 90 # Point at which we move from sample check to full solution
         # VARIABLES INITIALISATION
         #random.seed(0)
@@ -37,9 +37,9 @@ class EternityStart():
         while episode <= maxEpisodes:
             start = time.time()
             MCTSList = []
-            MCTSPosition = []
+            MCTSPosition = [] # Trying to use MCTS only
             testList = []
-            testPosition = []
+            #testPosition = [] # What worries me a little is whether double rotation gets overwritten if only testPosition is aligned
             averageList = []
             maxList = []
             epsilonMaxList = []
@@ -50,7 +50,7 @@ class EternityStart():
             terminalState = False
             countLimit = CreateTile.firstCountLimit
             while (len(MCTSList) <= cutoff and terminalState == False):
-                options = EternityMCTS.findNextPositionMatches(MCTSList,testPosition, useHints)
+                options = EternityMCTS.findNextPositionMatches(MCTSList,MCTSPosition, useHints)
                 optionsCount += len(options)
                 if len(options) != len(set(options)):
                     print("There are DUPLICATE options to deal with that needs further testing\n")
@@ -89,7 +89,8 @@ class EternityStart():
                     for tile in options:
                         itemFound = False
                         testList.append(tile)
-                        testPosition.append(CreateTile.tileList[tile].copy())
+                        MCTSPosition.append(CreateTile.tileList[tile].copy())
+                        MCTSPosition = EternityMCTS.tileAlignmentOnLastPosition(testList, MCTSPosition)
                         print(f"\nThe test list is {testList}")
                         # Implicitly does not deal with tiles that can have two positions - ideally stop using this
                         #tilePositions = EternityMCTS.tileAlignment(testList)
@@ -98,18 +99,19 @@ class EternityStart():
                         # 250 = 2m 250k likely a day
                         if (sampleMax == True):
                             for count in range(sampleSize):
-                                # Now working with solution list so need length
-                                testPosition = EternityMCTS.tileAlignmentOnPositions(testList, testPosition) # Need to align for each run
-                                limitedRunList = EternityMCTS.fullSolutionCheck(256, countLimit, testList.copy(), testPosition.copy(), useHints)
+                                # Now working with solution list so need length                                
+                                limitedRunList = EternityMCTS.fullSolutionCheck(256, countLimit, testList.copy(), MCTSPosition.copy(), useHints)
                                 if (len(limitedRunList) >= 200):                                    
                                     print(f"200+ solution reached of \n{limitedRunList}")
                                     file2.write(f"200+ solution reached of \n{limitedRunList}\n")
                                 a.append(len(limitedRunList))
-                                testList = MCTSList.copy()
-                                testPosition = MCTSPosition.copy()
+                                # just appending and popping same tile
+                                #testList = MCTSList.copy()
+                                #MCTSPosition.pop()
                                 #print(f"TEMP Line 111: MCTSPosition used to reset testPosition is: {MCTSPosition}")
-                                testList.append(tile)
-                                testPosition.append(CreateTile.tileList[tile])
+                                #testList.append(tile)
+                                #MCTSPosition.append(CreateTile.tileList[tile])
+                                #MCTSPosition = EternityMCTS.tileAlignmentOnLastPosition(testList, MCTSPosition)
                             print("The distribution for runs is as follows:")
                             print(sorted(Counter(a).items())) # See if this works
                             #file1.write(f"{Counter(a)}\n")
@@ -120,37 +122,37 @@ class EternityStart():
                             # As these tiles are not rotated yet, it's taking default position which is misleading
                             # Need to force alignment first
                             if (tile == 173 or tile == 233 or tile == 199):
-                                #tilePositions = EternityMCTS.tileAlignment(testList)
-                                testPosition = EternityMCTS.tileAlignmentOnPositions(testList, testPosition)
-                                northMatch = testPosition[-1][0]
-                                eastMatch = testPosition[-1][1]
-                                southMatch = testPosition[-1][2]
-                                westMatch = testPosition[-1][3]
-                                print(f"Current tile is {tile} with position {testPosition[-1]}")
-                                file1.write(f"Current tile is {tile} with position {testPosition[-1]}\n")
+                                #tilePositions = EternityMCTS.tileAlignment(testList)                                
+                                northMatch = MCTSPosition[-1][0]
+                                eastMatch = MCTSPosition[-1][1]
+                                southMatch = MCTSPosition[-1][2]
+                                westMatch = MCTSPosition[-1][3]
+                                print(f"Current tile is {tile} with position {MCTSPosition[-1]}")
+                                file1.write(f"Current tile is {tile} with position {MCTSPosition[-1]}\n")
                                 if (southMatch == westMatch):
                                     print("Second potential rotation needs to be tested\n")
                                     file1.write("Second potential rotation needs to be tested\n")
                                     # Rotation is clockwise
                                     if (southMatch == eastMatch):
-                                        CreateTile.rotatePosition(-1, testPosition)
+                                        CreateTile.rotatePosition(-1, MCTSPosition)
                                     else:
-                                        CreateTile.rotatePosition(-1, testPosition)
-                                        CreateTile.rotatePosition(-1, testPosition)
-                                        CreateTile.rotatePosition(-1, testPosition)
-                                    print(f"The new position is {testPosition[-1]}\n")
-                                    file1.write(f"The new position is {testPosition[-1]}\n")
+                                        CreateTile.rotatePosition(-1, MCTSPosition)
+                                        CreateTile.rotatePosition(-1, MCTSPosition)
+                                        CreateTile.rotatePosition(-1, MCTSPosition)
+                                    print(f"The new position is {MCTSPosition[-1]}\n")
+                                    file1.write(f"The new position is {MCTSPosition[-1]}\n")
                                     b = []
                                     for count in range(sampleSize):
-                                        limitedRunList = EternityMCTS.fullSolutionCheck(256, countLimit, testList.copy(), testPosition.copy(), useHints)
+                                        limitedRunList = EternityMCTS.fullSolutionCheck(256, countLimit, testList.copy(), MCTSPosition.copy(), useHints)
                                         if (len(limitedRunList) >= 200):                                    
                                             print(f"200+ solution reached of \n{limitedRunList}")
                                             file2.write(f"200+ solution reached of \n{limitedRunList}")
                                         b.append(len(limitedRunList))
-                                        testList = MCTSList.copy()
-                                        testPosition = MCTSPosition.copy()
-                                        testList.append(tile)
-                                        testPosition.append(CreateTile.tileList[tile].copy())
+                                        #testList = MCTSList.copy()
+                                        #MCTSPosition.pop()
+                                        #testList.append(tile)
+                                        #MCTSPosition.append(CreateTile.tileList[tile].copy())
+                                        #MCTSPosition = EternityMCTS.tileAlignmentOnLastPosition(testList, MCTSPosition)
                                     print("The distribution for the second run is as follows:")
                                     print(sorted(Counter(b).items())) # See if this works
                                     #file1.write(f"{Counter(b)}\n")
@@ -165,20 +167,20 @@ class EternityStart():
                                         print(f"The first rotation was better or the same and is being used")
                                         maximum2 = maximum
                                         average2 = average
-                                        eastMatch = testPosition[-1][1]
-                                        southMatch = testPosition[-1][2]
+                                        eastMatch = MCTSPosition[-1][1]
+                                        southMatch = MCTSPosition[-1][2]
                                         # better to use revised S and E here - less confusing
                                         if (southMatch == eastMatch):
-                                            CreateTile.rotatePosition(-1, testPosition)
+                                            CreateTile.rotatePosition(-1, MCTSPosition)
                                         else:
-                                            CreateTile.rotatePosition(-1, testPosition)
-                                            CreateTile.rotatePosition(-1, testPosition)
-                                            CreateTile.rotatePosition(-1, testPosition)
+                                            CreateTile.rotatePosition(-1, MCTSPosition)
+                                            CreateTile.rotatePosition(-1, MCTSPosition)
+                                            CreateTile.rotatePosition(-1, MCTSPosition)
                                     b = []
-                                    northMatch = testPosition[-1][0]
-                                    eastMatch = testPosition[-1][1]
-                                    southMatch = testPosition[-1][2]
-                                    westMatch = testPosition[-1][3]
+                                    northMatch = MCTSPosition[-1][0]
+                                    eastMatch = MCTSPosition[-1][1]
+                                    southMatch = MCTSPosition[-1][2]
+                                    westMatch = MCTSPosition[-1][3]
                                     print(f"Final rotation used was {northMatch} {eastMatch} {southMatch} {westMatch}\n")
                                     file1.write(f"Final rotation used was {northMatch} {eastMatch} {southMatch} {westMatch}\n")
                                 else:
@@ -203,7 +205,7 @@ class EternityStart():
                             Q.append([testList.copy(), maximum, 1])
                             epsilonMaxList.append(maximum)
                         testList = MCTSList.copy()
-                        testPosition = MCTSPosition.copy()
+                        MCTSPosition.pop()
                         a.clear()
                         end = time.time()
                         print(f"Time taken so far is: {end - start:.3f} seconds")
@@ -221,12 +223,12 @@ class EternityStart():
                         maxOption = options[maxList.index(max(maxList))]
                         MCTSList.append(maxOption)
                         MCTSPosition.append(CreateTile.tileList[maxOption].copy())
+                        MCTSPosition = EternityMCTS.tileAlignmentOnLastPosition(MCTSList, MCTSPosition)
                     else:
                         epsilonMaxOption = options[epsilonMaxList.index(max(epsilonMaxList))]
                         MCTSList.append(epsilonMaxOption)
                         MCTSPosition.append(CreateTile.tileList[epsilonMaxOption].copy())
-                    testList = MCTSList.copy()
-                    testPosition = MCTSPosition.copy()
+                        MCTSPosition = EternityMCTS.tileAlignmentOnLastPosition(MCTSList, MCTSPosition)
                     #print(f"The maximum AVERAGE was {max(averageList)} so option {maxOption} was chosen and tree search is {MCTSList}\n")
                     if (sampleMax == True):
                         print(f"The maximum VALUE using SAMPLING was {max(maxList)} so option {maxOption} was chosen and tree search is {MCTSList}")
@@ -259,9 +261,7 @@ class EternityStart():
                 elif (len(options) == 1):
                     MCTSList.append(options[0])
                     MCTSPosition.append(CreateTile.tileList[options[0]].copy())
-                    testList = MCTSList.copy()
-                    testPosition = MCTSPosition.copy()
-                    testPosition = EternityMCTS.tileAlignmentOnPositions(testList, testPosition)
+                    MCTSPosition = EternityMCTS.tileAlignmentOnLastPosition(MCTSList, MCTSPosition)
                     print(f"Only a single option {options[0]} so no random samples undertaken\n")
                     #print(f"TEMP Line 267: testPosition for single option with alignment is: {testPosition}")
                     if (maximaList != []):
@@ -274,13 +274,14 @@ class EternityStart():
                     file1.write(f"\nFinal tree length was: {len(MCTSList)}\n")
                     finalLength = len(MCTSList)
                 #tilePositions = EternityMCTS.tileAlignment(testList)
-                testPosition = EternityMCTS.tileAlignmentOnPositions(testList, testPosition)
+                #MCTSPosition = EternityMCTS.tileAlignmentOnPositions(MCTSList, MCTSPosition) - already done
                 averageList.clear()
                 maxList.clear()
                 epsilonMaxList.clear()
+                testList = MCTSList.copy()
             # New sense check - will become alternate full solution test after iteration 88 but not working atm
-            verificationList = testList.copy()
-            verificationPositions = EternityMCTS.tileAlignmentOnPositions(testList, testPosition)
+            verificationList = MCTSList.copy()
+            verificationPositions = MCTSPosition.copy()
             if (len(verificationList) >= cutoff):
                 cutoff = 256 # full solution test
                 print (f"\nUndertaking full solution sense check with cutoff of {cutoff}\n") 
@@ -318,9 +319,9 @@ class EternityStart():
             Q[0][1] = max(Q[0][1],finalLength)
             Q[0][2] = Q[0][2] + 1
             # Do Not Use if Testing
-            with open("Q-table.txt","w") as handler:
-                json.dump(Q,handler) 
-            handler.close()             
+            #with open("Q-table.txt","w") as handler:
+            #    json.dump(Q,handler) 
+            #handler.close()             
             episode += 1    
             optionsCount = 0
         print(f"\nFor the {episode - 1} episodes run with sample size {sampleSize} and count {countLimit} the longest run was {max(episodeList)}")
