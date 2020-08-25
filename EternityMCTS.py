@@ -141,47 +141,6 @@ class EternityMCTS():
         return consecutivePatterns
 
     # Input: usedTileList (list of integers)
-    # Output: list of tiles in correct rotation
-    def tileAlignmentOnPositions(usedList, positions):
-        tileList = [] 
-
-        for index, matchTile in enumerate(usedList):
-
-            iteration = index + 1 
-            
-            if (iteration < 16):
-                if (iteration != 1):
-                    while (positions[index][2] != 0):
-                        CreateTile.rotatePosition(index, positions)
-                        #print(f"Rotation to ensure edges aligned so we have tile {matchTile} now at {positions[index]}")
-                else:
-                    while (positions[index][2] != 0 or positions[index][3] != 0):
-                        CreateTile.rotatePosition(index, positions)
-            if (iteration == 16):
-                #print(f"\nConsidering the rotation of {matchTile} at iteration {iteration} which is currently {positions[index]}")
-                while (positions[index][2] != 0 or positions[index][1] != 0):
-                    CreateTile.rotatePosition(index, positions)
-                    #print(f"Rotation to ensure corners aligned so we have tile {matchTile} now at {positions[index]}")
-            if (iteration > 16 and iteration%16 == 1):
-                while (positions[index][3] != 0):
-                    CreateTile.rotatePosition(index, positions)
-                    #print(f"Rotation to ensure edge aligned so we have tile {matchTile} now at {positions[index]}")
-            elif (iteration > 16 and iteration%16 == 0):
-                while (positions[index][1] != 0):
-                    CreateTile.rotatePosition(index, positions)
-                    #print(f"Rotation to ensure edge aligned so we have tile {matchTile} now at {positions[index]}")
-            elif (iteration > 16):
-                firstMatch = positions[iteration - 17][0]
-                secondMatch = positions[iteration - 2][1]
-                while (positions[index][2] != firstMatch or positions[index][3] != secondMatch):
-                    #print(f'Relevant match is at {positions[index][2]}')
-                    CreateTile.rotatePosition(index, positions)
-                    #print(f"Rotation to ensure tiles aligned so we have tile {matchTile} now at {positions[index]}") #Optional Line 10
-            tileList.append(positions[index])
-
-        return tileList
-
-    # Input: usedTileList (list of integers)
     # Output: list of tiles in correct rotation assuming only last tile needs to be rotated
     def tileAlignmentOnLastPosition(usedList, positions):
 
