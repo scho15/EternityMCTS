@@ -9,7 +9,7 @@ class EternityMCTS():
     def findNextPositionMatches(usedTiles, positions, useHints):
 
         consecutivePatterns = [] # List of tiles with two consecutive patterns
-
+        tileSwap = False # When randomising double rotation tiles, the swap should only be made if 2 consecutive patterns have been used
         iteration = len(usedTiles) + 1
 
         if (iteration < 16):
@@ -32,6 +32,7 @@ class EternityMCTS():
                 # Introducing constraints on hint on level lower. Arguable whether this is good for upper hint tiles
                 if (iteration != 19 and iteration !=30 and iteration != 104 and iteration != 195 and iteration != 206):
                     consecutivePatterns = CreateTile.findConsecutivePatternMatches(firstMatch,secondMatch)
+                    tileSwap = True
                 elif (iteration == 19):
                     # ensuring iteration 19 has Northern tile of 15 as well as matching S and W
                     consecutivePatterns = CreateTile.findThreeConsecutivePatternMatches(firstMatch, secondMatch, 15)
@@ -49,6 +50,7 @@ class EternityMCTS():
                     consecutivePatterns = CreateTile.findThreeConsecutivePatternMatches(firstMatch, secondMatch, 17)
                 else:
                     consecutivePatterns = CreateTile.findConsecutivePatternMatches(firstMatch,secondMatch)
+                    tileSwap = True
 
             # Adding hints for centre tile
             if (iteration == 120):
@@ -125,15 +127,17 @@ class EternityMCTS():
                 consecutivePatterns.remove(item)
 
         # Keep swap in for time being
+        # Logic issue - should only do swap where it's for 2 patterns not three
         for item in consecutivePatterns[:]:
-            if (item == 173 or item == 199 or item == 233):
+            if ((item == 173 or item == 199 or item == 233) and tileSwap == True):
                 event = random.randint(0,1)
                 westMatch = CreateTile.tileList[item][3]
                 southMatch = CreateTile.tileList[item][2]
                 if (westMatch == southMatch and event == 1):
                     CreateTile.swapPosition(item)
                     #print(f"{item} swap occurred using tileList (only position tileList kept)")
-
+        tileSwap = False
+        
         return consecutivePatterns
 
     # Input: usedTileList (list of integers)
