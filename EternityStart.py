@@ -12,8 +12,8 @@ class EternityStart():
         # DECISIONS REQUIRED
         useHints = True # Use only centre tile or 4 corner hints as well
         maxEpisodes = 1 # number of episodes to run
-        sampleSize = 5 # number of runs/samples to take - at least 2 is recommended
-        CreateTile.firstCountLimit = 10000 # cutoff for run - normally at least 1m
+        sampleSize = 2 # number of runs/samples to take - at least 2 is recommended
+        CreateTile.firstCountLimit = 2000000 # cutoff for run - normally at least 1m
         cutoff = 90 # Point at which we move from sample check to full solution
         # VARIABLES INITIALISATION
         #random.seed(0)
