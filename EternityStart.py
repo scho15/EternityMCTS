@@ -13,7 +13,7 @@ class EternityStart():
         useHints = True # Use only centre tile or 4 corner hints as well
         maxEpisodes = 1 # number of episodes to run
         sampleSize = 2 # number of runs/samples to take - at least 2 is recommended
-        CreateTile.firstCountLimit = 100000 # cutoff for run - normally at least 1m
+        CreateTile.firstCountLimit = 5000000 # cutoff for run - normally at least 1m
         cutoff = 90 # Point at which we move from sample check to full solution
         # VARIABLES INITIALISATION
         #random.seed(0)
@@ -163,6 +163,12 @@ class EternityStart():
                                         print(f"The second rotation was better and is being used")
                                         maximum = maximum2
                                         average = average2
+                                        # Need to ensure that tileList from which option is subsequently picked is correctly updated
+                                        # Would be better if options all had positions as well as tile numbers
+                                        CreateTile.tileList[tile][0] = MCTSPosition[-1][0]
+                                        CreateTile.tileList[tile][1] = MCTSPosition[-1][1]
+                                        CreateTile.tileList[tile][2] = MCTSPosition[-1][2]
+                                        CreateTile.tileList[tile][3] = MCTSPosition[-1][3]
                                     else:
                                         print(f"The first rotation was better or the same and is being used")
                                         maximum2 = maximum
@@ -181,6 +187,12 @@ class EternityStart():
                                     eastMatch = MCTSPosition[-1][1]
                                     southMatch = MCTSPosition[-1][2]
                                     westMatch = MCTSPosition[-1][3]
+                                    # Need to ensure that tileList from which option is subsequently picked is correctly updated
+                                    # Would be better if options all had positions as well as tile numbers
+                                    CreateTile.tileList[tile][0] = northMatch
+                                    CreateTile.tileList[tile][1] = eastMatch
+                                    CreateTile.tileList[tile][2] = southMatch
+                                    CreateTile.tileList[tile][3] = westMatch
                                     print(f"Final rotation used was {northMatch} {eastMatch} {southMatch} {westMatch}\n")
                                     file1.write(f"Final rotation used was {northMatch} {eastMatch} {southMatch} {westMatch}\n")
                                 else:
@@ -231,7 +243,7 @@ class EternityStart():
                         MCTSPosition = EternityMCTS.tileAlignmentOnLastPosition(MCTSList, MCTSPosition)
                     #print(f"The maximum AVERAGE was {max(averageList)} so option {maxOption} was chosen and tree search is {MCTSList}\n")
                     if (sampleMax == True):
-                        print(f"The maximum VALUE using SAMPLING was {max(maxList)} so option {maxOption} was chosen and tree search is {MCTSList}")
+                        print(f"The maximum VALUE using SAMPLING was {max(maxList)} so option {maxOption} was chosen with position {MCTSPosition[-1]} and tree search is {MCTSList}")
                         file1.write(f"\nThe maximum VALUE using SAMPLING was {max(maxList)} so option {maxOption} was chosen\n")    
                         # Propogate maxes up the tree (even from earlier iterations and also to single solutions)
                         earlyList = MCTSList.copy()
@@ -249,7 +261,7 @@ class EternityStart():
                                 Q.append([earlyList.copy(), maxLength, 1])
                             earlyList.pop()
                     else:
-                        print(f"The maximum VALUE using GREEDY MAX was {max(epsilonMaxList)} so option {epsilonMaxOption} was chosen and tree search is {MCTSList}")
+                        print(f"The maximum VALUE using GREEDY MAX was {max(epsilonMaxList)} so option {epsilonMaxOption} was chosen with position {MCTSPosition[-1]} and tree search is {MCTSList}")
                         file1.write(f"\nThe maximum VALUE using GREEDY MAX was {max(epsilonMaxList)} so option {epsilonMaxOption} was chosen\n")                    
                     print(f"The length of the tree search is {len(MCTSList)}\n")
                     file1.write(f"The length of the tree search is {len(MCTSList)}\n")
@@ -282,6 +294,7 @@ class EternityStart():
             # New sense check - will become alternate full solution test after iteration 88 but not working atm
             verificationList = MCTSList.copy()
             verificationPositions = MCTSPosition.copy()
+            #print(f"TEMP ln 285: verification list and positions are \n{verificationList}\n{verificationPositions}")
             if (len(verificationList) >= cutoff):
                 cutoff = 256 # full solution test
                 print (f"\nUndertaking full solution sense check with cutoff of {cutoff}\n") 
@@ -302,6 +315,7 @@ class EternityStart():
             end = time.time()
             file2.write(f"Time taken for the complete run was: {end - start:.3f} seconds\n")
             file2.write(f"Final Q-table length: {len(Q)}\n\n")
+            print(f"Time taken for the complete run was: {end - start:.3f} seconds\n")
             episodeList.append(len(maxMCTS)) 
             MCTSList = verificationList.copy()
             while(MCTSList != []):
@@ -311,17 +325,17 @@ class EternityStart():
                         item[1] = max(item[1],finalLength)
                         itemFound = True
                 # Should add to Q even for single options where no sampling was previously done (but not past cutoff)
-                if (itemFound == False and len(MCTSList) <=cutoff):
-                    Q.append([MCTSList.copy(), finalLength, 1])
-                MCTSList.pop()
+                #if (itemFound == False and len(MCTSList) <=cutoff):
+                #    Q.append([MCTSList.copy(), finalLength, 1])
+                #MCTSList.pop()
             print(f"The final length of {finalLength} has been used to update all prior Q table values\n")
             # Final update for original leaf
             Q[0][1] = max(Q[0][1],finalLength)
             Q[0][2] = Q[0][2] + 1
             # Do Not Use if Testing
-            #with open("Q-table.txt","w") as handler:
-            #    json.dump(Q,handler) 
-            #handler.close()             
+            with open("Q-table.txt","w") as handler:
+                json.dump(Q,handler) 
+            handler.close()             
             episode += 1    
             optionsCount = 0
         print(f"\nFor the {episode - 1} episodes run with sample size {sampleSize} and count {countLimit} the longest run was {max(episodeList)}")

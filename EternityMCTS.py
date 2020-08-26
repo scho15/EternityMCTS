@@ -126,7 +126,7 @@ class EternityMCTS():
             elif (item <=4 and iteration != 1 and iteration != 16 and iteration != 241 and iteration != 256):
                 consecutivePatterns.remove(item)
 
-        # Keep swap in for time being
+        #
         # Logic issue - should only do swap where it's for 2 patterns not three
         for item in consecutivePatterns[:]:
             if ((item == 173 or item == 199 or item == 233) and tileSwap == True):
