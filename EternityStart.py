@@ -317,17 +317,18 @@ class EternityStart():
             file2.write(f"Final Q-table length: {len(Q)}\n\n")
             print(f"Time taken for the complete run was: {end - start:.3f} seconds\n")
             episodeList.append(len(maxMCTS)) 
-            MCTSList = verificationList.copy()
+            MCTSList = verificationList.copy()[:cutoff]
             while(MCTSList != []):
                 itemFound = False
                 for item in Q:                   
                     if MCTSList == item[0]:
                         item[1] = max(item[1],finalLength)
                         itemFound = True
-                # Should add to Q even for single options where no sampling was previously done (but not past cutoff)
-                #if (itemFound == False and len(MCTSList) <=cutoff):
-                #    Q.append([MCTSList.copy(), finalLength, 1])
-                #MCTSList.pop()
+                        break
+                # Should add to Q even for single options where no sampling was previously done (but not past cutoff) - may happen for single options
+                if (itemFound == False):
+                    Q.append([MCTSList.copy(), finalLength, 1])
+                MCTSList.pop()
             print(f"The final length of {finalLength} has been used to update all prior Q table values\n")
             # Final update for original leaf
             Q[0][1] = max(Q[0][1],finalLength)
