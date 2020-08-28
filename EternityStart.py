@@ -14,7 +14,7 @@ class EternityStart():
         maxEpisodes = 1 # number of episodes to run
         sampleSize = 2 # number of runs/samples to take - at least 2 is recommended
         CreateTile.firstCountLimit = 5000000 # cutoff for run - normally at least 1m
-        cutoff = 90 # Point at which we move from sample check to full solution
+        cutoff = 88 # Point at which we move from sample check to full solution
         # VARIABLES INITIALISATION
         #random.seed(0)
         optionsCount = 0
@@ -32,7 +32,8 @@ class EternityStart():
                 Q = json.load(QTablefile)
             print(f"Q-table uploaded with {len(Q)} lines")
         CreateTile.createTile()
-        CreateTile.findPatternMatches()   
+        CreateTile.findPatternMatches() 
+        CreateTile.findThreePatternMatches()
         # MAIN BODY FOR EACH EPISODE
         while episode <= maxEpisodes:
             start = time.time()
@@ -300,7 +301,7 @@ class EternityStart():
                 print (f"\nUndertaking full solution sense check with cutoff of {cutoff}\n") 
                 countLimit = 5000000000
                 maxMCTS = EternityMCTS.fullSolutionCheck(cutoff, countLimit, verificationList.copy()[:88], verificationPositions.copy()[:88], useHints)
-                cutoff = 90# back to sample check for future episodes
+                cutoff = 88# back to sample check for future episodes
                 finalLength = len(maxMCTS)
                 countLimit = CreateTile.firstCountLimit
                 print("FINAL RESULTS")

@@ -19,7 +19,10 @@ class EternityMCTS():
                 consecutivePatterns = CreateTile.findConsecutivePatternMatches(0,positions[iteration-2][1])
 
         if (iteration == 16):
+            #consecutivePatterns = CreateTile.findThreeConsecutivePatternMatches(0, 0, positions[iteration-2][1])
+            #print(f"TEMP: Patterns with old consecutivePatterns are {consecutivePatterns}")
             consecutivePatterns = CreateTile.findThreeConsecutivePatternMatches(0, 0, positions[iteration-2][1])
+            #print(f"TEMP: Patterns with new consecutivePatterns are {consecutivePatterns}")
 
         if (iteration > 16 and iteration%16 == 1):
             consecutivePatterns = CreateTile.findConsecutivePatternMatches(positions[iteration-17][0],0)
@@ -36,6 +39,9 @@ class EternityMCTS():
                 elif (iteration == 19):
                     # ensuring iteration 19 has Northern tile of 15 as well as matching S and W
                     consecutivePatterns = CreateTile.findThreeConsecutivePatternMatches(firstMatch, secondMatch, 15)
+                    #print(f"TEMP: Patterns with old consecutivePatterns are {consecutivePatterns}")
+                    #consecutivePatterns = CreateTile.findAltThreeConsecutivePatternMatches(firstMatch, secondMatch, 15)
+                    #print(f"TEMP: Patterns with old consecutivePatterns are {consecutivePatterns}")
                 elif (iteration == 30):
                     # ensuring iteration 30 has Northern tile of 18 as well as matching S and W
                     consecutivePatterns = CreateTile.findThreeConsecutivePatternMatches(firstMatch, secondMatch, 18)

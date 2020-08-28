@@ -10,7 +10,8 @@ class CreateTile():
     twoTilePatternList = []
     twoTilePatternSet = set()
     twoPatternList = []
-    detailedPatternList = []
+    detailedPatternList = []    
+    detailedThreePatternList = []
     doubleRotation = [False, False, False]
     firstCountLimit = 0
 
@@ -329,15 +330,43 @@ class CreateTile():
             output = CreateTile.detailedPatternList[x][y].copy()            
             return output
 
-    ## Tiles must be in clockwise order
+    def findThreePatternMatches():
+        threeTilePatternList = []
+        nextPatternList = []
+        threeTilePatternSet = set()
+        threePatternList = []
+        for a in range(CreateTile.PATTERN_TYPES + 1):
+            for b in range(CreateTile.PATTERN_TYPES + 1):
+                for c in range(CreateTile.PATTERN_TYPES + 1):
+                    for d in range(CreateTile.TILE_SET_SIZE + 1):
+                        for e in range( 4 ):
+                            if(CreateTile.tileList[d][e] == a and CreateTile.tileList[d][(e+1)%4] == b and CreateTile.tileList[d][(e+2)%4] == c):
+                                threeTilePatternSet.add(d)
+                    threeTilePatternList.extend(threeTilePatternSet.copy())
+                    threePatternList.append(threeTilePatternList.copy())
+                    threeTilePatternSet.clear()
+                    threeTilePatternList.clear()
+                nextPatternList.append(threePatternList.copy())
+                threePatternList.clear()
+            CreateTile.detailedThreePatternList.append(nextPatternList.copy())
+            nextPatternList.clear()
+        print(f"TEST: detailedThreePatternList[0] is {CreateTile.detailedThreePatternList[0]} and length {len(CreateTile.detailedThreePatternList[0])}")
+        print(f"TEST: Set of tiles with tile pattern 0,0 is {CreateTile.detailedThreePatternList[0][0]} and length {len(CreateTile.detailedThreePatternList[0][0])}\n")
+        print(f"TEST: Example for patterns 0,0,1 would be {CreateTile.detailedThreePatternList[0][0][1]}")
+
     def findThreeConsecutivePatternMatches(x, y, z):
-            threePatterns = []
-            for a in range(CreateTile.TILE_SET_SIZE + 1):
-                for b in range( 4 ):
-                    if(CreateTile.tileList[a][b] == x and CreateTile.tileList[a][(b+1)%4] == y and CreateTile.tileList[a][(b+2)%4] == z):
-                        threePatterns.append(a)
-            #print(f"Set of tiles with three consecutive tile patterns {x} {y} and {z} is {threePatterns}")
-            return threePatterns
+            output = CreateTile.detailedThreePatternList[x][y][z].copy()            
+            return output
+
+    ## Tiles must be in clockwise order
+    #def findThreeConsecutivePatternMatches(x, y, z):
+    #        threePatterns = []
+    #        for a in range(CreateTile.TILE_SET_SIZE + 1):
+    #            for b in range( 4 ):
+    #                if(CreateTile.tileList[a][b] == x and CreateTile.tileList[a][(b+1)%4] == y and CreateTile.tileList[a][(b+2)%4] == z):
+    #                    threePatterns.append(a)
+    #        #print(f"Set of tiles with three consecutive tile patterns {x} {y} and {z} is {threePatterns}")
+    #        return threePatterns
 
     def findTileMatches():
         for x in range(TILE_SET_SIZE):
