@@ -202,6 +202,8 @@ class EternityMCTS():
         count = 0
         maxIteration = 0
         maxMCTS = inputSolution
+        doubleTile = 0 # Working out how many times 173,199 and 233 are used for testing
+        SWMatch = 0 # Working out how many times double rotation tiles are used for testing
         termination = False # check to see if unexploredtiles are empty i.e. = [] at end
         #Seeing if lengths can start from input solution
         #while (len(exploredTiles) <= iteration):
@@ -240,6 +242,13 @@ class EternityMCTS():
                 inputSolution.append(matchTile)
                 positions.append(CreateTile.tileList[matchTile])
                 positions = EternityMCTS.tileAlignmentOnLastPosition(inputSolution, positions)
+                # Begin checking for adding or removal of double rotation tiles
+                if (matchTile == 173 or matchTile == 199 or matchTile == 233):
+                    doubleTile += 1
+                    print(f"Double rotation tile {matchTile} has just been added with position {positions[-1]} and count {doubleTile}")
+                    if (positions[-1][2] == positions[-1][3]):
+                        SWMatch += 1
+                        print(f"South and West tiles match so double rotation is possible with count {SWMatch}")
                 #print(f"TEMP Line 274:Positions has been amended to {positions}")                              
                 if (iteration > maxIteration):
                     maxIteration = iteration
@@ -251,6 +260,13 @@ class EternityMCTS():
                 iteration +=1
             elif (unexploredTiles != []):
                 while (unexploredTiles!= [] and len(unexploredTiles[-1]) == 0):
+                    # Begin checking for adding or removal of double rotation tiles
+                    if (inputSolution[-1] == 173 or inputSolution[-1] == 199 or inputSolution[-1] == 233):
+                        doubleTile -= 1
+                        print(f"Double rotation tile {inputSolution[-1]} has just been removed with position {positions[-1]} and count is now {doubleTile}")
+                        if (positions[-1][2] == positions[-1][3]):
+                            SWMatch -= 1
+                            print(f"South and West tiles matched so double rotation was possible with count reduced to {SWMatch}")
                     inputSolution.pop()
                     unexploredTiles.pop()
                     positions.pop() # Newly added
@@ -260,6 +276,12 @@ class EternityMCTS():
                 if (unexploredTiles!= [] and len(unexploredTiles[-1])!=0):
                     iteration -= 1
                     #print(f'The unexplored list is \n {unexploredTiles}') # Optional Line 15
+                    if (inputSolution[-1] == 173 or inputSolution[-1] == 199 or inputSolution[-1] == 233):
+                        doubleTile -= 1
+                        print(f"Double rotation tile {inputSolution[-1]} has just been removed with position {positions[-1]} and count is now {doubleTile}")
+                        if (positions[-1][2] == positions[-1][3]):
+                            SWMatch -= 1
+                            print(f"South and West tiles matched so double rotation was possible with count reduced to {SWMatch}")
                     exploredTiles[-1].append(inputSolution.pop()) # Only place where explored is appended
                     positions.pop()
             # Originally add if iteration == maxIteration and maxCheck == True or (iteration <= 91 and count > 500000)

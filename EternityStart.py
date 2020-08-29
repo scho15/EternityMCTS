@@ -13,7 +13,7 @@ class EternityStart():
         useHints = True # Use only centre tile or 4 corner hints as well
         maxEpisodes = 1 # number of episodes to run
         sampleSize = 2 # number of runs/samples to take - at least 2 is recommended
-        CreateTile.firstCountLimit = 5000000 # cutoff for run - normally at least 1m
+        CreateTile.firstCountLimit = 10000 # cutoff for run - normally at least 1m
         cutoff = 88 # Point at which we move from sample check to full solution
         # VARIABLES INITIALISATION
         #random.seed(0)
@@ -71,6 +71,7 @@ class EternityStart():
                         if MCTSList == item[0]: 
                             #print(f"MCTS is {MCTSList} and item[0] is {item[0]}\n")
                             currentVisitCount = item[2] - 1 # Adjusting so epsilon is 1 unless previous sample taken
+                    #epsilon = 0
                     #if (currentVisitCount >= 1):
                     #    epsilon = 0.0
                     #else:
@@ -335,9 +336,9 @@ class EternityStart():
             Q[0][1] = max(Q[0][1],finalLength)
             Q[0][2] = Q[0][2] + 1
             # Do Not Use if Testing
-            with open("Q-table.txt","w") as handler:
-                json.dump(Q,handler) 
-            handler.close()             
+            #with open("Q-table.txt","w") as handler:
+            #    json.dump(Q,handler) 
+            #handler.close()             
             episode += 1    
             optionsCount = 0
         print(f"\nFor the {episode - 1} episodes run with sample size {sampleSize} and count {countLimit} the longest run was {max(episodeList)}")
