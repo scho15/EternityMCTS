@@ -13,10 +13,10 @@ class EternityStart():
         useHints = True # Use only centre tile or 4 corner hints as well
         maxEpisodes = 1 # number of episodes to run
         sampleSize = 2 # number of runs/samples to take - at least 2 is recommended
-        CreateTile.firstCountLimit = 10000 # cutoff for run - normally at least 1m
+        CreateTile.firstCountLimit = 5000000 # cutoff for run - normally at least 1m
         cutoff = 88 # Point at which we move from sample check to full solution
         # VARIABLES INITIALISATION
-        #random.seed(0)
+        #random.seed(1)
         optionsCount = 0
         episode = 1
         Q = [] # Q list table with state and maximum amount for that state [1] and number of visits [2]
@@ -102,7 +102,7 @@ class EternityStart():
                         if (sampleMax == True):
                             for count in range(sampleSize):
                                 # Now working with solution list so need length                                
-                                limitedRunList = EternityMCTS.fullSolutionCheck(256, countLimit, testList.copy(), MCTSPosition.copy(), useHints)
+                                limitedRunList = EternityMCTS.fullSolutionCheckWithSwap(256, countLimit, testList.copy(), MCTSPosition.copy(), useHints)
                                 if (len(limitedRunList) >= 200):                                    
                                     print(f"200+ solution reached of \n{limitedRunList}")
                                     file2.write(f"200+ solution reached of \n{limitedRunList}\n")
@@ -145,7 +145,7 @@ class EternityStart():
                                     file1.write(f"The new position is {MCTSPosition[-1]}\n")
                                     b = []
                                     for count in range(sampleSize):
-                                        limitedRunList = EternityMCTS.fullSolutionCheck(256, countLimit, testList.copy(), MCTSPosition.copy(), useHints)
+                                        limitedRunList = EternityMCTS.fullSolutionCheckWithSwap(256, countLimit, testList.copy(), MCTSPosition.copy(), useHints)
                                         if (len(limitedRunList) >= 200):                                    
                                             print(f"200+ solution reached of \n{limitedRunList}")
                                             file2.write(f"200+ solution reached of \n{limitedRunList}")
@@ -301,7 +301,7 @@ class EternityStart():
                 cutoff = 256 # full solution test
                 print (f"\nUndertaking full solution sense check with cutoff of {cutoff}\n") 
                 countLimit = 5000000000
-                maxMCTS = EternityMCTS.fullSolutionCheck(cutoff, countLimit, verificationList.copy()[:88], verificationPositions.copy()[:88], useHints)
+                maxMCTS = EternityMCTS.fullSolutionCheckWithSwap(cutoff, countLimit, verificationList.copy()[:88], verificationPositions.copy()[:88], useHints)
                 cutoff = 88# back to sample check for future episodes
                 finalLength = len(maxMCTS)
                 countLimit = CreateTile.firstCountLimit
@@ -336,9 +336,9 @@ class EternityStart():
             Q[0][1] = max(Q[0][1],finalLength)
             Q[0][2] = Q[0][2] + 1
             # Do Not Use if Testing
-            #with open("Q-table.txt","w") as handler:
-            #    json.dump(Q,handler) 
-            #handler.close()             
+            with open("Q-table.txt","w") as handler:
+                json.dump(Q,handler) 
+            handler.close()             
             episode += 1    
             optionsCount = 0
         print(f"\nFor the {episode - 1} episodes run with sample size {sampleSize} and count {countLimit} the longest run was {max(episodeList)}")

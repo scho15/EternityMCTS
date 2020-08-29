@@ -134,14 +134,14 @@ class EternityMCTS():
 
         #
         # Logic issue - should only do swap where it's for 2 patterns not three
-        for item in consecutivePatterns[:]:
-            if ((item == 173 or item == 199 or item == 233) and tileSwap == True):
-                event = random.randint(0,1)
-                westMatch = CreateTile.tileList[item][3]
-                southMatch = CreateTile.tileList[item][2]
-                if (westMatch == southMatch and event == 1):
-                    CreateTile.swapPosition(item)
-                    #print(f"{item} swap occurred using tileList (only position tileList kept)")
+        #for item in consecutivePatterns[:]:
+        #    if ((item == 173 or item == 199 or item == 233) and tileSwap == True):
+        #        event = random.randint(0,1)
+        #        westMatch = CreateTile.tileList[item][3]
+        #        southMatch = CreateTile.tileList[item][2]
+        #        if (westMatch == southMatch and event == 1):
+        #            CreateTile.swapPosition(item)
+        #            #print(f"{item} swap occurred using tileList (only position tileList kept)")
         tileSwap = False
         
         return consecutivePatterns
@@ -205,6 +205,7 @@ class EternityMCTS():
         doubleTile = 0 # Working out how many times 173,199 and 233 are used for testing
         SWMatch = 0 # Working out how many times double rotation tiles are used for testing
         termination = False # check to see if unexploredtiles are empty i.e. = [] at end
+        oldPosition = []
         #Seeing if lengths can start from input solution
         #while (len(exploredTiles) <= iteration):
         #    exploredTiles.append([])
@@ -243,12 +244,12 @@ class EternityMCTS():
                 positions.append(CreateTile.tileList[matchTile])
                 positions = EternityMCTS.tileAlignmentOnLastPosition(inputSolution, positions)
                 # Begin checking for adding or removal of double rotation tiles
-                if (matchTile == 173 or matchTile == 199 or matchTile == 233):
-                    doubleTile += 1
-                    print(f"Double rotation tile {matchTile} has just been added with position {positions[-1]} and count {doubleTile}")
-                    if (positions[-1][2] == positions[-1][3]):
-                        SWMatch += 1
-                        print(f"South and West tiles match so double rotation is possible with count {SWMatch}")
+                #if (matchTile == 173 or matchTile == 199 or matchTile == 233):
+                #    doubleTile += 1
+                #    print(f"Double rotation tile {matchTile} has just been added with position {positions[-1]} and count {doubleTile}")
+                #    if (positions[-1][2] == positions[-1][3]):
+                #        SWMatch += 1
+                #        print(f"South and West tiles match so double rotation is possible with count {SWMatch}")
                 #print(f"TEMP Line 274:Positions has been amended to {positions}")                              
                 if (iteration > maxIteration):
                     maxIteration = iteration
@@ -261,12 +262,12 @@ class EternityMCTS():
             elif (unexploredTiles != []):
                 while (unexploredTiles!= [] and len(unexploredTiles[-1]) == 0):
                     # Begin checking for adding or removal of double rotation tiles
-                    if (inputSolution[-1] == 173 or inputSolution[-1] == 199 or inputSolution[-1] == 233):
-                        doubleTile -= 1
-                        print(f"Double rotation tile {inputSolution[-1]} has just been removed with position {positions[-1]} and count is now {doubleTile}")
-                        if (positions[-1][2] == positions[-1][3]):
-                            SWMatch -= 1
-                            print(f"South and West tiles matched so double rotation was possible with count reduced to {SWMatch}")
+                    #if (inputSolution[-1] == 173 or inputSolution[-1] == 199 or inputSolution[-1] == 233):
+                    #    doubleTile -= 1
+                    #    print(f"Double rotation tile {inputSolution[-1]} has just been removed with position {positions[-1]} and count is now {doubleTile}")
+                    #    if (positions[-1][2] == positions[-1][3]):
+                    #        SWMatch -= 1
+                    #        print(f"South and West tiles matched so double rotation was possible with count reduced to {SWMatch}")
                     inputSolution.pop()
                     unexploredTiles.pop()
                     positions.pop() # Newly added
@@ -276,14 +277,197 @@ class EternityMCTS():
                 if (unexploredTiles!= [] and len(unexploredTiles[-1])!=0):
                     iteration -= 1
                     #print(f'The unexplored list is \n {unexploredTiles}') # Optional Line 15
-                    if (inputSolution[-1] == 173 or inputSolution[-1] == 199 or inputSolution[-1] == 233):
-                        doubleTile -= 1
-                        print(f"Double rotation tile {inputSolution[-1]} has just been removed with position {positions[-1]} and count is now {doubleTile}")
-                        if (positions[-1][2] == positions[-1][3]):
-                            SWMatch -= 1
-                            print(f"South and West tiles matched so double rotation was possible with count reduced to {SWMatch}")
+                    #if (inputSolution[-1] == 173 or inputSolution[-1] == 199 or inputSolution[-1] == 233):
+                    #    doubleTile -= 1
+                    #    print(f"Double rotation tile {inputSolution[-1]} has just been removed with position {positions[-1]} and count is now {doubleTile}")
+                    #    if (positions[-1][2] == positions[-1][3]):
+                    #        SWMatch -= 1
+                    #        print(f"South and West tiles matched so double rotation was possible with count reduced to {SWMatch}")
                     exploredTiles[-1].append(inputSolution.pop()) # Only place where explored is appended
                     positions.pop()
+            # Originally add if iteration == maxIteration and maxCheck == True or (iteration <= 91 and count > 500000)
+            if (count%250000000 == 0):
+                print(f"\nUsed tiles list at count {count} is now \n{inputSolution}\n and iteration reached was {maxIteration}")
+                print(f"Unexplored tiles at iteration {iteration} are \n{unexploredTiles}")
+                print(f"Explored tiles at iteration {iteration} are \n{exploredTiles}")
+                if (unexploredTiles != []):
+                    for i, val in enumerate(unexploredTiles):
+                        if (minimumLength + i <= minimumLength + 10 and len(inputSolution) > i+minimumLength):
+                            print(f"{minimumLength+i+1}\t{inputSolution[i+minimumLength]} {val} {exploredTiles[i]}")                
+                    maxCheck = False # Optional Insert Line 18 to get all iterations           
+        return maxMCTS
+
+
+    #Main change to original version is using findNextPositionMatches rather than findNextMatches
+    def fullSolutionCheckWithSwap(cutoff,countLimit, inputSolution, positions, useHints):
+    # Need 3 different elements - unexplored path, explored path and currentPath/usedtiles        
+        
+        exploredTiles = []
+        unexploredTiles = []
+        iteration = len(inputSolution) + 1
+        minimumLength = len(inputSolution) 
+        tempList = []
+        count = 0
+        maxIteration = 0
+        maxMCTS = inputSolution
+        doubleTile = 0 # Working out how many times 173,199 and 233 are used for testing
+        SWMatch = [False,False,False] # Check to see if match 177,199,233 are in tree
+        termination = False # check to see if unexploredtiles are empty i.e. = [] at end
+        alternativeMatch = [False,False,False] # See if alternative position has been tried
+        special = False #Catch all log to see if alternative matches have been triggered
+        #Seeing if lengths can start from input solution
+        #while (len(exploredTiles) <= iteration):
+        #    exploredTiles.append([])
+        #    unexploredTiles.append([])
+        while (iteration <= cutoff and termination == False):
+            special = False # reset flag for each iteration - not sure this is the right position
+            # Next matches as a list
+            if (unexploredTiles == [] and count != 0):
+                termination = True
+                break
+            if (count > countLimit):
+                termination = True
+                break
+            count += 1
+            # Significantly simplified code to re-use findNextMatches and keep explored tiles check below
+            consecutivePatterns = EternityMCTS.findNextPositionMatches(inputSolution, positions, useHints)
+            
+            if (exploredTiles != [] and len(exploredTiles[-1]) != 0):
+                for item in exploredTiles[-1]:
+                    if item in consecutivePatterns:
+                        consecutivePatterns.remove(item)
+                #print(f"Explored tiles for iteration is {exploredTiles[iteration-1]}")
+            #print(f"Matching tiles list after explored tile purge is {consecutivePatterns}") # Optional Line 8
+            # Take first eligible tile (for breadth first search would need to print them all out
+            if (len(consecutivePatterns) != 0):
+                # Migrating to random
+                choice = random.randint(0,len(consecutivePatterns) - 1)
+                matchTile = consecutivePatterns[choice]
+                consecutivePatterns.pop(choice)
+                if (unexploredTiles == [] or len(unexploredTiles) <= iteration - minimumLength - 1):
+                    unexploredTiles.append(consecutivePatterns.copy()) # only place where unexploredTiles is appended apart from length
+                    exploredTiles.append([])
+                else:
+                    unexploredTiles[-1] = consecutivePatterns.copy()
+                # Adding to used tile list
+                inputSolution.append(matchTile)
+                positions.append(CreateTile.tileList[matchTile])
+                positions = EternityMCTS.tileAlignmentOnLastPosition(inputSolution, positions)
+                # Begin checking for adding or removal of double rotation tiles
+                if ((matchTile == 173 or matchTile == 199 or matchTile == 233) and (positions[-1][2] == positions[-1][3])):    
+                    if (inputSolution[-1] == 173):
+                        SWMatch[0] = True
+                    elif(inputSolution[-1] == 199):
+                        SWMatch[1] = True
+                    elif(inputSolution[-1] == 233):
+                        SWMatch[2] = True
+                    #print(f"Double rotation tile {matchTile} has just been added with position   {positions[-1]} and SWcount is {SWMatch} on iteration {iteration} and count {count}")
+                #print(f"TEMP Line 274:Positions has been amended to {positions}")                              
+                if (iteration > maxIteration):
+                    maxIteration = iteration
+                    if (maxIteration >= 190 and count > CreateTile.firstCountLimit or maxIteration >= 200):
+                        print(f"Iteration is {iteration} and count is {count} with maximum iteration reached of {maxIteration}")
+                        print(f"Latest solution is\n{inputSolution}")
+                    maxCheck = True
+                    maxMCTS = inputSolution.copy()
+                iteration +=1
+            elif (unexploredTiles != []):
+                while (unexploredTiles!= [] and len(unexploredTiles[-1]) == 0):
+                    # Begin checking for adding or removal of double rotation tiles
+                    if ((inputSolution[-1] == 173 or inputSolution[-1] == 199 or inputSolution[-1] == 233) and (positions[-1][2] == positions[-1][3])):
+                        if (inputSolution[-1] == 173):                            
+                            # Check alternative for that match
+                            if alternativeMatch[0] == False:
+                                alternativeMatch[0] = True
+                                special = True #Undertake a double rotation rather than pop inputSolution
+                                oldPosition = positions[-1].copy()
+                                positions[-1][0] = oldPosition[1]
+                                positions[-1][1] = oldPosition[0]
+                                #print(f"Position of tile {inputSolution[-1]} has been swapped from {oldPosition} to {positions[-1]} on iteration {iteration} and count {count}")
+                            else:
+                                special = False
+                                alternativeMatch[0] = False
+                                SWMatch[0] = False
+                        elif(inputSolution[-1] == 199):
+                            if alternativeMatch[1] == False:
+                                alternativeMatch[1] = True
+                                special = True #Undertake a double rotation rather than pop inputSolution
+                                oldPosition = positions[-1].copy()
+                                positions[-1][0] = oldPosition[1]
+                                positions[-1][1] = oldPosition[0]
+                                #print(f"Position of tile {inputSolution[-1]} has been swapped from {oldPosition} to {positions[-1]} on iteration {iteration} and count {count}")
+                            else:
+                                special = False
+                                alternativeMatch[1] = False
+                                SWMatch[1] = False
+                        elif(inputSolution[-1] == 233):
+                            if alternativeMatch[2] == False:
+                                alternativeMatch[2] = True
+                                special = True #Undertake a double rotation rather than pop inputSolution
+                                oldPosition = positions[-1].copy()
+                                positions[-1][0] = oldPosition[1]
+                                positions[-1][1] = oldPosition[0]
+                                #print(f"Position of tile {inputSolution[-1]} has been swapped from {oldPosition} to {positions[-1]} on iteration {iteration} and count {count}")
+                            else:
+                                special = False
+                                alternativeMatch[2] = False
+                                SWMatch[2] = False
+                        #if special == False:
+                            #print(f"Double rotation tile {inputSolution[-1]} has just been removed with position {positions[-1]} and SWcount is {SWMatch}") 
+                    if special == False:
+                        inputSolution.pop()
+                        unexploredTiles.pop()
+                        positions.pop() # Newly added
+                        exploredTiles.pop() # always reduces length by one - may also need to clear?
+                        iteration -=1
+                        #print(f'The last unexploredTile is now {unexploredTiles[-1]}') # Optional Line 14
+                if (unexploredTiles!= [] and len(unexploredTiles[-1])!=0):
+                    #print(f'The unexplored list is \n {unexploredTiles}') # Optional Line 15
+                    # Begin checking for adding or removal of double rotation tiles
+                    if ((inputSolution[-1] == 173 or inputSolution[-1] == 199 or inputSolution[-1] == 233) and (positions[-1][2] == positions[-1][3])):
+                        if (inputSolution[-1] == 173):                            
+                            # Check alternative for that match
+                            if alternativeMatch[0] == False:
+                                alternativeMatch[0] = True
+                                special = True #Undertake a double rotation rather than pop inputSolution
+                                oldPosition = positions[-1].copy()
+                                positions[-1][0] = oldPosition[1]
+                                positions[-1][1] = oldPosition[0]
+                                #print(f"Position of tile {inputSolution[-1]} has been swapped from {oldPosition} to {positions[-1]} on iteration {iteration} and count {count}")
+                            else:
+                                special = False
+                                alternativeMatch[0] = False
+                                SWMatch[0] = False
+                        elif(inputSolution[-1] == 199):
+                            if alternativeMatch[1] == False:
+                                alternativeMatch[1] = True
+                                special = True #Undertake a double rotation rather than pop inputSolution
+                                oldPosition = positions[-1].copy()
+                                positions[-1][0] = oldPosition[1]
+                                positions[-1][1] = oldPosition[0]
+                                #print(f"Position of tile {inputSolution[-1]} has been swapped from {oldPosition} to {positions[-1]} on iteration {iteration} and count {count}")
+                            else:
+                                special = False
+                                alternativeMatch[1] = False
+                                SWMatch[1] = False
+                        elif(inputSolution[-1] == 233):
+                            if alternativeMatch[2] == False:
+                                alternativeMatch[2] = True
+                                special = True #Undertake a double rotation rather than pop inputSolution
+                                oldPosition = positions[-1].copy()
+                                positions[-1][0] = oldPosition[1]
+                                positions[-1][1] = oldPosition[0]
+                                #print(f"Position of tile {inputSolution[-1]} has been swapped from {oldPosition} to {positions[-1]} on iteration {iteration} and count {count}")
+                            else:
+                                special = False
+                                alternativeMatch[2] = False
+                                SWMatch[2] = False
+                        #if special == False:
+                        #    print(f"Double rotation tile {inputSolution[-1]} has just been removed with position {positions[-1]} and SWcount is {SWMatch}") 
+                    if special == False:
+                        iteration -= 1
+                        exploredTiles[-1].append(inputSolution.pop()) # Only place where explored is appended
+                        positions.pop()
             # Originally add if iteration == maxIteration and maxCheck == True or (iteration <= 91 and count > 500000)
             if (count%250000000 == 0):
                 print(f"\nUsed tiles list at count {count} is now \n{inputSolution}\n and iteration reached was {maxIteration}")
