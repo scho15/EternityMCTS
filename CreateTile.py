@@ -350,9 +350,9 @@ class CreateTile():
                 threePatternList.clear()
             CreateTile.detailedThreePatternList.append(nextPatternList.copy())
             nextPatternList.clear()
-        print(f"TEST: detailedThreePatternList[0] is {CreateTile.detailedThreePatternList[0]} and length {len(CreateTile.detailedThreePatternList[0])}")
-        print(f"TEST: Set of tiles with tile pattern 0,0 is {CreateTile.detailedThreePatternList[0][0]} and length {len(CreateTile.detailedThreePatternList[0][0])}\n")
-        print(f"TEST: Example for patterns 0,0,1 would be {CreateTile.detailedThreePatternList[0][0][1]}")
+        #print(f"TEST: detailedThreePatternList[0] is {CreateTile.detailedThreePatternList[0]} and length {len(CreateTile.detailedThreePatternList[0])}")
+        #print(f"TEST: Set of tiles with tile pattern 0,0 is {CreateTile.detailedThreePatternList[0][0]} and length {len(CreateTile.detailedThreePatternList[0][0])}\n")
+        #print(f"TEST: Example for patterns 0,0,1 would be {CreateTile.detailedThreePatternList[0][0][1]}")
 
     def findThreeConsecutivePatternMatches(x, y, z):
             output = CreateTile.detailedThreePatternList[x][y][z].copy()            
