@@ -297,6 +297,19 @@ class EternityMCTS():
                     maxCheck = False # Optional Insert Line 18 to get all iterations           
         return maxMCTS
 
+    # Check to see if matching two or three tiles (to work out if double rotation swapping is a good thing
+    def iterationCheck(iteration, useHints):
+        tileSwap = False
+
+        # Don't need to worry about edge tiles as 173 etc will not be considered
+
+        if (useHints == True and iteration!= 19 and iteration != 30 and iteration != 104 and iteration != 195 and iteration != 206):
+            tileSwap = True
+
+        if (useHints == False and iteration!= 104):
+            tileSwap = True
+
+        return tileSwap
 
     #Main change to original version is using findNextPositionMatches rather than findNextMatches
     def fullSolutionCheckWithSwap(cutoff,countLimit, inputSolution, positions, useHints):
@@ -309,6 +322,7 @@ class EternityMCTS():
         tempList = []
         count = 0
         maxIteration = 0
+        swapCheck = False # Verify if double rotation may be an issue (for 2 rather than 3 consecutive matches)
         maxMCTS = inputSolution
         doubleTile = 0 # Working out how many times 173,199 and 233 are used for testing
         SWMatch = [False,False,False] # Check to see if match 177,199,233 are in tree
@@ -375,7 +389,10 @@ class EternityMCTS():
                 while (unexploredTiles!= [] and len(unexploredTiles[-1]) == 0):
                     # Begin checking for adding or removal of double rotation tiles
                     if ((inputSolution[-1] == 173 or inputSolution[-1] == 199 or inputSolution[-1] == 233) and (positions[-1][2] == positions[-1][3])):
-                        if (inputSolution[-1] == 173):                            
+                        swapCheck = EternityMCTS.iterationCheck(len(inputSolution) - 1, useHints)
+                        #if (swapCheck == False):
+                        #    print(f"TEST: Edge case found on iteration {len(inputSolution) - 1} count {count} and tile {inputSolution[-1]} where swapping is not appropriate")
+                        if (inputSolution[-1] == 173 and swapCheck == True):                            
                             # Check alternative for that match
                             if alternativeMatch[0] == False:
                                 alternativeMatch[0] = True
@@ -388,7 +405,7 @@ class EternityMCTS():
                                 special = False
                                 alternativeMatch[0] = False
                                 SWMatch[0] = False
-                        elif(inputSolution[-1] == 199):
+                        elif(inputSolution[-1] == 199 and swapCheck == True):
                             if alternativeMatch[1] == False:
                                 alternativeMatch[1] = True
                                 special = True #Undertake a double rotation rather than pop inputSolution
@@ -400,7 +417,7 @@ class EternityMCTS():
                                 special = False
                                 alternativeMatch[1] = False
                                 SWMatch[1] = False
-                        elif(inputSolution[-1] == 233):
+                        elif(inputSolution[-1] == 233 and swapCheck == True):
                             if alternativeMatch[2] == False:
                                 alternativeMatch[2] = True
                                 special = True #Undertake a double rotation rather than pop inputSolution
@@ -412,6 +429,8 @@ class EternityMCTS():
                                 special = False
                                 alternativeMatch[2] = False
                                 SWMatch[2] = False
+                        else:
+                            special = False
                         #if special == False:
                             #print(f"Double rotation tile {inputSolution[-1]} has just been removed with position {positions[-1]} and SWcount is {SWMatch}") 
                     if special == False:
@@ -425,7 +444,10 @@ class EternityMCTS():
                     #print(f'The unexplored list is \n {unexploredTiles}') # Optional Line 15
                     # Begin checking for adding or removal of double rotation tiles
                     if ((inputSolution[-1] == 173 or inputSolution[-1] == 199 or inputSolution[-1] == 233) and (positions[-1][2] == positions[-1][3])):
-                        if (inputSolution[-1] == 173):                            
+                        swapCheck = EternityMCTS.iterationCheck(len(inputSolution) - 1, useHints)
+                        #if (swapCheck == False):
+                        #    print(f"TEST: Edge case found on iteration {len(inputSolution) - 1} count {count} and tile {inputSolution[-1]} where swapping is not appropriate")
+                        if (inputSolution[-1] == 173 and swapCheck == True):                            
                             # Check alternative for that match
                             if alternativeMatch[0] == False:
                                 alternativeMatch[0] = True
@@ -438,7 +460,7 @@ class EternityMCTS():
                                 special = False
                                 alternativeMatch[0] = False
                                 SWMatch[0] = False
-                        elif(inputSolution[-1] == 199):
+                        elif(inputSolution[-1] == 199 and swapCheck == True):
                             if alternativeMatch[1] == False:
                                 alternativeMatch[1] = True
                                 special = True #Undertake a double rotation rather than pop inputSolution
@@ -450,7 +472,7 @@ class EternityMCTS():
                                 special = False
                                 alternativeMatch[1] = False
                                 SWMatch[1] = False
-                        elif(inputSolution[-1] == 233):
+                        elif(inputSolution[-1] == 233 and swapCheck == True):
                             if alternativeMatch[2] == False:
                                 alternativeMatch[2] = True
                                 special = True #Undertake a double rotation rather than pop inputSolution
@@ -462,6 +484,8 @@ class EternityMCTS():
                                 special = False
                                 alternativeMatch[2] = False
                                 SWMatch[2] = False
+                        else:
+                            special = False # dealing with swapCheck = False
                         #if special == False:
                         #    print(f"Double rotation tile {inputSolution[-1]} has just been removed with position {positions[-1]} and SWcount is {SWMatch}") 
                     if special == False:
@@ -478,4 +502,4 @@ class EternityMCTS():
                         if (minimumLength + i <= minimumLength + 10 and len(inputSolution) > i+minimumLength):
                             print(f"{minimumLength+i+1}\t{inputSolution[i+minimumLength]} {val} {exploredTiles[i]}")                
                     maxCheck = False # Optional Insert Line 18 to get all iterations           
-        return maxMCTS
+        return [maxMCTS,count-1]

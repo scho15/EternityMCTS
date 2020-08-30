@@ -45,9 +45,11 @@ class EternityStart():
             maxList = []
             epsilonMaxList = []
             maximaList = [] # depth of lookahead at each iteration - changed to iteration length
-            a = []
+            a = [] # storing lengths of maximum iteration
+            runLength = [] # storing count length
             limitedRunList = []
             earlyList = []
+            runCount = 0
             terminalState = False
             countLimit = CreateTile.firstCountLimit
             while (len(MCTSList) <= cutoff and terminalState == False):
@@ -102,20 +104,15 @@ class EternityStart():
                         if (sampleMax == True):
                             for count in range(sampleSize):
                                 # Now working with solution list so need length                                
-                                limitedRunList = EternityMCTS.fullSolutionCheckWithSwap(256, countLimit, testList.copy(), MCTSPosition.copy(), useHints)
+                                limitedRunList, runCount = EternityMCTS.fullSolutionCheckWithSwap(256, countLimit, testList.copy(), MCTSPosition.copy(), useHints)
                                 if (len(limitedRunList) >= 200):                                    
                                     print(f"200+ solution reached of \n{limitedRunList}")
                                     file2.write(f"200+ solution reached of \n{limitedRunList}\n")
                                 a.append(len(limitedRunList))
-                                # just appending and popping same tile
-                                #testList = MCTSList.copy()
-                                #MCTSPosition.pop()
-                                #print(f"TEMP Line 111: MCTSPosition used to reset testPosition is: {MCTSPosition}")
-                                #testList.append(tile)
-                                #MCTSPosition.append(CreateTile.tileList[tile])
-                                #MCTSPosition = EternityMCTS.tileAlignmentOnLastPosition(testList, MCTSPosition)
+                                runLength.append(runCount)
                             print("The distribution for runs is as follows:")
-                            print(sorted(Counter(a).items())) # See if this works
+                            print(sorted(Counter(a).items())) 
+                            print(sorted(Counter(runLength).items()))
                             #file1.write(f"{Counter(a)}\n")
                             average = sum(a)/len(a)
                             maximum = max(Counter(a))
@@ -144,20 +141,18 @@ class EternityStart():
                                     print(f"The new position is {MCTSPosition[-1]}\n")
                                     file1.write(f"The new position is {MCTSPosition[-1]}\n")
                                     b = []
+                                    runLength.clear()
                                     for count in range(sampleSize):
-                                        limitedRunList = EternityMCTS.fullSolutionCheckWithSwap(256, countLimit, testList.copy(), MCTSPosition.copy(), useHints)
+                                        limitedRunList, runCount = EternityMCTS.fullSolutionCheckWithSwap(256, countLimit, testList.copy(), MCTSPosition.copy(), useHints)
                                         if (len(limitedRunList) >= 200):                                    
                                             print(f"200+ solution reached of \n{limitedRunList}")
                                             file2.write(f"200+ solution reached of \n{limitedRunList}")
                                         b.append(len(limitedRunList))
-                                        #testList = MCTSList.copy()
-                                        #MCTSPosition.pop()
-                                        #testList.append(tile)
-                                        #MCTSPosition.append(CreateTile.tileList[tile].copy())
-                                        #MCTSPosition = EternityMCTS.tileAlignmentOnLastPosition(testList, MCTSPosition)
+                                        runLength.append(runCount)
                                     print("The distribution for the second run is as follows:")
                                     print(sorted(Counter(b).items())) # See if this works
-                                    #file1.write(f"{Counter(b)}\n")
+                                    print(sorted(Counter(runLength).items()))
+                                    file1.write(f"{Counter(b)}\n")
                                     average2 = sum(b)/len(b)
                                     maximum2 = max(Counter(b))
                                     print(f"The average is {average2:.5f} and maximum was {maximum2}")
@@ -221,6 +216,7 @@ class EternityStart():
                         testList = MCTSList.copy()
                         MCTSPosition.pop()
                         a.clear()
+                        runLength.clear()
                         end = time.time()
                         print(f"Time taken so far is: {end - start:.3f} seconds")
                     print(f"\nFor options {options}")
@@ -301,12 +297,12 @@ class EternityStart():
                 cutoff = 256 # full solution test
                 print (f"\nUndertaking full solution sense check with cutoff of {cutoff}\n") 
                 countLimit = 5000000000
-                maxMCTS = EternityMCTS.fullSolutionCheckWithSwap(cutoff, countLimit, verificationList.copy()[:88], verificationPositions.copy()[:88], useHints)
+                maxMCTS, runCount = EternityMCTS.fullSolutionCheckWithSwap(cutoff, countLimit, verificationList.copy()[:88], verificationPositions.copy()[:88], useHints)
                 cutoff = 88# back to sample check for future episodes
                 finalLength = len(maxMCTS)
                 countLimit = CreateTile.firstCountLimit
                 print("FINAL RESULTS")
-                print(f"Length of final solution was {finalLength}\n")
+                print(f"Length of final solution was {finalLength} and counts required were {runCount}\n")
                 print(f"The solution was\n{maxMCTS}")
                 file2.write(f"Final solution from {cutoff} iteration was of length {finalLength} and the solution itself was:\n{maxMCTS}\n")
             print(f"The length of the final Q-table with state, maximum, visitcount was {len(Q)}\n")
