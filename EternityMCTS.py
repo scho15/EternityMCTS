@@ -390,8 +390,8 @@ class EternityMCTS():
                     # Begin checking for adding or removal of double rotation tiles
                     if ((inputSolution[-1] == 173 or inputSolution[-1] == 199 or inputSolution[-1] == 233) and (positions[-1][2] == positions[-1][3])):
                         swapCheck = EternityMCTS.iterationCheck(len(inputSolution), useHints) # changed to length of inputSolution
-                        if (swapCheck == False):
-                            print(f"TEST: Edge case found on iteration {len(inputSolution)} count {count} and tile {inputSolution[-1]} where swapping is not appropriate")
+                        #if (swapCheck == False):
+                        #    print(f"TEST: Edge case found on iteration {len(inputSolution)} count {count} and tile {inputSolution[-1]} where swapping is not appropriate")
                         if (inputSolution[-1] == 173 and swapCheck == True):                            
                             # Check alternative for that match
                             if alternativeMatch[0] == False:
@@ -445,8 +445,8 @@ class EternityMCTS():
                     # Begin checking for adding or removal of double rotation tiles
                     if ((inputSolution[-1] == 173 or inputSolution[-1] == 199 or inputSolution[-1] == 233) and (positions[-1][2] == positions[-1][3])):
                         swapCheck = EternityMCTS.iterationCheck(len(inputSolution), useHints) # RChanged to length of inputSolution
-                        if (swapCheck == False):
-                            print(f"TEST: Edge case found on iteration {len(inputSolution)} count {count} and tile {inputSolution[-1]} where swapping is not appropriate")
+                        #if (swapCheck == False):
+                        #    print(f"TEST: Edge case found on iteration {len(inputSolution)} count {count} and tile {inputSolution[-1]} where swapping is not appropriate")
                         if (inputSolution[-1] == 173 and swapCheck == True):                            
                             # Check alternative for that match
                             if alternativeMatch[0] == False:

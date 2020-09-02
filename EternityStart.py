@@ -11,7 +11,7 @@ class EternityStart():
     def main():
         # DECISIONS REQUIRED
         useHints = True # Use only centre tile or 4 corner hints as well
-        maxEpisodes = 4 # number of episodes to run
+        maxEpisodes = 1 # number of episodes to run
         sampleSize = 2 # number of runs/samples to take - at least 2 is recommended
         CreateTile.firstCountLimit = 5000000 # cutoff for run - normally at least 1m
         cutoff = 88 # Point at which we move from sample check to full solution
@@ -119,7 +119,7 @@ class EternityStart():
                                                 break
                                         # Using zero rather than one to indicate it has not been visited or solved
                                         if (itemFound == False):
-                                            Q.append([interimList.copy(), finalLength, 0])
+                                            Q.append([interimList.copy(), len(limitedRunList), 0])
                                         interimList.pop()
                                     interimList.clear()
                                 a.append(len(limitedRunList))
@@ -172,7 +172,7 @@ class EternityStart():
                                                         break
                                                 # Using zero rather than one to indicate it has not been visited or solved
                                                 if (itemFound == False):
-                                                    Q.append([interimList.copy(), finalLength, 0])
+                                                    Q.append([interimList.copy(), len(limitedRunList), 0])
                                                 interimList.pop()
                                         interimList.clear()
                                         b.append(len(limitedRunList))
