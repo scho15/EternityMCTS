@@ -11,7 +11,7 @@ class EternityStart():
     def main():
         # DECISIONS REQUIRED
         useHints = True # Use only centre tile or 4 corner hints as well
-        maxEpisodes = 1 # number of episodes to run
+        maxEpisodes = 4 # number of episodes to run
         sampleSize = 2 # number of runs/samples to take - at least 2 is recommended
         CreateTile.firstCountLimit = 5000000 # cutoff for run - normally at least 1m
         cutoff = 88 # Point at which we move from sample check to full solution
@@ -108,8 +108,22 @@ class EternityStart():
                                 if (len(limitedRunList) >= 200):                                    
                                     print(f"200+ solution reached of \n{limitedRunList}")
                                     file2.write(f"200+ solution reached of \n{limitedRunList}\n")
+                                    print(f"The solution of {len(limitedRunList)} has been used to create new Q table values in later iterations but with no visitCount\n")
+                                    interimList = limitedRunList.copy()[:88]
+                                    while(len(interimList) > len(testList)):
+                                        itemFound = False
+                                        for item in Q:                   
+                                            if interimList == item[0]:
+                                                item[1] = max(item[1],len(limitedRunList))
+                                                itemFound = True
+                                                break
+                                        # Using zero rather than one to indicate it has not been visited or solved
+                                        if (itemFound == False):
+                                            Q.append([interimList.copy(), finalLength, 0])
+                                        interimList.pop()
+                                    interimList.clear()
                                 a.append(len(limitedRunList))
-                                runLength.append(runCount)
+                                runLength.append(runCount)                                
                             print("The distribution for runs is as follows:")
                             print(sorted(Counter(a).items())) 
                             print(sorted(Counter(runLength).items()))
@@ -147,8 +161,22 @@ class EternityStart():
                                         if (len(limitedRunList) >= 200):                                    
                                             print(f"200+ solution reached of \n{limitedRunList}")
                                             file2.write(f"200+ solution reached of \n{limitedRunList}")
+                                            print(f"The solution of {len(limitedRunList)} has been used to create new Q table values in later iterations but with no visitCount\n")
+                                            interimList = limitedRunList.copy()[:88]
+                                            while(len(interimList) > len(testList)):
+                                                itemFound = False
+                                                for item in Q:                   
+                                                    if interimList == item[0]:
+                                                        item[1] = max(item[1],len(limitedRunList))
+                                                        itemFound = True
+                                                        break
+                                                # Using zero rather than one to indicate it has not been visited or solved
+                                                if (itemFound == False):
+                                                    Q.append([interimList.copy(), finalLength, 0])
+                                                interimList.pop()
+                                        interimList.clear()
                                         b.append(len(limitedRunList))
-                                        runLength.append(runCount)
+                                        runLength.append(runCount)                                        
                                     print("The distribution for the second run is as follows:")
                                     print(sorted(Counter(b).items())) # See if this works
                                     print(sorted(Counter(runLength).items()))
