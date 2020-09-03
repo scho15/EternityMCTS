@@ -340,7 +340,7 @@ class EternityStart():
             file2.write(f"The lookahead for each iteration for sample size {sampleSize} and count {countLimit} was {maximaList} and maximum was {max(maximaList)} with average {sum(maximaList)/len(maximaList):.3f}\n")
             end = time.time()
             file2.write(f"Time taken for the complete run was: {end - start:.3f} seconds\n")
-            file2.write(f"Final Q-table length: {len(Q)}\n\n")
+            file2.write(f"Final Q-table length: {len(Q)}\n")
             print(f"Time taken for the complete run was: {end - start:.3f} seconds\n")
             episodeList.append(len(maxMCTS)) 
             MCTSList = verificationList.copy()[:cutoff]
@@ -356,6 +356,8 @@ class EternityStart():
                     Q.append([MCTSList.copy(), finalLength, 1])
                 MCTSList.pop()
             print(f"The final length of {finalLength} has been used to update all prior Q table values\n")
+            print(f"Shortened form for information of initial, average, final and time: {max(maximaList)} {sum(maximaList)/len(maximaList):.3f} {finalLength} {end-start:.0f}\n")
+            file2.write(f"Shortened Form: {max(maximaList)} {sum(maximaList)/len(maximaList):.3f} {finalLength} {end-start:.0f}\n\n")
             # Final update for original leaf
             Q[0][1] = max(Q[0][1],finalLength)
             Q[0][2] = Q[0][2] + 1
