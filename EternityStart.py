@@ -174,7 +174,7 @@ class EternityStart():
                                                 if (itemFound == False):
                                                     Q.append([interimList.copy(), len(limitedRunList), 0])
                                                 interimList.pop()
-                                        interimList.clear()
+                                            interimList.clear()
                                         b.append(len(limitedRunList))
                                         runLength.append(runCount)                                        
                                     print("The distribution for the second run is as follows:")

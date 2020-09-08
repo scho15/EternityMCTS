@@ -54,4 +54,4 @@ class QCleanup:
 			print(f"{element[0]}, {element[1]}, {QDictVisits[element[0]]}")
 		
 QCleanup.cleanser()
-QCleanup.reader(1)
+QCleanup.reader(4)
