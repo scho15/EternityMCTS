@@ -11,7 +11,7 @@ class EternityStart():
     def main():
         # DECISIONS REQUIRED
         useHints = True # Use only centre tile or 4 corner hints as well
-        maxEpisodes = 7 # number of episodes to run
+        maxEpisodes = 1 # number of episodes to run
         sampleSize = 5 # number of runs/samples to take - at least 2 is recommended
         CreateTile.firstCountLimit = 2000000 # cutoff for run - normally at least 1m
         cutoff = 88 # Point at which we move from sample check to full solution
@@ -24,6 +24,7 @@ class EternityStart():
         terminalState = False # graceful way to end program where empty list
         episodeList = [] # list of episode lengths
         maximaList = [] # list of maxima at each iteration 
+        lowIteration = [] # list of lowest iteration explored
         # FILE OPENING AND SETTING UP TILE AND PATTERN SETS
         file1 = open("MCTS.txt", "w") # detail for each episode (overwritten each time)
         file2 = open("MCTSRunSummary.txt", "a") # summary of tree and lookahead info
@@ -50,6 +51,7 @@ class EternityStart():
             limitedRunList = []
             earlyList = []
             runCount = 0
+            lowestItn = 0
             terminalState = False
             countLimit = CreateTile.firstCountLimit
             while (len(MCTSList) <= cutoff and terminalState == False):
@@ -104,7 +106,7 @@ class EternityStart():
                         if (sampleMax == True):
                             for count in range(sampleSize):
                                 # Now working with solution list so need length                                
-                                limitedRunList, runCount = EternityMCTS.fullSolutionCheckWithSwap(256, countLimit, testList.copy(), MCTSPosition.copy(), useHints)
+                                limitedRunList, runCount, lowestItn = EternityMCTS.fullSolutionCheckWithSwap(256, countLimit, testList.copy(), MCTSPosition.copy(), useHints)
                                 if (len(limitedRunList) >= 200):                                    
                                     print(f"200+ solution reached of \n{limitedRunList}")
                                     file2.write(f"200+ solution reached of \n{limitedRunList}\n")
@@ -123,10 +125,12 @@ class EternityStart():
                                         interimList.pop()
                                     interimList.clear()
                                 a.append(len(limitedRunList))
-                                runLength.append(runCount)                                
+                                runLength.append(runCount)  
+                                lowIteration.append(lowestItn)
                             print("The distribution for runs is as follows:")
                             print(sorted(Counter(a).items())) 
                             print(sorted(Counter(runLength).items()))
+                            print(sorted(Counter(lowIteration).items()))
                             #file1.write(f"{Counter(a)}\n")
                             average = sum(a)/len(a)
                             maximum = max(Counter(a))
@@ -156,8 +160,9 @@ class EternityStart():
                                     file1.write(f"The new position is {MCTSPosition[-1]}\n")
                                     b = []
                                     runLength.clear()
+                                    lowIteration.clear()
                                     for count in range(sampleSize):
-                                        limitedRunList, runCount = EternityMCTS.fullSolutionCheckWithSwap(256, countLimit, testList.copy(), MCTSPosition.copy(), useHints)
+                                        limitedRunList, runCount, lowestItn = EternityMCTS.fullSolutionCheckWithSwap(256, countLimit, testList.copy(), MCTSPosition.copy(), useHints)
                                         if (len(limitedRunList) >= 200):                                    
                                             print(f"200+ solution reached of \n{limitedRunList}")
                                             file2.write(f"200+ solution reached of \n{limitedRunList}")
@@ -176,10 +181,12 @@ class EternityStart():
                                                 interimList.pop()
                                             interimList.clear()
                                         b.append(len(limitedRunList))
-                                        runLength.append(runCount)                                        
+                                        runLength.append(runCount)      
+                                        lowIteration.append(lowestItn)
                                     print("The distribution for the second run is as follows:")
                                     print(sorted(Counter(b).items())) # See if this works
                                     print(sorted(Counter(runLength).items()))
+                                    print(sorted(Counter(lowIteration).items()))
                                     file1.write(f"{Counter(b)}\n")
                                     average2 = sum(b)/len(b)
                                     maximum2 = max(Counter(b))
@@ -245,6 +252,7 @@ class EternityStart():
                         MCTSPosition.pop()
                         a.clear()
                         runLength.clear()
+                        lowIteration.clear()
                         end = time.time()
                         print(f"Time taken so far is: {end - start:.3f} seconds")
                     print(f"\nFor options {options}")
@@ -325,7 +333,7 @@ class EternityStart():
                 cutoff = 256 # full solution test
                 print (f"\nUndertaking full solution sense check with cutoff of {cutoff}\n") 
                 countLimit = 5000000000
-                maxMCTS, runCount = EternityMCTS.fullSolutionCheckWithSwap(cutoff, countLimit, verificationList.copy()[:88], verificationPositions.copy()[:88], useHints)
+                maxMCTS, runCount, lowestItn = EternityMCTS.fullSolutionCheckWithSwap(cutoff, countLimit, verificationList.copy()[:88], verificationPositions.copy()[:88], useHints)
                 cutoff = 88# back to sample check for future episodes
                 finalLength = len(maxMCTS)
                 countLimit = CreateTile.firstCountLimit

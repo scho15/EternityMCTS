@@ -329,6 +329,7 @@ class EternityMCTS():
         termination = False # check to see if unexploredtiles are empty i.e. = [] at end
         alternativeMatch = [False,False,False] # See if alternative position has been tried
         special = False #Catch all log to see if alternative matches have been triggered
+        lowPoint = 0 # Working out largest distance between max and iteration 
         #Seeing if lengths can start from input solution
         #while (len(exploredTiles) <= iteration):
         #    exploredTiles.append([])
@@ -439,6 +440,8 @@ class EternityMCTS():
                         positions.pop() # Newly added
                         exploredTiles.pop() # always reduces length by one - may also need to clear?
                         iteration -=1
+                        if (maxIteration - iteration > lowPoint):
+                            lowPoint = maxIteration - iteration
                         #print(f'The last unexploredTile is now {unexploredTiles[-1]}') # Optional Line 14
                 if (unexploredTiles!= [] and len(unexploredTiles[-1])!=0):
                     #print(f'The unexplored list is \n {unexploredTiles}') # Optional Line 15
@@ -490,6 +493,8 @@ class EternityMCTS():
                         #    print(f"Double rotation tile {inputSolution[-1]} has just been removed with position {positions[-1]} and SWcount is {SWMatch}") 
                     if special == False:
                         iteration -= 1
+                        if (maxIteration - iteration > lowPoint):
+                            lowPoint = maxIteration - iteration
                         exploredTiles[-1].append(inputSolution.pop()) # Only place where explored is appended
                         positions.pop()
             # Originally add if iteration == maxIteration and maxCheck == True or (iteration <= 91 and count > 500000)
@@ -502,4 +507,4 @@ class EternityMCTS():
                         if (minimumLength + i <= minimumLength + 10 and len(inputSolution) > i+minimumLength):
                             print(f"{minimumLength+i+1}\t{inputSolution[i+minimumLength]} {val} {exploredTiles[i]}")                
                     maxCheck = False # Optional Insert Line 18 to get all iterations           
-        return [maxMCTS,count-1]
+        return [maxMCTS, count-1, maxIteration - lowPoint - 1]
