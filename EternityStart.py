@@ -11,9 +11,9 @@ class EternityStart():
     def main():
         # DECISIONS REQUIRED
         useHints = True # Use only centre tile or 4 corner hints as well
-        maxEpisodes = 1 # number of episodes to run
-        sampleSize = 5 # number of runs/samples to take - at least 2 is recommended
-        CreateTile.firstCountLimit = 2000000 # cutoff for run - normally at least 1m
+        maxEpisodes = 2 # number of episodes to run
+        sampleSize = 2 # number of runs/samples to take - at least 2 is recommended
+        CreateTile.firstCountLimit = 10000000 # cutoff for run - normally at least 1m
         cutoff = 88 # Point at which we move from sample check to full solution
         # VARIABLES INITIALISATION
         #random.seed(1)
@@ -81,7 +81,7 @@ class EternityStart():
                     #else:
                     #    epsilon = 1.0
                     epsilon = 100/ (100 + currentVisitCount)		
-                    print(f"Epsilon is set at {epsilon:.5f} and visitCount at {currentVisitCount}")
+                    print(f"Epsilon is set at {epsilon:.5f} and visitCount at {currentVisitCount + 1}")
                     currentVisitCount = 0
                     # Three options - random, sample maximum or current largest maximum as tree policy
                     # In order to learn, using sample maximum and largest maximum for tree policy and avoiding random
