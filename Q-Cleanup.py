@@ -19,7 +19,7 @@ class QCleanup:
 		print(sorted(Counter(a).items()))
 		a.clear()
 		for item in Q.copy():
-			if (len(item[0]) > 90):
+			if (len(item[0]) > 88):
 				Q.remove(item)
 		for item in Q:
 			length = len(item[0])
@@ -54,4 +54,4 @@ class QCleanup:
 			print(f"{element[0]}, {element[1]}, {QDictVisits[element[0]]}")
 		
 #QCleanup.cleanser()
-QCleanup.reader(88)
+QCleanup.reader(10)

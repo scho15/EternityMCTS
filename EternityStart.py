@@ -11,9 +11,9 @@ class EternityStart():
     def main():
         # DECISIONS REQUIRED
         useHints = True # Use only centre tile or 4 corner hints as well
-        maxEpisodes = 2 # number of episodes to run
-        sampleSize = 2 # number of runs/samples to take - at least 2 is recommended
-        CreateTile.firstCountLimit = 10000000 # cutoff for run - normally at least 1m
+        maxEpisodes = 5 # number of episodes to run
+        sampleSize = 5 # number of runs/samples to take - at least 2 is recommended
+        CreateTile.firstCountLimit = 2000000 # cutoff for run - normally at least 1m
         cutoff = 88 # Point at which we move from sample check to full solution
         # VARIABLES INITIALISATION
         #random.seed(1)
@@ -308,7 +308,7 @@ class EternityStart():
                     MCTSList.append(options[0])
                     MCTSPosition.append(CreateTile.tileList[options[0]].copy())
                     MCTSPosition = EternityMCTS.tileAlignmentOnLastPosition(MCTSList, MCTSPosition)
-                    print(f"Only a single option {options[0]} so no random samples undertaken\n")
+                    print(f"Only a single option {options[0]} so no random samples undertaken and position was {MCTSPosition[-1]}\n")
                     #print(f"TEMP Line 267: testPosition for single option with alignment is: {testPosition}")
                     if (maximaList != []):
                         maximaList.append(maximaList[-1])
