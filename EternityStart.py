@@ -10,10 +10,11 @@ import os.path
 class EternityStart():
     def main():
         # DECISIONS REQUIRED
-        useHints = True # Use only centre tile or 4 corner hints as well
-        maxEpisodes = 5 # number of episodes to run
-        sampleSize = 5 # number of runs/samples to take - at least 2 is recommended
-        CreateTile.firstCountLimit = 2000000 # cutoff for run - normally at least 1m
+        useHints = False # Use only centre tile or 4 corner hints as well
+        maxEpisodes = 1 # number of episodes to run
+        sampleSize = 2 # number of runs/samples to take - at least 2 is recommended
+        CreateTile.firstCountLimit = 20000000 # cutoff for run - normally at least 1m
+        solutionPrint = 210;
         cutoff = 88 # Point at which we move from sample check to full solution
         # VARIABLES INITIALISATION
         #random.seed(1)
@@ -54,7 +55,7 @@ class EternityStart():
             lowestItn = 0
             terminalState = False
             countLimit = CreateTile.firstCountLimit
-            while (len(MCTSList) <= cutoff and terminalState == False):
+            while (len(MCTSList) < cutoff and terminalState == False):
                 options = EternityMCTS.findNextPositionMatches(MCTSList,MCTSPosition, useHints)
                 optionsCount += len(options)
                 if len(options) != len(set(options)):
@@ -107,7 +108,7 @@ class EternityStart():
                             for count in range(sampleSize):
                                 # Now working with solution list so need length                                
                                 limitedRunList, runCount, lowestItn = EternityMCTS.fullSolutionCheckWithSwap(256, countLimit, testList.copy(), MCTSPosition.copy(), useHints)
-                                if (len(limitedRunList) >= 200):                                    
+                                if (len(limitedRunList) >= solutionPrint):                                    
                                     print(f"200+ solution reached of \n{limitedRunList}")
                                     file2.write(f"200+ solution reached of \n{limitedRunList}\n")
                                     print(f"The solution of {len(limitedRunList)} has been used to create new Q table values in later iterations but with no visitCount\n")
