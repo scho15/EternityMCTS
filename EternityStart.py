@@ -11,9 +11,9 @@ class EternityStart():
     def main():
         # DECISIONS REQUIRED
         useHints = False # Use only centre tile or 4 corner hints as well
-        maxEpisodes = 5 # number of episodes to run
-        sampleSize = 2 # number of runs/samples to take - at least 2 is recommended
-        CreateTile.firstCountLimit = 2000000 # cutoff for run - normally at least 1m
+        maxEpisodes = 1 # number of episodes to run
+        sampleSize = 1 # number of runs/samples to take - at least 2 is recommended
+        CreateTile.firstCountLimit = 5000000 # cutoff for run - normally at least 1m
         solutionPrint = 205; # based on first 2x20m itn, 207 was max and 205 was reached on 4 or 5 occasions
         cutoff = 88 # Point at which we move from sample check to full solution
         # VARIABLES INITIALISATION
@@ -51,6 +51,7 @@ class EternityStart():
             runLength = [] # storing count length
             limitedRunList = []
             earlyList = []
+            doubleOption = [] # list containing position of double tile option that produces best result
             runCount = 0
             lowestItn = 0
             terminalState = False
@@ -81,12 +82,13 @@ class EternityStart():
                     #    epsilon = 0.0
                     #else:
                     #    epsilon = 1.0
-                    epsilon = 100/ (100 + currentVisitCount)		
-                    print(f"Epsilon is set at {epsilon:.5f} and visitCount at {currentVisitCount + 1}")
+                    epsilon = 100/ (100 + currentVisitCount)	
+                    number = random.random()
+                    print(f"Epsilon is set at {epsilon:.5f} and visitCount at {currentVisitCount + 1} with random number at {number:.5f}")
                     currentVisitCount = 0
                     # Three options - random, sample maximum or current largest maximum as tree policy
                     # In order to learn, using sample maximum and largest maximum for tree policy and avoiding random
-                    if (random.random() < epsilon):
+                    if (number < epsilon):
                         print(f"SAMPLE: Proceeding with sample testing and using results of sample")
                         sampleMax = True
                     else:
@@ -150,6 +152,7 @@ class EternityStart():
                                 if (southMatch == westMatch):
                                     print("Second potential rotation needs to be tested\n")
                                     file1.write("Second potential rotation needs to be tested\n")
+                                    optionDouble = True
                                     # Rotation is clockwise
                                     if (southMatch == eastMatch):
                                         CreateTile.rotatePosition(-1, MCTSPosition)
@@ -226,6 +229,7 @@ class EternityStart():
                                     CreateTile.tileList[tile][1] = eastMatch
                                     CreateTile.tileList[tile][2] = southMatch
                                     CreateTile.tileList[tile][3] = westMatch
+                                    doubleOption = [northMatch, eastMatch, southMatch, westMatch]
                                     print(f"Final rotation used was {northMatch} {eastMatch} {southMatch} {westMatch}\n")
                                     file1.write(f"Final rotation used was {northMatch} {eastMatch} {southMatch} {westMatch}\n")
                                 else:
@@ -269,9 +273,15 @@ class EternityStart():
                     if (sampleMax == True):
                         maxOption = options[maxList.index(max(maxList))]
                         MCTSList.append(maxOption)
-                        MCTSPosition.append(CreateTile.tileList[maxOption].copy())
-                        MCTSPosition = EternityMCTS.tileAlignmentOnLastPosition(MCTSList, MCTSPosition)
+                        if (optionDouble == True and (maxOption == 173 or maxOption == 199 or maxOption == 233)):
+                            MCTSPosition.append(doubleOption)
+                            print(f"TEMP: New double option coding used to insert config {doubleOption}")
+                        else:
+                            MCTSPosition.append(CreateTile.tileList[maxOption].copy())
+                            MCTSPosition = EternityMCTS.tileAlignmentOnLastPosition(MCTSList, MCTSPosition)
+                        optionDouble = False
                     else:
+                        # Double options not used in epsilon max yet
                         epsilonMaxOption = options[epsilonMaxList.index(max(epsilonMaxList))]
                         MCTSList.append(epsilonMaxOption)
                         MCTSPosition.append(CreateTile.tileList[epsilonMaxOption].copy())
