@@ -54,13 +54,14 @@ class EternityMCTS():
             else:
                 if (iteration == 104):
                     consecutivePatterns = CreateTile.findThreeConsecutivePatternMatches(firstMatch, secondMatch, 17)
-                else:
+                else:                   
                     consecutivePatterns = CreateTile.findConsecutivePatternMatches(firstMatch,secondMatch)
                     tileSwap = True
 
+            # Need to assess if and/or
             # Adding hints for centre tile
             if (iteration == 120):
-                if (firstMatch != 17) and (secondMatch != 10):
+                if (firstMatch != 17) or (secondMatch != 10):
                     consecutivePatterns.clear()
                 elif (139 not in consecutivePatterns):
                     consecutivePatterns.clear()
