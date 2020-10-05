@@ -11,13 +11,14 @@ class EternityStart():
     def main():
         # DECISIONS REQUIRED
         useHints = False # Use only centre tile or 4 corner hints as well
-        maxEpisodes = 1 # number of episodes to run
+        maxEpisodes = 19 # number of episodes to run
         sampleSize = 1 # number of runs/samples to take - at least 2 is recommended
         CreateTile.firstCountLimit = 5000000 # cutoff for run - normally at least 1m
         solutionPrint = 205; # based on first 2x20m itn, 207 was max and 205 was reached on 4 or 5 occasions
         cutoff = 88 # Point at which we move from sample check to full solution
         # VARIABLES INITIALISATION
         #random.seed(1)
+        optionDouble = False # Used to work out if double tile has been used
         optionsCount = 0
         episode = 1
         Q = [] # Q list table with state and maximum amount for that state [1] and number of visits [2]
@@ -111,8 +112,8 @@ class EternityStart():
                                 # Now working with solution list so need length                                
                                 limitedRunList, runCount, lowestItn = EternityMCTS.fullSolutionCheckWithSwap(256, countLimit, testList.copy(), MCTSPosition.copy(), useHints)
                                 if (len(limitedRunList) >= solutionPrint):                                    
-                                    print(f"200+ solution reached of \n{limitedRunList}")
-                                    file2.write(f"200+ solution reached of \n{limitedRunList}\n")
+                                    print(f"{len(limitedRunList)} solution reached of \n{limitedRunList}")
+                                    file2.write(f"{len(limitedRunList)} solution reached of \n{limitedRunList}\n")
                                     print(f"The solution of {len(limitedRunList)} has been used to create new Q table values in later iterations but with no visitCount\n")
                                     interimList = limitedRunList.copy()[:88]
                                     while(len(interimList) > len(testList)):
@@ -168,8 +169,8 @@ class EternityStart():
                                     for count in range(sampleSize):
                                         limitedRunList, runCount, lowestItn = EternityMCTS.fullSolutionCheckWithSwap(256, countLimit, testList.copy(), MCTSPosition.copy(), useHints)
                                         if (len(limitedRunList) >= 200):                                    
-                                            print(f"200+ solution reached of \n{limitedRunList}")
-                                            file2.write(f"200+ solution reached of \n{limitedRunList}")
+                                            print(f"{len(limitedRunList)} solution reached of \n{limitedRunList}")
+                                            file2.write(f"{len(limitedRunList)} solution reached of \n{limitedRunList}")
                                             print(f"The solution of {len(limitedRunList)} has been used to create new Q table values in later iterations but with no visitCount\n")
                                             interimList = limitedRunList.copy()[:88]
                                             while(len(interimList) > len(testList)):
