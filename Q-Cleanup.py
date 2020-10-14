@@ -29,11 +29,29 @@ class QCleanup:
 		#with open("Q-table.txt","w") as handler:
 		#	json.dump(Q,handler) 
 		#handler.close()    
+
+	def massedit(iteration):
+		Q = []
+		a = []	
+		counter = 0
+		if (os.path.isfile('Q-Table.txt') == True):
+			with open("Q-table.txt", "r") as QTablefile:
+				Q = json.load(QTablefile)
+				print(f"Q-table uploaded with {len(Q)} lines")
+		for item in Q.copy():
+			if (len(item[0]) == 3 and item[2] > 0):
+				item[2] = 0
+				counter = counter + 1
+		print(f"Number of items amended to length 0 was {counter}")
+		#with open("Q-table.txt","w") as handler:
+		#	json.dump(Q,handler) 
+		#handler.close()    
+
 	def reader(iteration):
 		Q = []
 		a = []	
 		sum = 0
-		minimum = 200
+		minimum = 1
 		QDictLength = {}
 		QDictVisits = {}
 		if (os.path.isfile('Q-Table.txt') == True):
@@ -42,7 +60,7 @@ class QCleanup:
 				print(f"Q-table uploaded with {len(Q)} lines")
 		for item in Q:
 			length = len(item[0])
-			if (length == iteration and item[1] >= minimum):
+			if (length == iteration and item[2] >= minimum):
 				QDictLength[str(item[0])] = item[1] # 1 for iteration and 2 for visit
 				QDictVisits[str(item[0])] = item[2]
 				sum += 1
@@ -53,5 +71,6 @@ class QCleanup:
 		for element in entries:			
 			print(f"{element[0]}, {element[1]}, {QDictVisits[element[0]]}")
 		
-QCleanup.cleanser()
-#QCleanup.reader(10)
+#QCleanup.cleanser()
+QCleanup.reader(3)
+#QCleanup.massedit(3)

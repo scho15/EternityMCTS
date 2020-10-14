@@ -240,11 +240,12 @@ class EternityStart():
                             if len(Q) == 0:
                                 Q.append([MCTSList.copy(),maximum,0])
                         # Should be done for greedy and non-greedy
+                        itemFound = False
                         for item in Q:  
                             #print(f"Item is {item}")
                             if testList == item[0]:
                                 #print(f"item[0] is {item[0]}")
-                                item[2] = item[2] + 1
+                                #item[2] = item[2] + 1 moved to once option is chosen
                                 if (sampleMax == True):
                                     item[1] = max(item[1],maximum)
                                 epsilonMaxList.append(item[1])
@@ -252,7 +253,7 @@ class EternityStart():
                                 break;
                         if (itemFound == False):
                             #print(f"testlist {testList} is not in Q")
-                            Q.append([testList.copy(), maximum, 1])
+                            Q.append([testList.copy(), maximum, 0]) # would be zero rather than one unless actually selected
                             epsilonMaxList.append(maximum)
                         testList = MCTSList.copy()
                         MCTSPosition.pop()
@@ -287,6 +288,10 @@ class EternityStart():
                         MCTSList.append(epsilonMaxOption)
                         MCTSPosition.append(CreateTile.tileList[epsilonMaxOption].copy())
                         MCTSPosition = EternityMCTS.tileAlignmentOnLastPosition(MCTSList, MCTSPosition)
+                    for item in Q:
+                        if MCTSList == item[0]:
+                            item[2] = item[2] + 1 # Incremented after selection now
+                            break
                     #print(f"The maximum AVERAGE was {max(averageList)} so option {maxOption} was chosen and tree search is {MCTSList}\n")
                     if (sampleMax == True):
                         print(f"The maximum VALUE using SAMPLING was {max(maxList)} so option {maxOption} was chosen with position {MCTSPosition[-1]} and tree search is {MCTSList}")
@@ -304,6 +309,7 @@ class EternityStart():
                                     itemFound = True
                                     break
                             if (itemFound == False):
+                                print(f"CHECK: The following list was only created through back-prop of later solution {earlyList}")
                                 Q.append([earlyList.copy(), maxLength, 1])
                             earlyList.pop()
                     else:
@@ -324,6 +330,15 @@ class EternityStart():
                     #print(f"TEMP Line 267: testPosition for single option with alignment is: {testPosition}")
                     if (maximaList != []):
                         maximaList.append(maximaList[-1])
+                    maximum = maximaList[-1]
+                    itemFound = False
+                    for item in Q:
+                        if MCTSList == item[0]:
+                            item[2] = item[2] + 1 # Incremented after selection now
+                            itemFound = True
+                            break
+                    if (itemFound == False):
+                            Q.append([MCTSList.copy(), maximum, 1]) # would be one as no other options in this case
                 elif (maxList == []):
                     terminalState = True
                     print(f"\nFinal tree length was {len(MCTSList)} which was \n{MCTSList}")
@@ -390,8 +405,4 @@ class EternityStart():
         print(f"\nFor the {episode - 1} episodes run with sample size {sampleSize} and count {countLimit} the longest run was {max(episodeList)}")
         print(f"\nThe longest recorded run in the Q-Table is {Q[0][1]}")
         file1.close()
-
     main()
-
-
-
