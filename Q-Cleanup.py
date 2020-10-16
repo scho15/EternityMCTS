@@ -39,7 +39,7 @@ class QCleanup:
 				Q = json.load(QTablefile)
 				print(f"Q-table uploaded with {len(Q)} lines")
 		for item in Q.copy():
-			if (len(item[0]) == 3 and item[2] > 0):
+			if (len(item[0]) == iteration and item[2] > 0):
 				item[2] = 0
 				counter = counter + 1
 		print(f"Number of items amended to length 0 was {counter}")
@@ -51,7 +51,7 @@ class QCleanup:
 		Q = []
 		a = []	
 		sum = 0
-		minimum = 1
+		minimum = 0
 		QDictLength = {}
 		QDictVisits = {}
 		if (os.path.isfile('Q-Table.txt') == True):
@@ -71,6 +71,4 @@ class QCleanup:
 		for element in entries:			
 			print(f"{element[0]}, {element[1]}, {QDictVisits[element[0]]}")
 		
-#QCleanup.cleanser()
 QCleanup.reader(3)
-#QCleanup.massedit(3)
