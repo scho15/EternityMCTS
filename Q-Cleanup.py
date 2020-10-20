@@ -49,7 +49,7 @@ class QCleanup:
 	def reader(iteration):
 		Q = []
 		sum = 0
-		minimum = 200
+		minimum = 205
 		QDictLength = {}
 		QDictVisits = {}
 		if (os.path.isfile('Q-Table.txt') == True):
@@ -74,29 +74,33 @@ class QCleanup:
 		itemList = []
 		updateList = []
 		textInput = ""
-		#if (os.path.isfile('Q-Table.txt') == True):
-		#	with open("Q-table.txt", "r") as QTablefile:
-		#		Q = json.load(QTablefile)
-		#		print(f"Q-table uploaded with {len(Q)} lines")	
+		errorNote = False
+		if (os.path.isfile('Q-Table.txt') == True):
+			with open("Q-table.txt", "r") as QTablefile:
+				Q = json.load(QTablefile)
+				print(f"Q-table uploaded with {len(Q)} lines")	
 		textInput = input("Enter the iteration to be updated in Q with brackets: ")
 		textInput = textInput[1:-1]
 		itemList = [int(item) for item in textInput.split(',')]
-		print(itemList)
 		updateList = itemList.copy()[:88]
 		while(len(updateList) > 3):
 			itemFound = False
 			for item in Q:
-				if interimList == item[0]:
+				if updateList == item[0]:
 					item[2] = 1
 					itemFound = True
 					break
 			if (itemFound == False):
 				print(f"{updateList} has not been found")
+				errorNote = True
 			updateList.pop()
-		#with open("Q-table.txt","w") as handler:
-		#	json.dump(Q,handler) 
-		#handler.close()    
+		if (errorNote == True):
+			print("There was a problem on at least one update")
+		else:
+			print("All entries were updated successfully")
+		with open("Q-table.txt","w") as handler:
+			json.dump(Q,handler) 
+		handler.close()    
 
 #QCleanup.cleanser()	
-QCleanup.reader(4)
-#QCleanup.updateFrom88()
+QCleanup.reader(0)
