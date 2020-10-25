@@ -26,6 +26,7 @@ class EternityStart():
         terminalState = False # graceful way to end program where empty list
         episodeList = [] # list of episode lengths
         maximaList = [] # list of maxima at each iteration 
+        iterationList = [] # list of all iterations
         lowIteration = [] # list of lowest iteration explored
         # FILE OPENING AND SETTING UP TILE AND PATTERN SETS
         file1 = open("MCTS.txt", "w") # detail for each episode (overwritten each time)
@@ -48,7 +49,8 @@ class EternityStart():
             maxList = []
             epsilonMaxList = []
             maximaList = [] # depth of lookahead at each iteration - changed to iteration length
-            a = [] # storing lengths of maximum iteration
+            iterationList = [] # list of viable iterations
+            a = [] # storing lengths of maximum iteration            
             runLength = [] # storing count length
             limitedRunList = []
             earlyList = []
@@ -129,6 +131,8 @@ class EternityStart():
                                         interimList.pop()
                                     interimList.clear()
                                 a.append(len(limitedRunList))
+                                if (len(limitedRunList) >= 180):
+                                    iterationList.append(len(limitedRunList))
                                 runLength.append(runCount)  
                                 lowIteration.append(lowestItn)
                             print("The distribution for runs is as follows:")
@@ -168,9 +172,9 @@ class EternityStart():
                                     lowIteration.clear()
                                     for count in range(sampleSize):
                                         limitedRunList, runCount, lowestItn = EternityMCTS.fullSolutionCheckWithSwap(256, countLimit, testList.copy(), MCTSPosition.copy(), useHints)
-                                        if (len(limitedRunList) >= 200):                                    
+                                        if (len(limitedRunList) >= 205):                                    
                                             print(f"{len(limitedRunList)} solution reached of \n{limitedRunList}")
-                                            file2.write(f"{len(limitedRunList)} solution reached of \n{limitedRunList}")
+                                            file2.write(f"{len(limitedRunList)} solution reached of \n{limitedRunList}\n")
                                             print(f"The solution of {len(limitedRunList)} has been used to create new Q table values in later iterations but with no visitCount\n")
                                             interimList = limitedRunList.copy()[:88]
                                             while(len(interimList) > len(testList)):
@@ -186,6 +190,8 @@ class EternityStart():
                                                 interimList.pop()
                                             interimList.clear()
                                         b.append(len(limitedRunList))
+                                        if (len(limitedRunList) >= 180):
+                                            iterationList.append(len(limitedRunList))
                                         runLength.append(runCount)      
                                         lowIteration.append(lowestItn)
                                     print("The distribution for the second run is as follows:")
@@ -371,8 +377,10 @@ class EternityStart():
             print(f"The length of the final Q-table with state, maximum, visitcount was {len(Q)}\n")
             print(f"The lookahead for each iteration for sample size {sampleSize} and count {countLimit} was {maximaList} and maximum was {max(maximaList)} with average {sum(maximaList)/len(maximaList):.3f}\n")
             file1.write(f"The lookahead for each iteration for sample size {sampleSize} and count {countLimit} was {maximaList} and maximum was {max(maximaList)} with average {sum(maximaList)/len(maximaList):.3f}\n")
+            print(f"The list of viable iterations for sample size {sampleSize} and count {countLimit} was {iterationList} and maximum was {max(iterationList)} with average {sum(iterationList)/len(iterationList):.3f}\n")
+            file2.write(f"The list of viable iterations for sample size {sampleSize} and count {countLimit} was {iterationList} and maximum was {max(iterationList)} with average {sum(iterationList)/len(iterationList):.3f}\n")
             file1.write(f"Final Q-table length: {len(Q)}\n\n\n")
-            file2.write(f"The lookahead for each iteration for sample size {sampleSize} and count {countLimit} was {maximaList} and maximum was {max(maximaList)} with average {sum(maximaList)/len(maximaList):.3f}\n")
+            file2.write(f"The lookahead for each iteration for sample size {sampleSize} and count {countLimit} was {maximaList} and maximum was {max(maximaList)} with average {sum(maximaList)/len(maximaList):.3f}\n")           
             end = time.time()
             file2.write(f"Time taken for the complete run was: {end - start:.3f} seconds\n")
             file2.write(f"Final Q-table length: {len(Q)}\n")
