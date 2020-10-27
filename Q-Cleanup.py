@@ -109,11 +109,18 @@ class QCleanup:
 		textInput = textInput[1:-1]
 		itemList = [int(item) for item in textInput.split(',')]
 		print(f"itemList is {sorted(Counter(itemList).items())}")
+		length = len(itemList)
+		average = sum(itemList)/length
+		print(f"There were {len(itemList)} viable options with an average of {average:.3f}")
+		# 10m
 		#itemList is [(188, 1), (191, 2), (194, 4), (195, 15), (196, 24), (197, 69), (198, 60), (199, 47), (200, 43), (201, 21), (202, 12), (203, 4), (204, 2), (207, 1)]
 		#itemList is [(193, 1), (194, 8), (195, 9), (196, 33), (197, 43), (198, 50), (199, 43), (200, 33), (201, 31), (202, 8), (203, 6), (204, 3), (207, 1)]
 		#itemList is [(190, 1), (191, 5), (194, 5), (195, 13), (196, 28), (197, 54), (198, 57), (199, 45), (200, 26), (201, 27), (202, 12), (203, 5), (204, 1)]
 		#itemList is [(187, 1), (191, 4), (193, 3), (194, 6), (195, 14), (196, 41), (197, 52), (198, 78), (199, 50), (200, 24), (201, 19), (202, 5), (203, 3), (204, 3), (206, 2), (207, 1)]
 		#itemList is [(191, 1), (193, 1), (194, 2), (195, 11), (196, 18), (197, 42), (198, 63), (199, 48), (200, 44), (201, 26), (202, 10), (203, 4), (204, 6), (205, 3)]
+		# 25m 
+		#itemList is [(195, 1), (196, 3), (197, 19), (198, 46), (199, 63), (200, 65), (201, 37), (202, 32), (203, 12), (204, 8), (205, 1), (206, 1), (209, 1), (210, 1)]
+		#There were 290 viable options with an average of 199.897
 #QCleanup.cleanser()	
 #QCleanup.reader(2)
 QCleanup.iterationReader()
