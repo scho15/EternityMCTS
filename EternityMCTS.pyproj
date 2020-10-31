@@ -29,6 +29,7 @@
     <Compile Include="Q-Cleanup.py" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Count-Distribution.txt" />
     <Content Include="MCTS Notes.txt" />
     <Content Include="MCTS.txt" />
     <Content Include="MCTSRunSummary.txt" />

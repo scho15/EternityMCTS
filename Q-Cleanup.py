@@ -102,25 +102,86 @@ class QCleanup:
 			json.dump(Q,handler) 
 		handler.close()  
 		
+	# Input is received from user for cutoff and viable iterations
 	def iterationReader():
-		values = []
-		values
-		textInput = input("Enter the list of viable iterations: ")
-		textInput = textInput[1:-1]
-		itemList = [int(item) for item in textInput.split(',')]
-		print(f"itemList is {sorted(Counter(itemList).items())}")
+		# Note that it seems hard to store integer keys in the Counter and by default these are txt in json
+		# Could only store dictionary rather than list but it would take too many files
+		dist = [] # list containing cutoff and Counter for lengths of viable options
+		storedCntr = Counter() # Counter for a particular cutoff
+		itemFound = False # Check to see if counter has been stored for this iteration
+		textInput = 0
+		if (os.path.isfile('Count-Distribution.txt') == True):
+			with open("Count-Distribution.txt", "r") as CountDistributionfile:
+				dist = json.load(CountDistributionfile)
+			print(f"Count distribution uploaded with {len(dist)} entries")
+		textInput1 = int(input("Enter the cutoff used for this iteration (in millions): "))
+		textInput1 = textInput1*1000000
+		for item in dist:
+			if textInput1 == item[0]:
+				storedCntr = item[1]
+				print(f"Initial counter for cutoff {textInput1} uploaded as: \n{sorted(storedCntr.items())}")
+				itemFound = True
+		if (itemFound == False):
+			print(f"No initial count distribution was found")
+		textInput2 = input("Enter the list of viable iterations (including brackets): ")
+		textInput2 = textInput2[1:-1]
+		itemList = [int(item) for item in textInput2.split(',')]
+		textItemList = [str(item).strip() for item in textInput2.split(',')]
+		counter = Counter(itemList)
+		textCounter = Counter(textItemList) # seems incredibly hard to store Counter as int keys
+		print(f"The counter for this particular iteration was {sorted(counter.items())}")
 		length = len(itemList)
 		average = sum(itemList)/length
 		print(f"There were {len(itemList)} viable options with an average of {average:.3f}")
-		# 10m
-		#itemList is [(188, 1), (191, 2), (194, 4), (195, 15), (196, 24), (197, 69), (198, 60), (199, 47), (200, 43), (201, 21), (202, 12), (203, 4), (204, 2), (207, 1)]
-		#itemList is [(193, 1), (194, 8), (195, 9), (196, 33), (197, 43), (198, 50), (199, 43), (200, 33), (201, 31), (202, 8), (203, 6), (204, 3), (207, 1)]
-		#itemList is [(190, 1), (191, 5), (194, 5), (195, 13), (196, 28), (197, 54), (198, 57), (199, 45), (200, 26), (201, 27), (202, 12), (203, 5), (204, 1)]
-		#itemList is [(187, 1), (191, 4), (193, 3), (194, 6), (195, 14), (196, 41), (197, 52), (198, 78), (199, 50), (200, 24), (201, 19), (202, 5), (203, 3), (204, 3), (206, 2), (207, 1)]
-		#itemList is [(191, 1), (193, 1), (194, 2), (195, 11), (196, 18), (197, 42), (198, 63), (199, 48), (200, 44), (201, 26), (202, 10), (203, 4), (204, 6), (205, 3)]
-		# 25m 
-		#itemList is [(195, 1), (196, 3), (197, 19), (198, 46), (199, 63), (200, 65), (201, 37), (202, 32), (203, 12), (204, 8), (205, 1), (206, 1), (209, 1), (210, 1)]
-		#There were 290 viable options with an average of 199.897
+		storedCntr = Counter(storedCntr) + Counter(textCounter)
+		itemFound = False
+		for item in dist:
+			if textInput1 == item[0]:
+				item[1] = storedCntr
+				print(f"The stored counter has been updated to: \n{sorted(storedCntr.items())}")
+				itemFound = True
+		if (itemFound == False):
+			dist.append([textInput1,storedCntr]) # difficulty in ensuring this is int rather than txt
+			print(f"A new stored counter has been created of :\n{sorted(storedCntr.items())}")
+		print(f"The total count was {sum(storedCntr.values())} and the 5 most common values were {storedCntr.most_common(5)}")
+		with open("Count-Distribution.txt","w") as handler:
+			json.dump(dist,handler)
+		handler.close()
+
+	# Input is read from main file
+	def viableIterations(cutoff, currentdist):
+		storedCntr = Counter() # Counter for a particular cutoff
+		if (os.path.isfile('Count-Distribution.txt') == True):
+			with open("Count-Distribution.txt", "r") as CountDistributionfile:
+				dist = json.load(CountDistributionfile)
+			print(f"Count distribution uploaded with {len(dist)} entries")
+		for item in dist:
+			if cutoff == item[0]:
+				storedCntr = item[1]
+				print(f"Initial counter for cutoff {cutoff} uploaded as: \n{sorted(storedCntr.items())}")
+				itemFound = True
+		if (itemFound == False):
+			print(f"No initial count distribution was found for cutoff {cutoff}")
+		textItemList = [str(item) for item in currentdist]
+		length = len(currentdist)
+		average = sum(currentdist)/length
+		print(f"There were {length} viable options with an average of {average:.3f}")
+		textCounter = Counter(textItemList) # seems incredibly hard to store Counter as int keys		
+		storedCntr = Counter(storedCntr) + Counter(textCounter)
+		itemFound = False
+		for item in dist:
+			if cutoff == item[0]:
+				item[1] = storedCntr
+				print(f"The stored counter has been updated to: \n{sorted(storedCntr.items())}")
+				itemFound = True
+		if (itemFound == False):
+			dist.append([cutoff,storedCntr]) # difficulty in ensuring this is int rather than txt
+			print(f"A new stored counter has been created of :\n{sorted(storedCntr.items())}")
+		print(f"The total count was {sum(storedCntr.values())} and the 3 most common values were {storedCntr.most_common(3)}")
+		with open("Count-Distribution.txt","w") as handler:
+			json.dump(dist,handler)
+		handler.close()
+
 #QCleanup.cleanser()	
 #QCleanup.reader(2)
-QCleanup.iterationReader()
+

@@ -379,6 +379,7 @@ class EternityStart():
             file1.write(f"The lookahead for each iteration for sample size {sampleSize} and count {countLimit} was {maximaList} and maximum was {max(maximaList)} with average {sum(maximaList)/len(maximaList):.3f}\n")
             print(f"The list of viable iterations for sample size {sampleSize} and count {countLimit} was {iterationList} and maximum was {max(iterationList)} with average {sum(iterationList)/len(iterationList):.3f}\n")
             file2.write(f"The list of viable iterations for sample size {sampleSize} and count {countLimit} was {iterationList} and maximum was {max(iterationList)} with average {sum(iterationList)/len(iterationList):.3f}\n")
+            QCleanup.viableIterations(sampleSize, iterationList)
             file1.write(f"Final Q-table length: {len(Q)}\n\n\n")
             file2.write(f"The lookahead for each iteration for sample size {sampleSize} and count {countLimit} was {maximaList} and maximum was {max(maximaList)} with average {sum(maximaList)/len(maximaList):.3f}\n")           
             end = time.time()
