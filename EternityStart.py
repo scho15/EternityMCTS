@@ -1,5 +1,6 @@
 from CreateTile import CreateTile
 from EternityMCTS import EternityMCTS
+from QCleanup import QCleanup
 from collections import Counter
 import numpy as np
 import time
