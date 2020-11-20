@@ -14,9 +14,10 @@ class EternityStart():
         useHints = False # Use only centre tile or 4 corner hints as well
         maxEpisodes = 1 # number of episodes to run
         sampleSize = 1 # number of runs/samples to take - at least 2 is recommended
-        CreateTile.firstCountLimit = 25000000 # cutoff for run - normally at least 1m
+        CreateTile.firstCountLimit = 10000000 # cutoff for run - normally at least 1m
         solutionPrint = 205; # based on first 2x20m itn, 207 was max and 205 was reached on 4 or 5 occasions
         cutoff = 88 # Point at which we move from sample check to full solution
+        viableMinimum = 128 # Lowest point at which iteration counts as viable
         # VARIABLES INITIALISATION
         #random.seed(1)
         optionDouble = False # Used to work out if double tile has been used
@@ -132,7 +133,7 @@ class EternityStart():
                                         interimList.pop()
                                     interimList.clear()
                                 a.append(len(limitedRunList))
-                                if (len(limitedRunList) >= 180):
+                                if (len(limitedRunList) >= viableMinimum):
                                     iterationList.append(len(limitedRunList))
                                 runLength.append(runCount)  
                                 lowIteration.append(lowestItn)
@@ -191,7 +192,7 @@ class EternityStart():
                                                 interimList.pop()
                                             interimList.clear()
                                         b.append(len(limitedRunList))
-                                        if (len(limitedRunList) >= 180):
+                                        if (len(limitedRunList) >= viableMinimum):
                                             iterationList.append(len(limitedRunList))
                                         runLength.append(runCount)      
                                         lowIteration.append(lowestItn)
@@ -380,7 +381,7 @@ class EternityStart():
             file1.write(f"The lookahead for each iteration for sample size {sampleSize} and count {countLimit} was {maximaList} and maximum was {max(maximaList)} with average {sum(maximaList)/len(maximaList):.3f}\n")
             print(f"The list of viable iterations for sample size {sampleSize} and count {countLimit} was {iterationList} and maximum was {max(iterationList)} with average {sum(iterationList)/len(iterationList):.3f}\n")
             file2.write(f"The list of viable iterations for sample size {sampleSize} and count {countLimit} was {iterationList} and maximum was {max(iterationList)} with average {sum(iterationList)/len(iterationList):.3f}\n")
-            QCleanup.viableIterations(sampleSize, iterationList)
+            QCleanup.viableIterations(countLimit, iterationList)
             file1.write(f"Final Q-table length: {len(Q)}\n\n\n")
             file2.write(f"The lookahead for each iteration for sample size {sampleSize} and count {countLimit} was {maximaList} and maximum was {max(maximaList)} with average {sum(maximaList)/len(maximaList):.3f}\n")           
             end = time.time()

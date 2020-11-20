@@ -46,10 +46,10 @@ class QCleanup:
 			json.dump(Q,handler) 
 		handler.close()    
 
-	def reader(iteration):
+	def reader(iteration,min):
 		Q = []
 		sum = 0
-		minimum = 205
+		minimum = min
 		QDictLength = {}
 		QDictVisits = {}
 		if (os.path.isfile('Q-Table.txt') == True):
@@ -151,6 +151,8 @@ class QCleanup:
 	# Input is read from main file
 	def viableIterations(cutoff, currentdist):
 		storedCntr = Counter() # Counter for a particular cutoff
+		dist = [] # list containing cutoff and Counter for lengths of viable options
+		itemFound = False # variable to see if items is already in table
 		if (os.path.isfile('Count-Distribution.txt') == True):
 			with open("Count-Distribution.txt", "r") as CountDistributionfile:
 				dist = json.load(CountDistributionfile)
