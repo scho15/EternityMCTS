@@ -83,16 +83,20 @@ class QCleanup:
 		textInput = textInput[1:-1]
 		itemList = [int(item) for item in textInput.split(',')]
 		updateList = itemList.copy()[:88]
-		while(len(updateList) > 3):
+		while(len(updateList) > 0):
 			itemFound = False
 			for item in Q:
 				if updateList == item[0]:
-					item[2] = 1
+					item[1] = max(item[1],len(itemList))
+					item[2] = item[2] + 1
 					itemFound = True
+					print(f"{updateList} has been amended with count now at {item[2]} and length {item[1]}")
 					break
 			if (itemFound == False):
-				print(f"{updateList} has not been found")
-				errorNote = True
+				print(f"{updateList} has been created with length {item[1]}")
+				item[1] = len(itemList)
+				Q.append([updateList.copy(), len(itemList), 1])
+				errorNote = False
 			updateList.pop()
 		if (errorNote == True):
 			print("There was a problem on at least one update")
@@ -185,5 +189,5 @@ class QCleanup:
 		handler.close()
 
 #QCleanup.cleanser()	
-#QCleanup.reader(2)
+#QCleanup.reader(6,180)
 
