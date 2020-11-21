@@ -7,7 +7,12 @@ class QCleanup:
 	# Could use later to sort through Q and see some interesting properties
 	def cleanser():
 		Q = []
-		a = []		
+		a = []	
+		b = []
+		cutoff = 180
+		minimumIteration = 6
+		counter = 0
+		kept = 0
 		if (os.path.isfile('Q-Table.txt') == True):
 			with open("Q-table.txt", "r") as QTablefile:
 				Q = json.load(QTablefile)
@@ -15,18 +20,31 @@ class QCleanup:
 		for item in Q:
 			length = len(item[0])
 			a.append(length)
-		print(f"Maximum and average are {max(a)} and {sum(a)/len(a):.5f}\n")
+			b.append(item[1])
+		print(f"Maximum and average iterations are {max(a)} and {sum(a)/len(a):.5f}")
 		print(sorted(Counter(a).items()))
 		a.clear()
+		print(f"Maximum and average lengths are {max(b)} and {sum(b)/len(b):.5f}")
+		print(sorted(Counter(b).items()))
+		b.clear()
+		print(f"\nIntroducing a minimum cutoff of {cutoff} for iterations for those greater than length {minimumIteration}")
 		for item in Q.copy():
-			if (len(item[0]) > 88):
-				Q.remove(item)
+			if (item[1] < cutoff and len(item[0]) > minimumIteration):
+				Q.remove(item)				
+				counter += 1
+				if (counter%10000 == 0):
+					print(f"{counter} items have been removed and items kept is {kept}")
+			else:
+				kept += 1
 		for item in Q:
 			length = len(item[0])
 			a.append(length)
+			b.append(item[1])
 		print(f"Revised maximum and average are {max(a)} and {sum(a)/len(a):.5f} and length is {len(Q)}\n")
 		print(sorted(Counter(a).items()))
-		#with open("Q-table.txt","w") as handler:
+		print(f"Revised maximum and average lengths are {max(b)} and {sum(b)/len(b):.5f}")
+		print(sorted(Counter(b).items()))
+		#with open("Q-table-180.txt","w") as handler:
 		#	json.dump(Q,handler) 
 		#handler.close()    
 
@@ -83,20 +101,16 @@ class QCleanup:
 		textInput = textInput[1:-1]
 		itemList = [int(item) for item in textInput.split(',')]
 		updateList = itemList.copy()[:88]
-		while(len(updateList) > 0):
+		while(len(updateList) > 3):
 			itemFound = False
 			for item in Q:
 				if updateList == item[0]:
-					item[1] = max(item[1],len(itemList))
-					item[2] = item[2] + 1
+					item[2] = 1
 					itemFound = True
-					print(f"{updateList} has been amended with count now at {item[2]} and length {item[1]}")
 					break
 			if (itemFound == False):
-				print(f"{updateList} has been created with length {item[1]}")
-				item[1] = len(itemList)
-				Q.append([updateList.copy(), len(itemList), 1])
-				errorNote = False
+				print(f"{updateList} has not been found")
+				errorNote = True
 			updateList.pop()
 		if (errorNote == True):
 			print("There was a problem on at least one update")
@@ -156,7 +170,7 @@ class QCleanup:
 	def viableIterations(cutoff, currentdist):
 		storedCntr = Counter() # Counter for a particular cutoff
 		dist = [] # list containing cutoff and Counter for lengths of viable options
-		itemFound = False # variable to see if items is already in table
+		itemFound = False
 		if (os.path.isfile('Count-Distribution.txt') == True):
 			with open("Count-Distribution.txt", "r") as CountDistributionfile:
 				dist = json.load(CountDistributionfile)
@@ -189,5 +203,4 @@ class QCleanup:
 		handler.close()
 
 #QCleanup.cleanser()	
-#QCleanup.reader(6,180)
-
+QCleanup.reader(0,205)
