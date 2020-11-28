@@ -245,4 +245,4 @@ class QCleanup:
 			json.dump(dist,handler)
 		handler.close()
 
-QCleanup.reader(0,205)
+QCleanup.viewer()
