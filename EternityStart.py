@@ -12,10 +12,17 @@ class EternityStart():
     def main():
         # DECISIONS REQUIRED
         useHints = False # Use only centre tile or 4 corner hints as well
+<<<<<<< HEAD
         maxEpisodes = 30 # number of episodes to run
         sampleSize = 1 # number of runs/samples to take - at least 2 is recommended
         CreateTile.firstCountLimit = 4000000 # cutoff for run - normally at least 1m
         solutionPrint = 205; # based on first 2x20m itn, 207 was max and 205 was reached on 4 or 5 occasions
+=======
+        maxEpisodes = 202 # number of episodes to run
+        sampleSize = 1 # number of runs/samples to take - at least 2 is recommended
+        CreateTile.firstCountLimit = 100000 # cutoff for run - normally at least 1m
+        solutionPrint = 200; # based on first 2x20m itn, 207 was max and 205 was reached on 4 or 5 occasions
+>>>>>>> Latest versions of files
         cutoff = 88 # Point at which we move from sample check to full solution
         viableMinimum = 128 # Lowest point at which iteration counts as viable
         # VARIABLES INITIALISATION
@@ -365,11 +372,17 @@ class EternityStart():
             verificationPositions = MCTSPosition.copy()
             #print(f"TEMP ln 285: verification list and positions are \n{verificationList}\n{verificationPositions}")
             if (len(verificationList) >= cutoff):
-                cutoff = 256 # full solution test
+                #cutoff = 256 # full solution test
                 print (f"\nUndertaking full solution sense check with cutoff of {cutoff}\n") 
+<<<<<<< HEAD
                 countLimit = 500000000
                 maxMCTS, runCount, lowestItn = EternityMCTS.fullSolutionCheckWithSwap(cutoff, countLimit, verificationList.copy()[:88], verificationPositions.copy()[:88], useHints)
                 cutoff = 88# back to sample check for future episodes
+=======
+                countLimit = 5000000
+                maxMCTS, runCount, lowestItn = EternityMCTS.fullSolutionCheckWithSwap(256, countLimit, verificationList.copy()[:cutoff], verificationPositions.copy()[:cutoff], useHints)
+                #cutoff = 96 # back to sample check for future episodes
+>>>>>>> Latest versions of files
                 finalLength = len(maxMCTS)
                 countLimit = CreateTile.firstCountLimit
                 print("FINAL RESULTS")
