@@ -225,4 +225,4 @@ class QCleanup:
 			json.dump(dist,handler)
 		handler.close()
 
-QCleanup.reader(16,205)
+QCleanup.reader(0,205)
