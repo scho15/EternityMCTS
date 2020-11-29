@@ -242,9 +242,13 @@ class QCleanup:
 		handler.close()
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 #QCleanup.cleanser()	
 QCleanup.reader(6,1)
 
 =======
 QCleanup.reader(0,205)
 >>>>>>> Latest versions of files
+=======
+QCleanup.reader(0,205)
+>>>>>>> 50 run of 250K
