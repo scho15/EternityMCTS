@@ -12,7 +12,7 @@ class EternityStart():
     def main():
         # DECISIONS REQUIRED
         useHints = False # Use only centre tile or 4 corner hints as well
-        maxEpisodes = 150 # number of episodes to run
+        maxEpisodes = 250 # number of episodes to run
         sampleSize = 1 # number of runs/samples to take - 1 for no hints and 2 for hints typically
         CreateTile.firstCountLimit = 250000 # cutoff for run - normally at least 1m
         solutionPrint = 200; # based on first 2x20m itn, 207 was max and 205 was reached on 4 or 5 occasions

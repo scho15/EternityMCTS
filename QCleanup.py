@@ -226,3 +226,4 @@ class QCleanup:
 		handler.close()
 
 QCleanup.reader(0,205)
+#QCleanup.viewer()
