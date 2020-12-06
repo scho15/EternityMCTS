@@ -367,7 +367,7 @@ class EternityStart():
             if (len(verificationList) >= cutoff):
                 cutoff = 256 # full solution test
                 print (f"\nUndertaking full solution sense check with cutoff of {cutoff}\n") 
-                countLimit = 5000000000
+                countLimit = 10000000000
                 maxMCTS, runCount, lowestItn = EternityMCTS.fullSolutionCheckWithSwap(cutoff, countLimit, verificationList.copy()[:88], verificationPositions.copy()[:88], useHints)
                 cutoff = 88# back to sample check for future episodes
                 finalLength = len(maxMCTS)
