@@ -189,5 +189,5 @@ class QCleanup:
 		handler.close()
 
 #QCleanup.cleanser()	
-QCleanup.reader(4,210)
+QCleanup.reader(0,210)
 
