@@ -87,10 +87,11 @@ class QCleanup:
 			json.dump(Q,handler) 
 		handler.close()    
 
-	def reader(iteration,min):
+	def reader(iteration,min,entries):
 		Q = []
 		sum = 0
 		minimum = min
+		verbose = entries
 		QDictLength = {}
 		QDictVisits = {}
 		if (os.path.isfile('Q-Table.txt') == True):
@@ -103,12 +104,36 @@ class QCleanup:
 				QDictLength[str(item[0])] = item[1] # 1 for iteration and 2 for visit
 				QDictVisits[str(item[0])] = item[2]
 				sum += 1
-		print(f"Entries which are {minimum} or more are {sum}")
-		#print(sorted(QDictLength.items(), key=lambda x: x[1], reverse=True))
-		#print(sorted(QDictVisits.items(), key=lambda x: x[1], reverse=True))
-		entries = sorted(QDictLength.items(), key=lambda x: x[1], reverse=True)
-		for element in entries:			
-			print(f"{element[0]}, {element[1]}, {QDictVisits[element[0]]}")
+		print(f"Entries which are {minimum} or more of length {iteration} are {sum}")
+		if verbose == True:
+			entries = sorted(QDictLength.items(), key=lambda x: x[1], reverse=True)
+			for element in entries:			
+				print(f"{element[0]}, {element[1]}, {QDictVisits[element[0]]}")
+
+	def table(min):
+		Q = []
+		sum = 0
+		minimum = min
+		output = ""
+		QDictLength = {}
+		QDictVisits = {}
+		if (os.path.isfile('Q-Table.txt') == True):
+			with open("Q-table.txt", "r") as QTablefile:
+				Q = json.load(QTablefile)
+				print(f"Q-table uploaded with {len(Q)} lines")
+		print(f"Entries which are {minimum} or more for iterations 1 to 6:")
+		for iteration in range(1,7):
+			for item in Q:
+				length = len(item[0])
+				if (length == iteration and item[1] >= minimum):
+					QDictLength[str(item[0])] = item[1] # 1 for iteration and 2 for visit
+					QDictVisits[str(item[0])] = item[2]
+					sum += 1
+			output += str(sum) + " "
+			sum = 0
+		print (output)
+		#for i in range(1,6):
+		#	QCleanup.reader(i, min, False)
 
 	def updateFrom88():
 		Q = []
@@ -225,5 +250,6 @@ class QCleanup:
 			json.dump(dist,handler)
 		handler.close()
 
-QCleanup.reader(0,207)
+#QCleanup.reader(3,1,True)
 #QCleanup.viewer()
+QCleanup.table(180)
