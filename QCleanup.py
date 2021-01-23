@@ -250,6 +250,6 @@ class QCleanup:
 			json.dump(dist,handler)
 		handler.close()
 
-#QCleanup.reader(3,1,True)
+QCleanup.reader(0,207,True)
 #QCleanup.viewer()
-QCleanup.table(180)
+#QCleanup.table(180)
