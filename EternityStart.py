@@ -28,7 +28,7 @@ class EternityStart():
 =======
         maxEpisodes = 150 # number of episodes to run
         sampleSize = 1 # number of runs/samples to take - 1 for no hints and 2 for hints typically
-        CreateTile.firstCountLimit = 350000 # cutoff for run - normally at least 1m
+        CreateTile.firstCountLimit = 250000 # cutoff for run - normally at least 1m
         solutionPrint = 205; # can consider 200,205 or similar
         cutoff = 88 # Point at which we move from sample check to full/5m solution
 >>>>>>> 50 run of 250K
