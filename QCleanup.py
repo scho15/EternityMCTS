@@ -110,6 +110,48 @@ class QCleanup:
 			for element in entries:			
 				print(f"{element[0]}, {element[1]}, {QDictVisits[element[0]]}")
 
+	# Extract information on sample size, iteration and then "shortened" info
+	def runParser(size):	
+		count1 = 0
+		count2 = 0
+		compact = list()
+		cnt1 = Counter()
+		cnt2 = Counter()
+		if (os.path.isfile('MCTSRunSummary.txt') == True):
+			with open("MCTSRunSummary.txt","r") as file:
+				line = file.readline()		
+				while line != "":							
+					if line.startswith("The lookahead"):
+						count1 += 1
+						file.readline()
+						file.readline()
+						nextline = file.readline()
+						if nextline.startswith("Shortened"):
+							compact.append(int(line[49:50]))
+							if line[68] == "w":							
+								compact.append(int(line[60:68]))
+							else:
+								compact.append(int(line[60:68]))
+							shortlist = nextline[16:].split()
+							compact.append(int(shortlist[0]))
+							compact.append(float(shortlist[1]))
+							compact.append(int(shortlist[2]))
+							compact.append(int(shortlist[3]))
+							#print(compact)
+							count2 += 1
+						else:
+							count1 = 0
+						if size in compact:
+							cnt1[compact[2]] += 1
+							cnt2[compact[4]] += 1
+					compact.clear()
+					line = file.readline()	
+			if (count1 != count2):
+				print("ERROR: Mismatch of counts between lookahead and shortened text lines")
+			print(f"There are {count1} shortened entries in the file")
+			print(f"The counter of iteration values for {size} summed to {sum(cnt1.values())} and was:\n {sorted(cnt1.items())}")
+			print(f"The counter of final values for {size} summed to {sum(cnt2.values())} and was:\n {sorted(cnt2.items())}")
+
 	def table(min):
 		Q = []
 		sum = 0
@@ -250,6 +292,7 @@ class QCleanup:
 			json.dump(dist,handler)
 		handler.close()
 
-QCleanup.reader(0,207,True)
+#QCleanup.reader(10,207,True)
 #QCleanup.viewer()
 #QCleanup.table(180)
+QCleanup.runParser(250000)
