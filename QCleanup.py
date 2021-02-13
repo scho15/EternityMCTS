@@ -115,8 +115,9 @@ class QCleanup:
 		count1 = 0
 		count2 = 0
 		compact = list()
-		cnt1 = Counter()
-		cnt2 = Counter()
+		cnt1 = Counter() # initial iterations 
+		cnt2 = Counter() # final 
+		cnt3 = Counter() # time taken
 		if (os.path.isfile('MCTSRunSummary.txt') == True):
 			with open("MCTSRunSummary.txt","r") as file:
 				line = file.readline()		
@@ -144,6 +145,8 @@ class QCleanup:
 						if size in compact:
 							cnt1[compact[2]] += 1
 							cnt2[compact[4]] += 1
+							if compact[5] <= 5000:
+								cnt3[compact[5]] += 1
 					compact.clear()
 					line = file.readline()	
 			if (count1 != count2):
@@ -151,6 +154,7 @@ class QCleanup:
 			print(f"There are {count1} shortened entries in the file")
 			print(f"The counter of iteration values for {size} summed to {sum(cnt1.values())} and was:\n {sorted(cnt1.items())}")
 			print(f"The counter of final values for {size} summed to {sum(cnt2.values())} and was:\n {sorted(cnt2.items())}")
+			print(f"Time to Complete: There were {sum(cnt3.values())} entries less than 5000s and the average was {sum(cnt3.elements())/sum(cnt3.values()):.2f}")
 
 	def table(min):
 		Q = []
@@ -292,7 +296,7 @@ class QCleanup:
 			json.dump(dist,handler)
 		handler.close()
 
-#QCleanup.reader(10,207,True)
+QCleanup.reader(0,207,True)
 #QCleanup.viewer()
 #QCleanup.table(180)
-QCleanup.runParser(250000)
+#QCleanup.runParser(300000)
