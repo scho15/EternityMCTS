@@ -34,10 +34,11 @@ class EternityStart():
         # FILE OPENING AND SETTING UP TILE AND PATTERN SETS
         file1 = open("MCTS.txt", "w") # detail for each episode (overwritten each time)
         file2 = open("MCTSRunSummary.txt", "a") # summary of tree and lookahead info
-        if (os.path.isfile('Q-Table.txt') == True):
-            with open("Q-table.txt", "r") as QTablefile:
+        #Special characters seem to create issues for file locations
+        if (os.path.isfile('QTable.txt') == True):
+            with open("QTable.txt", "r") as QTablefile:
                 Q = json.load(QTablefile)
-            print(f"Q-table uploaded with {len(Q)} lines")
+            print(f"QTable uploaded with {len(Q)} lines")
         CreateTile.createTile()
         CreateTile.findPatternMatches() 
         CreateTile.findThreePatternMatches()
@@ -412,7 +413,7 @@ class EternityStart():
             Q[0][1] = max(Q[0][1],finalLength)
             Q[0][2] = Q[0][2] + 1
             # Do Not Use if Testing
-            with open("Q-table.txt","w") as handler:
+            with open("QTable.txt","w") as handler:
                 json.dump(Q,handler) 
             handler.close()             
             episode += 1    
