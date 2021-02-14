@@ -31,7 +31,8 @@
   <ItemGroup>
     <Content Include="MCTS Notes.txt" />
     <Content Include="MCTS.txt" />
-    <Content Include="Q-table.txt" />
+    <Content Include="MCTSRunSummary.txt" />
+    <Content Include="QTable.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
