@@ -13,10 +13,10 @@ class QCleanup:
 		minimumIteration = 6
 		counter = 0
 		kept = 0
-		if (os.path.isfile('Q-table.txt') == True):
-			with open("Q-table.txt", "r") as QTablefile:
+		if (os.path.isfile('QTable.txt') == True):
+			with open("QTable.txt", "r") as QTablefile:
 				Q = json.load(QTablefile)
-				print(f"Q-table uploaded with {len(Q)} lines")
+				print(f"QTable uploaded with {len(Q)} lines")
 		for item in Q:
 			length = len(item[0])
 			a.append(length)
@@ -94,10 +94,10 @@ class QCleanup:
 		verbose = entries
 		QDictLength = {}
 		QDictVisits = {}
-		if (os.path.isfile('Q-Table.txt') == True):
-			with open("Q-table.txt", "r") as QTablefile:
+		if (os.path.isfile('QTable.txt') == True):
+			with open("QTable.txt", "r") as QTablefile:
 				Q = json.load(QTablefile)
-				print(f"Q-table uploaded with {len(Q)} lines")
+				print(f"Q Table uploaded with {len(Q)} lines")
 		for item in Q:
 			length = len(item[0])
 			if (length == iteration and item[1] >= minimum):
@@ -121,7 +121,9 @@ class QCleanup:
 		if (os.path.isfile('MCTSRunSummary.txt') == True):
 			with open("MCTSRunSummary.txt","r") as file:
 				line = file.readline()		
-				while line != "":							
+				while line != "":	
+					if line.startswith("["):
+						match = line[:50]
 					if line.startswith("The lookahead"):
 						count1 += 1
 						file.readline()
@@ -138,7 +140,8 @@ class QCleanup:
 							compact.append(float(shortlist[1]))
 							compact.append(int(shortlist[2]))
 							compact.append(int(shortlist[3]))
-							#print(compact)
+							if (compact[2]>202 or compact[3]>202):
+								print(f"{match}] {compact}")
 							count2 += 1
 						else:
 							count1 = 0
@@ -297,7 +300,7 @@ class QCleanup:
 			json.dump(dist,handler)
 		handler.close()
 
-#QCleanup.reader(10,207,True)
+QCleanup.reader(10,207,True)
 #QCleanup.viewer()
 #QCleanup.table(180)
-QCleanup.runParser(300000)
+#QCleanup.runParser(300000)
