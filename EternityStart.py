@@ -22,6 +22,7 @@ class EternityStart():
         #random.seed(1)
         optionDouble = False # Used to work out if double tile has been used
         optionsCount = 0
+        greedyCount = 0 # Counting number of iterations skipped through greedy option 
         episode = 1
         Q = [] # Q list table with state and maximum amount for that state [1] and number of visits [2]
         currentVisitCount = 0
@@ -278,6 +279,8 @@ class EternityStart():
                     else:
                         print(f"GREEDY RUN: The greedy maxima were {epsilonMaxList}")
                         file1.write(f"GREEDY RUN: Greedy Maxima:\n{epsilonMaxList}\n\n")
+                        greedyCount += len(epsilonMaxList)
+                        print(f"The iterations skipped so far through greedy runs was {greedyCount}")
                 if (len(options) > 1 or maxList != []):                    
                     #maxOption = options[averageList.index(max(averageList))]
                     if (sampleMax == True):
@@ -404,6 +407,7 @@ class EternityStart():
             print(f"The final length of {finalLength} has been used to update all prior Q table values\n")
             print(f"Shortened form for information of initial, average, final and time: {max(maximaList)} {sum(maximaList)/len(maximaList):.3f} {finalLength} {end-start:.0f}\n")
             file2.write(f"Shortened Form: {max(maximaList)} {sum(maximaList)/len(maximaList):.3f} {finalLength} {end-start:.0f}\n\n")
+            print(f"The number of iterations skipped through greedy runs was {greedyCount}")
             # Final update for original leaf
             Q[0][1] = max(Q[0][1],finalLength)
             Q[0][2] = Q[0][2] + 1
@@ -413,7 +417,9 @@ class EternityStart():
             handler.close()             
             episode += 1    
             optionsCount = 0
+            greedyCount = 0
         print(f"\nFor the {episode - 1} episodes run with sample size {sampleSize} and count {countLimit} the longest run was {max(episodeList)}")
         print(f"\nThe longest recorded run in the Q-Table is {Q[0][1]}")
         file1.close()
+        file2.close()
     main()
