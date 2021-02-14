@@ -155,6 +155,7 @@ class QCleanup:
 			print(f"The counter of iteration values for {size} summed to {sum(cnt1.values())} and was:\n {sorted(cnt1.items())}")
 			print(f"The counter of final values for {size} summed to {sum(cnt2.values())} and was:\n {sorted(cnt2.items())}")
 			print(f"Time to Complete: There were {sum(cnt3.values())} entries less than 5000s and the average was {sum(cnt3.elements())/sum(cnt3.values()):.2f}")
+			file.close()
 
 	def table(min):
 		Q = []
@@ -296,7 +297,7 @@ class QCleanup:
 			json.dump(dist,handler)
 		handler.close()
 
-QCleanup.reader(0,207,True)
+#QCleanup.reader(10,207,True)
 #QCleanup.viewer()
 #QCleanup.table(180)
-#QCleanup.runParser(300000)
+QCleanup.runParser(300000)
