@@ -12,26 +12,11 @@ class EternityStart():
     def main():
         # DECISIONS REQUIRED
         useHints = False # Use only centre tile or 4 corner hints as well
-<<<<<<< HEAD
-<<<<<<< HEAD
-        maxEpisodes = 30 # number of episodes to run
-        sampleSize = 1 # number of runs/samples to take - at least 2 is recommended
-        CreateTile.firstCountLimit = 4000000 # cutoff for run - normally at least 1m
-        solutionPrint = 205; # based on first 2x20m itn, 207 was max and 205 was reached on 4 or 5 occasions
-=======
-        maxEpisodes = 202 # number of episodes to run
-        sampleSize = 1 # number of runs/samples to take - at least 2 is recommended
-        CreateTile.firstCountLimit = 100000 # cutoff for run - normally at least 1m
-        solutionPrint = 200; # based on first 2x20m itn, 207 was max and 205 was reached on 4 or 5 occasions
->>>>>>> Latest versions of files
-        cutoff = 88 # Point at which we move from sample check to full solution
-=======
-        maxEpisodes = 150 # number of episodes to run
+        maxEpisodes = 250 # number of episodes to run
         sampleSize = 1 # number of runs/samples to take - 1 for no hints and 2 for hints typically
         CreateTile.firstCountLimit = 300000 # cutoff for run - normally at least 1m
         solutionPrint = 205; # can consider 200,205 or similar
         cutoff = 88 # Point at which we move from sample check to full/5m solution
->>>>>>> 50 run of 250K
         viableMinimum = 128 # Lowest point at which iteration counts as viable
         # VARIABLES INITIALISATION
         #random.seed(1)
@@ -49,10 +34,11 @@ class EternityStart():
         # FILE OPENING AND SETTING UP TILE AND PATTERN SETS
         file1 = open("MCTS.txt", "w") # detail for each episode (overwritten each time)
         file2 = open("MCTSRunSummary.txt", "a") # summary of tree and lookahead info
+        #Special characters seem to create issues for file locations
         if (os.path.isfile('QTable.txt') == True):
             with open("QTable.txt", "r") as QTablefile:
                 Q = json.load(QTablefile)
-            print(f"Q Table uploaded with {len(Q)} lines")
+            print(f"QTable uploaded with {len(Q)} lines")
         CreateTile.createTile()
         CreateTile.findPatternMatches() 
         CreateTile.findThreePatternMatches()
@@ -135,7 +121,7 @@ class EternityStart():
                                     print(f"{len(limitedRunList)} solution reached of \n{limitedRunList}")
                                     file2.write(f"{len(limitedRunList)} solution reached of \n{limitedRunList}\n")
                                     print(f"The solution of {len(limitedRunList)} has been used to create new Q table values in later iterations but with no visitCount\n")
-                                    interimList = limitedRunList.copy()[:88]
+                                    interimList = limitedRunList.copy()[:cutoff]
                                     while(len(interimList) > len(testList)):
                                         itemFound = False
                                         for item in Q:                   
@@ -194,7 +180,7 @@ class EternityStart():
                                             print(f"{len(limitedRunList)} solution reached of \n{limitedRunList}")
                                             file2.write(f"{len(limitedRunList)} solution reached of \n{limitedRunList}\n")
                                             print(f"The solution of {len(limitedRunList)} has been used to create new Q table values in later iterations but with no visitCount\n")
-                                            interimList = limitedRunList.copy()[:88]
+                                            interimList = limitedRunList.copy()[:cutoff]
                                             while(len(interimList) > len(testList)):
                                                 itemFound = False
                                                 for item in Q:                   
@@ -385,15 +371,9 @@ class EternityStart():
             if (len(verificationList) >= cutoff):
                 #cutoff = 256 # full solution test
                 print (f"\nUndertaking full solution sense check with cutoff of {cutoff}\n") 
-<<<<<<< HEAD
-                countLimit = 500000000
-                maxMCTS, runCount, lowestItn = EternityMCTS.fullSolutionCheckWithSwap(cutoff, countLimit, verificationList.copy()[:88], verificationPositions.copy()[:88], useHints)
-                cutoff = 88# back to sample check for future episodes
-=======
                 countLimit = 5000000
                 maxMCTS, runCount, lowestItn = EternityMCTS.fullSolutionCheckWithSwap(256, countLimit, verificationList.copy()[:cutoff], verificationPositions.copy()[:cutoff], useHints)
                 #cutoff = 96 # back to sample check for future episodes
->>>>>>> Latest versions of files
                 finalLength = len(maxMCTS)
                 countLimit = CreateTile.firstCountLimit
                 print("FINAL RESULTS")
@@ -425,7 +405,7 @@ class EternityStart():
                 if (itemFound == False):
                     Q.append([MCTSList.copy(), finalLength, 1])
                 MCTSList.pop()
-            print(f"The final length of {finalLength} has been used to update all prior Q Table values\n")
+            print(f"The final length of {finalLength} has been used to update all prior Q table values\n")
             print(f"Shortened form for information of initial, average, final and time: {max(maximaList)} {sum(maximaList)/len(maximaList):.3f} {finalLength} {end-start:.0f}\n")
             file2.write(f"Shortened Form: {max(maximaList)} {sum(maximaList)/len(maximaList):.3f} {finalLength} {end-start:.0f}\n\n")
             print(f"The number of iterations skipped through greedy runs was {greedyCount}")
