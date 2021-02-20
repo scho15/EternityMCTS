@@ -14,6 +14,7 @@ class CreateTile():
     detailedThreePatternList = []
     doubleRotation = [False, False, False]
     firstCountLimit = 0
+    terminalCountLimit = 0
 
     def createTile():       
         # 0: Grey edge tile
