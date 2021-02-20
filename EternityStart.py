@@ -15,6 +15,7 @@ class EternityStart():
         maxEpisodes = 250 # number of episodes to run
         sampleSize = 1 # number of runs/samples to take - 1 for no hints and 2 for hints typically
         CreateTile.firstCountLimit = 300000 # cutoff for run - normally at least 1m
+        CreateTile.terminalCountLimit = 5000000 # cutoff for final iteration at 88
         solutionPrint = 205; # can consider 200,205 or similar
         cutoff = 88 # Point at which we move from sample check to full/5m solution
         viableMinimum = 128 # Lowest point at which iteration counts as viable
@@ -31,9 +32,6 @@ class EternityStart():
         maximaList = [] # list of maxima at each iteration 
         iterationList = [] # list of all iterations
         lowIteration = [] # list of lowest iteration explored
-        # FILE OPENING AND SETTING UP TILE AND PATTERN SETS
-        file1 = open("MCTS.txt", "w") # detail for each episode (overwritten each time)
-        file2 = open("MCTSRunSummary.txt", "a") # summary of tree and lookahead info
         #Special characters seem to create issues for file locations
         if (os.path.isfile('QTable.txt') == True):
             with open("QTable.txt", "r") as QTablefile:
@@ -45,6 +43,9 @@ class EternityStart():
         # MAIN BODY FOR EACH EPISODE
         while episode <= maxEpisodes:
             start = time.time()
+            # FILE OPENING AND SETTING UP TILE AND PATTERN SETS
+            file1 = open("MCTS.txt", "w") # detail for each episode (overwritten each time)
+            file2 = open("MCTSRunSummary.txt", "a") # summary of tree and lookahead info
             MCTSList = []
             MCTSPosition = [] # Trying to use MCTS only
             testList = []
@@ -61,6 +62,7 @@ class EternityStart():
             doubleOption = [] # list containing position of double tile option that produces best result
             runCount = 0
             lowestItn = 0
+            greedyCount = 0
             terminalState = False
             countLimit = CreateTile.firstCountLimit
             while (len(MCTSList) < cutoff and terminalState == False):
@@ -371,7 +373,7 @@ class EternityStart():
             if (len(verificationList) >= cutoff):
                 #cutoff = 256 # full solution test
                 print (f"\nUndertaking full solution sense check with cutoff of {cutoff}\n") 
-                countLimit = 5000000
+                countLimit = CreateTile.terminalCountLimit
                 maxMCTS, runCount, lowestItn = EternityMCTS.fullSolutionCheckWithSwap(256, countLimit, verificationList.copy()[:cutoff], verificationPositions.copy()[:cutoff], useHints)
                 #cutoff = 96 # back to sample check for future episodes
                 finalLength = len(maxMCTS)
@@ -405,10 +407,13 @@ class EternityStart():
                 if (itemFound == False):
                     Q.append([MCTSList.copy(), finalLength, 1])
                 MCTSList.pop()
-            print(f"The final length of {finalLength} has been used to update all prior Q table values\n")
-            print(f"Shortened form for information of initial, average, final and time: {max(maximaList)} {sum(maximaList)/len(maximaList):.3f} {finalLength} {end-start:.0f}\n")
-            file2.write(f"Shortened Form: {max(maximaList)} {sum(maximaList)/len(maximaList):.3f} {finalLength} {end-start:.0f}\n\n")
+            print(f"The final length of {finalLength} has been used to update all prior Q table values")
             print(f"The number of iterations skipped through greedy runs was {greedyCount}")
+            print(f"Shortened form for information of initial, average, final and time: {max(maximaList)} {sum(maximaList)/len(maximaList):.3f} {finalLength} {end-start:.0f}")
+            print(f"Longer version including sample size, first count limit, shortened form, terminal limit and greedy run count:")
+            print(f"Long Form: {sampleSize} {countLimit} {max(maximaList)} {sum(maximaList)/len(maximaList):.3f} {finalLength} {end-start:.0f} {runCount} {greedyCount}\n\n")
+            file2.write(f"Shortened Form: {max(maximaList)} {sum(maximaList)/len(maximaList):.3f} {finalLength} {end-start:.0f}\n") 
+            file2.write(f"Long Form: {sampleSize} {countLimit} {max(maximaList)} {sum(maximaList)/len(maximaList):.3f} {finalLength} {end-start:.0f} {runCount} {greedyCount}\n\n")           
             # Final update for original leaf
             Q[0][1] = max(Q[0][1],finalLength)
             Q[0][2] = Q[0][2] + 1
@@ -417,10 +422,10 @@ class EternityStart():
                 json.dump(Q,handler) 
             handler.close()             
             episode += 1    
-            optionsCount = 0
-            greedyCount = 0
+            optionsCount = 0            
+            file1.close() #Better to close/update file for each iteration to avoid data being lost
+            file2.close()
         print(f"\nFor the {episode - 1} episodes run with sample size {sampleSize} and count {countLimit} the longest run was {max(episodeList)}")
         print(f"\nThe longest recorded run in the Q-Table is {Q[0][1]}")
-        file1.close()
-        file2.close()
+
     main()
