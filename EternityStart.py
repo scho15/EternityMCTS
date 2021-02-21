@@ -12,9 +12,9 @@ class EternityStart():
     def main():
         # DECISIONS REQUIRED
         useHints = False # Use only centre tile or 4 corner hints as well
-        maxEpisodes = 5 # number of episodes to run
+        maxEpisodes = 30 # number of episodes to run
         sampleSize = 1 # number of runs/samples to take - at least 2 is recommended
-        CreateTile.firstCountLimit = 25000000 # cutoff for run - normally at least 1m
+        CreateTile.firstCountLimit = 4000000 # cutoff for run - normally at least 1m
         solutionPrint = 205; # based on first 2x20m itn, 207 was max and 205 was reached on 4 or 5 occasions
         cutoff = 88 # Point at which we move from sample check to full solution
         viableMinimum = 128 # Lowest point at which iteration counts as viable
@@ -33,10 +33,10 @@ class EternityStart():
         # FILE OPENING AND SETTING UP TILE AND PATTERN SETS
         file1 = open("MCTS.txt", "w") # detail for each episode (overwritten each time)
         file2 = open("MCTSRunSummary.txt", "a") # summary of tree and lookahead info
-        if (os.path.isfile('Q-Table.txt') == True):
-            with open("Q-table.txt", "r") as QTablefile:
+        if (os.path.isfile('QTable.txt') == True):
+            with open("QTable.txt", "r") as QTablefile:
                 Q = json.load(QTablefile)
-            print(f"Q-table uploaded with {len(Q)} lines")
+            print(f"Q Table uploaded with {len(Q)} lines")
         CreateTile.createTile()
         CreateTile.findPatternMatches() 
         CreateTile.findThreePatternMatches()
@@ -401,14 +401,14 @@ class EternityStart():
                 if (itemFound == False):
                     Q.append([MCTSList.copy(), finalLength, 1])
                 MCTSList.pop()
-            print(f"The final length of {finalLength} has been used to update all prior Q table values\n")
+            print(f"The final length of {finalLength} has been used to update all prior Q Table values\n")
             print(f"Shortened form for information of initial, average, final and time: {max(maximaList)} {sum(maximaList)/len(maximaList):.3f} {finalLength} {end-start:.0f}\n")
             file2.write(f"Shortened Form: {max(maximaList)} {sum(maximaList)/len(maximaList):.3f} {finalLength} {end-start:.0f}\n\n")
             # Final update for original leaf
             Q[0][1] = max(Q[0][1],finalLength)
             Q[0][2] = Q[0][2] + 1
             # Do Not Use if Testing
-            with open("Q-table.txt","w") as handler:
+            with open("QTable.txt","w") as handler:
                 json.dump(Q,handler) 
             handler.close()             
             episode += 1    
