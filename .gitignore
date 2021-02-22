@@ -12,6 +12,11 @@
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
+QTable.txt
+MCTSRunSummary.txt
+MCTS.txt
+Count-Distribution.txt
+MCTS Notes.txt
 
 # Build results
 [Dd]ebug/
