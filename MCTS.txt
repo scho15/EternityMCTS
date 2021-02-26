@@ -1,0 +1,936 @@
+[4, 1, 3, 2]
+GREEDY: Taking the current largest maximum value without another sample test
+GREEDY RUN: Greedy Maxima:
+[211, 207, 205, 207]
+
+
+The maximum VALUE using GREEDY MAX was 211 so option 4 was chosen
+The length of the tree search is 1
+[4]
+
+[25, 16, 15, 18, 17, 19, 24, 22, 21, 20, 23]
+GREEDY: Taking the current largest maximum value without another sample test
+GREEDY RUN: Greedy Maxima:
+[204, 211, 203, 207, 203, 204, 205, 205, 203, 203, 203]
+
+
+The maximum VALUE using GREEDY MAX was 211 so option 16 was chosen
+The length of the tree search is 2
+[4, 16]
+
+[33, 31, 29, 35, 27, 28, 26, 34, 32, 30, 36]
+GREEDY: Taking the current largest maximum value without another sample test
+GREEDY RUN: Greedy Maxima:
+[203, 204, 203, 202, 204, 211, 203, 206, 205, 205, 206]
+
+
+The maximum VALUE using GREEDY MAX was 211 so option 28 was chosen
+The length of the tree search is 3
+[4, 16, 28]
+
+[32, 29, 34, 33, 31, 26, 30, 27, 35, 36]
+Average List:
+[191.0, 187.0, 189.0, 191.0, 186.0, 190.0, 120.0, 187.0, 198.0, 120.0]
+Sample Maxima:
+[191, 187, 189, 191, 186, 190, 120, 187, 198, 120]
+Greedy Maxima:
+[210, 207, 206, 207, 211, 205, 207, 204, 205, 206]
+
+
+The maximum VALUE using SAMPLING was 198 so option 35 was chosen
+The length of the tree search is 4
+[4, 16, 28, 35]
+
+[58, 59, 49, 50, 53, 60, 55, 52, 57, 51, 56, 54]
+Average List:
+[175.0, 185.0, 188.0, 191.0, 190.0, 119.0, 188.0, 120.0, 120.0, 190.0, 188.0, 189.0]
+Sample Maxima:
+[175, 185, 188, 191, 190, 119, 188, 120, 120, 190, 188, 189]
+Greedy Maxima:
+[201, 203, 199, 205, 201, 201, 200, 200, 202, 200, 201, 203]
+
+
+The maximum VALUE using SAMPLING was 191 so option 50 was chosen
+The length of the tree search is 5
+[4, 16, 28, 35, 50]
+
+[14, 6, 10, 11, 9, 8, 13, 5, 7, 12]
+Average List:
+[120.0, 186.0, 191.0, 191.0, 191.0, 189.0, 183.0, 186.0, 195.0, 120.0]
+Sample Maxima:
+[120, 186, 191, 191, 191, 189, 183, 186, 195, 120]
+Greedy Maxima:
+[189, 191, 191, 195, 202, 205, 200, 190, 199, 190]
+
+
+The maximum VALUE using SAMPLING was 195 so option 7 was chosen
+The length of the tree search is 6
+[4, 16, 28, 35, 50, 7]
+
+[6, 11, 5, 9, 10, 13, 8, 12, 14]
+Average List:
+[119.0, 191.0, 188.0, 188.0, 189.0, 186.0, 191.0, 189.0, 39.0]
+Sample Maxima:
+[119, 191, 188, 188, 189, 186, 191, 189, 39]
+Greedy Maxima:
+[187, 191, 191, 188, 190, 187, 199, 189, 181]
+
+
+The maximum VALUE using SAMPLING was 191 so option 11 was chosen
+The length of the tree search is 7
+[4, 16, 28, 35, 50, 7, 11]
+
+[19, 18, 21, 15, 22, 20, 25, 17, 24, 23]
+Average List:
+[181.0, 188.0, 119.0, 186.0, 187.0, 188.0, 191.0, 190.0, 191.0, 191.0]
+Sample Maxima:
+[181, 188, 119, 186, 187, 188, 191, 190, 191, 191]
+Greedy Maxima:
+[181, 188, 119, 186, 187, 188, 191, 190, 191, 191]
+
+
+The maximum VALUE using SAMPLING was 191 so option 25 was chosen
+The length of the tree search is 8
+[4, 16, 28, 35, 50, 7, 11, 25]
+
+[14, 8, 5, 12, 9, 13, 6, 10]
+Average List:
+[190.0, 204.0, 185.0, 187.0, 188.0, 188.0, 190.0, 187.0]
+Sample Maxima:
+[190, 204, 185, 187, 188, 188, 190, 187]
+Greedy Maxima:
+[190, 204, 185, 187, 188, 188, 190, 187]
+
+
+The maximum VALUE using SAMPLING was 204 so option 8 was chosen
+The length of the tree search is 9
+[4, 16, 28, 35, 50, 7, 11, 25, 8]
+
+[51, 54, 60, 58, 56, 49, 59, 55, 57, 52, 53]
+Average List:
+[195.0, 189.0, 191.0, 120.0, 194.0, 193.0, 188.0, 189.0, 189.0, 195.0, 185.0]
+Sample Maxima:
+[195, 189, 191, 120, 194, 193, 188, 189, 189, 195, 185]
+Greedy Maxima:
+[195, 189, 191, 120, 194, 193, 188, 189, 189, 195, 185]
+
+
+The maximum VALUE using SAMPLING was 195 so option 51 was chosen
+The length of the tree search is 10
+[4, 16, 28, 35, 50, 7, 11, 25, 8, 51]
+
+[23, 17, 24, 22, 15, 21, 18, 20, 19]
+Average List:
+[191.0, 57.0, 190.0, 187.0, 189.0, 189.0, 190.0, 191.0, 197.0]
+Sample Maxima:
+[191, 57, 190, 187, 189, 189, 190, 191, 197]
+Greedy Maxima:
+[191, 57, 190, 187, 189, 189, 190, 191, 197]
+
+
+The maximum VALUE using SAMPLING was 197 so option 19 was chosen
+The length of the tree search is 11
+[4, 16, 28, 35, 50, 7, 11, 25, 8, 51, 19]
+
+[15, 21, 22, 24, 18, 17, 20, 23]
+Average List:
+[188.0, 119.0, 193.0, 191.0, 191.0, 191.0, 189.0, 189.0]
+Sample Maxima:
+[188, 119, 193, 191, 191, 191, 189, 189]
+Greedy Maxima:
+[188, 119, 193, 191, 191, 191, 189, 189]
+
+
+The maximum VALUE using SAMPLING was 193 so option 22 was chosen
+The length of the tree search is 12
+[4, 16, 28, 35, 50, 7, 11, 25, 8, 51, 19, 22]
+
+[12, 10, 5, 9, 14, 13, 6]
+Average List:
+[187.0, 188.0, 198.0, 186.0, 119.0, 188.0, 187.0]
+Sample Maxima:
+[187, 188, 198, 186, 119, 188, 187]
+Greedy Maxima:
+[187, 188, 198, 186, 119, 188, 187]
+
+
+The maximum VALUE using SAMPLING was 198 so option 5 was chosen
+The length of the tree search is 13
+[4, 16, 28, 35, 50, 7, 11, 25, 8, 51, 19, 22, 5]
+
+[14, 6, 13, 12, 9, 10]
+Average List:
+[187.0, 189.0, 188.0, 186.0, 119.0, 188.0]
+Sample Maxima:
+[187, 189, 188, 186, 119, 188]
+Greedy Maxima:
+[187, 189, 188, 186, 119, 188]
+
+
+The maximum VALUE using SAMPLING was 189 so option 6 was chosen
+The length of the tree search is 14
+[4, 16, 28, 35, 50, 7, 11, 25, 8, 51, 19, 22, 5, 6]
+
+[21, 18, 17, 15, 24, 23, 20]
+Average List:
+[15.0, 15.0, 15.0, 193.0, 171.0, 15.0, 185.0]
+Sample Maxima:
+[15, 15, 15, 193, 171, 15, 185]
+Greedy Maxima:
+[15, 15, 15, 193, 171, 15, 185]
+
+
+The maximum VALUE using SAMPLING was 193 so option 15 was chosen
+The length of the tree search is 15
+[4, 16, 28, 35, 50, 7, 11, 25, 8, 51, 19, 22, 5, 6, 15]
+
+[1, 2]
+Average List:
+[190.0, 187.0]
+Sample Maxima:
+[190, 187]
+Greedy Maxima:
+[190, 187]
+
+
+The maximum VALUE using SAMPLING was 190 so option 1 was chosen
+The length of the tree search is 16
+[4, 16, 28, 35, 50, 7, 11, 25, 8, 51, 19, 22, 5, 6, 15, 1]
+
+[41, 56, 29, 32, 9, 60, 27, 44]
+Average List:
+[191.0, 191.0, 190.0, 191.0, 18.0, 185.0, 189.0, 17.0]
+Sample Maxima:
+[191, 191, 190, 191, 18, 185, 189, 17]
+Greedy Maxima:
+[191, 191, 190, 191, 18, 185, 189, 17]
+
+
+The maximum VALUE using SAMPLING was 191 so option 41 was chosen
+The length of the tree search is 17
+[4, 16, 28, 35, 50, 7, 11, 25, 8, 51, 19, 22, 5, 6, 15, 1, 41]
+
+[151, 84, 150]
+Average List:
+[189.0, 119.0, 191.0]
+Sample Maxima:
+[189, 119, 191]
+Greedy Maxima:
+[189, 119, 191]
+
+
+The maximum VALUE using SAMPLING was 191 so option 150 was chosen
+The length of the tree search is 18
+[4, 16, 28, 35, 50, 7, 11, 25, 8, 51, 19, 22, 5, 6, 15, 1, 41, 150]
+
+[116, 115, 117, 114]
+Average List:
+[196.0, 187.0, 19.0, 189.0]
+Sample Maxima:
+[196, 187, 19, 189]
+Greedy Maxima:
+[196, 187, 19, 189]
+
+
+The maximum VALUE using SAMPLING was 196 so option 116 was chosen
+The length of the tree search is 19
+[4, 16, 28, 35, 50, 7, 11, 25, 8, 51, 19, 22, 5, 6, 15, 1, 41, 150, 116]
+
+[109]
+[107, 108, 106]
+Average List:
+[184.0, 184.0, 191.0]
+Sample Maxima:
+[184, 184, 191]
+Greedy Maxima:
+[184, 184, 191]
+
+
+The maximum VALUE using SAMPLING was 191 so option 106 was chosen
+The length of the tree search is 21
+[4, 16, 28, 35, 50, 7, 11, 25, 8, 51, 19, 22, 5, 6, 15, 1, 41, 150, 116, 109, 106]
+
+[179, 178]
+Average List:
+[196.0, 22.0]
+Sample Maxima:
+[196, 22]
+Greedy Maxima:
+[196, 22]
+
+
+The maximum VALUE using SAMPLING was 196 so option 179 was chosen
+The length of the tree search is 22
+[4, 16, 28, 35, 50, 7, 11, 25, 8, 51, 19, 22, 5, 6, 15, 1, 41, 150, 116, 109, 106, 179]
+
+ROTATION: This list contains tile 173 that may have two positions
+[173, 247, 192, 243]
+Current tile is 173 with position [17, 18, 18, 18]
+Second potential rotation needs to be tested
+The new position is [18, 17, 18, 18]
+Counter({189: 1})
+Final rotation used was 17 18 18 18
+Average List:
+[189.0, 186.0, 187.0, 119.0]
+Sample Maxima:
+[189, 186, 187, 119]
+Greedy Maxima:
+[189, 186, 187, 119]
+
+
+The maximum VALUE using SAMPLING was 189 so option 173 was chosen
+The length of the tree search is 23
+[4, 16, 28, 35, 50, 7, 11, 25, 8, 51, 19, 22, 5, 6, 15, 1, 41, 150, 116, 109, 106, 179, 173]
+
+[250, 249, 240, 126]
+Average List:
+[189.0, 185.0, 190.0, 191.0]
+Sample Maxima:
+[189, 185, 190, 191]
+Greedy Maxima:
+[189, 185, 190, 191]
+
+
+The maximum VALUE using SAMPLING was 191 so option 126 was chosen
+The length of the tree search is 24
+[4, 16, 28, 35, 50, 7, 11, 25, 8, 51, 19, 22, 5, 6, 15, 1, 41, 150, 116, 109, 106, 179, 173, 126]
+
+[178]
+[128, 127, 103, 129, 130]
+Average List:
+[191.0, 26.0, 26.0, 194.0, 26.0]
+Sample Maxima:
+[191, 26, 26, 194, 26]
+Greedy Maxima:
+[191, 26, 26, 194, 26]
+
+
+The maximum VALUE using SAMPLING was 194 so option 129 was chosen
+The length of the tree search is 26
+[4, 16, 28, 35, 50, 7, 11, 25, 8, 51, 19, 22, 5, 6, 15, 1, 41, 150, 116, 109, 106, 179, 173, 126, 178, 129]
+
+[207, 189, 78]
+Average List:
+[190.0, 196.0, 189.0]
+Sample Maxima:
+[190, 196, 189]
+Greedy Maxima:
+[190, 196, 189]
+
+
+The maximum VALUE using SAMPLING was 196 so option 189 was chosen
+The length of the tree search is 27
+[4, 16, 28, 35, 50, 7, 11, 25, 8, 51, 19, 22, 5, 6, 15, 1, 41, 150, 116, 109, 106, 179, 173, 126, 178, 129, 189]
+
+[95, 185, 132]
+Average List:
+[185.0, 189.0, 196.0]
+Sample Maxima:
+[185, 189, 196]
+Greedy Maxima:
+[185, 189, 196]
+
+
+The maximum VALUE using SAMPLING was 196 so option 132 was chosen
+The length of the tree search is 28
+[4, 16, 28, 35, 50, 7, 11, 25, 8, 51, 19, 22, 5, 6, 15, 1, 41, 150, 116, 109, 106, 179, 173, 126, 178, 129, 189, 132]
+
+[96, 88]
+Average List:
+[191.0, 193.0]
+Sample Maxima:
+[191, 193]
+Greedy Maxima:
+[191, 193]
+
+
+The maximum VALUE using SAMPLING was 193 so option 88 was chosen
+The length of the tree search is 29
+[4, 16, 28, 35, 50, 7, 11, 25, 8, 51, 19, 22, 5, 6, 15, 1, 41, 150, 116, 109, 106, 179, 173, 126, 178, 129, 189, 132, 88]
+
+[122, 124, 123]
+Average List:
+[195.0, 196.0, 31.0]
+Sample Maxima:
+[195, 196, 31]
+Greedy Maxima:
+[195, 196, 31]
+
+
+The maximum VALUE using SAMPLING was 196 so option 124 was chosen
+The length of the tree search is 30
+[4, 16, 28, 35, 50, 7, 11, 25, 8, 51, 19, 22, 5, 6, 15, 1, 41, 150, 116, 109, 106, 179, 173, 126, 178, 129, 189, 132, 88, 124]
+
+[120]
+[36]
+[54, 53, 47, 14, 10, 46, 12, 21, 34, 48]
+Average List:
+[187.0, 187.0, 33.0, 186.0, 196.0, 189.0, 33.0, 191.0, 33.0, 119.0]
+Sample Maxima:
+[187, 187, 33, 186, 196, 189, 33, 191, 33, 119]
+Greedy Maxima:
+[187, 187, 33, 186, 196, 189, 33, 191, 33, 119]
+
+
+The maximum VALUE using SAMPLING was 196 so option 10 was chosen
+The length of the tree search is 33
+[4, 16, 28, 35, 50, 7, 11, 25, 8, 51, 19, 22, 5, 6, 15, 1, 41, 150, 116, 109, 106, 179, 173, 126, 178, 129, 189, 132, 88, 124, 120, 36, 10]
+
+[171, 170, 172]
+Average List:
+[186.0, 121.0, 194.0]
+Sample Maxima:
+[186, 121, 194]
+Greedy Maxima:
+[186, 121, 194]
+
+
+The maximum VALUE using SAMPLING was 194 so option 172 was chosen
+The length of the tree search is 34
+[4, 16, 28, 35, 50, 7, 11, 25, 8, 51, 19, 22, 5, 6, 15, 1, 41, 150, 116, 109, 106, 179, 173, 126, 178, 129, 189, 132, 88, 124, 120, 36, 10, 172]
+
+[227]
+[101, 102]
+Average List:
+[120.0, 185.0]
+Sample Maxima:
+[120, 185]
+Greedy Maxima:
+[120, 185]
+
+
+The maximum VALUE using SAMPLING was 185 so option 102 was chosen
+The length of the tree search is 36
+[4, 16, 28, 35, 50, 7, 11, 25, 8, 51, 19, 22, 5, 6, 15, 1, 41, 150, 116, 109, 106, 179, 173, 126, 178, 129, 189, 132, 88, 124, 120, 36, 10, 172, 227, 102]
+
+[135]
+[94, 242, 251]
+Average List:
+[188.0, 194.0, 190.0]
+Sample Maxima:
+[188, 194, 190]
+Greedy Maxima:
+[188, 194, 190]
+
+
+The maximum VALUE using SAMPLING was 194 so option 242 was chosen
+The length of the tree search is 38
+[4, 16, 28, 35, 50, 7, 11, 25, 8, 51, 19, 22, 5, 6, 15, 1, 41, 150, 116, 109, 106, 179, 173, 126, 178, 129, 189, 132, 88, 124, 120, 36, 10, 172, 227, 102, 135, 242]
+
+[169, 141, 107, 168]
+Average List:
+[121.0, 197.0, 188.0, 39.0]
+Sample Maxima:
+[121, 197, 188, 39]
+Greedy Maxima:
+[121, 197, 188, 39]
+
+
+The maximum VALUE using SAMPLING was 197 so option 141 was chosen
+The length of the tree search is 39
+[4, 16, 28, 35, 50, 7, 11, 25, 8, 51, 19, 22, 5, 6, 15, 1, 41, 150, 116, 109, 106, 179, 173, 126, 178, 129, 189, 132, 88, 124, 120, 36, 10, 172, 227, 102, 135, 242, 141]
+
+[105]
+[237, 101, 111]
+Average List:
+[184.0, 189.0, 196.0]
+Sample Maxima:
+[184, 189, 196]
+Greedy Maxima:
+[184, 189, 196]
+
+
+The maximum VALUE using SAMPLING was 196 so option 111 was chosen
+The length of the tree search is 41
+[4, 16, 28, 35, 50, 7, 11, 25, 8, 51, 19, 22, 5, 6, 15, 1, 41, 150, 116, 109, 106, 179, 173, 126, 178, 129, 189, 132, 88, 124, 120, 36, 10, 172, 227, 102, 135, 242, 141, 105, 111]
+
+[121]
+[123, 103, 112]
+Average List:
+[197.0, 189.0, 189.0]
+Sample Maxima:
+[197, 189, 189]
+Greedy Maxima:
+[197, 189, 189]
+
+
+The maximum VALUE using SAMPLING was 197 so option 123 was chosen
+The length of the tree search is 43
+[4, 16, 28, 35, 50, 7, 11, 25, 8, 51, 19, 22, 5, 6, 15, 1, 41, 150, 116, 109, 106, 179, 173, 126, 178, 129, 189, 132, 88, 124, 120, 36, 10, 172, 227, 102, 135, 242, 141, 105, 111, 121, 123]
+
+[110]
+[84, 86, 87, 85]
+Average List:
+[119.0, 46.0, 46.0, 198.0]
+Sample Maxima:
+[119, 46, 46, 198]
+Greedy Maxima:
+[119, 46, 46, 198]
+
+
+The maximum VALUE using SAMPLING was 198 so option 85 was chosen
+The length of the tree search is 45
+[4, 16, 28, 35, 50, 7, 11, 25, 8, 51, 19, 22, 5, 6, 15, 1, 41, 150, 116, 109, 106, 179, 173, 126, 178, 129, 189, 132, 88, 124, 120, 36, 10, 172, 227, 102, 135, 242, 141, 105, 111, 121, 123, 110, 85]
+
+ROTATION: This list contains tile 199 that may have two positions
+[192, 177, 199]
+Current tile is 199 with position [9, 9, 9, 11]
+Average List:
+[189.0, 188.0, 46.0]
+Sample Maxima:
+[189, 188, 46]
+Greedy Maxima:
+[189, 188, 46]
+
+
+The maximum VALUE using SAMPLING was 189 so option 192 was chosen
+The length of the tree search is 46
+[4, 16, 28, 35, 50, 7, 11, 25, 8, 51, 19, 22, 5, 6, 15, 1, 41, 150, 116, 109, 106, 179, 173, 126, 178, 129, 189, 132, 88, 124, 120, 36, 10, 172, 227, 102, 135, 242, 141, 105, 111, 121, 123, 110, 85, 192]
+
+[209]
+[39]
+[37, 57, 42, 45, 52, 24]
+Average List:
+[188.0, 137.0, 185.0, 49.0, 191.0, 49.0]
+Sample Maxima:
+[188, 137, 185, 49, 191, 49]
+Greedy Maxima:
+[188, 137, 185, 49, 191, 49]
+
+
+The maximum VALUE using SAMPLING was 191 so option 52 was chosen
+The length of the tree search is 49
+[4, 16, 28, 35, 50, 7, 11, 25, 8, 51, 19, 22, 5, 6, 15, 1, 41, 150, 116, 109, 106, 179, 173, 126, 178, 129, 189, 132, 88, 124, 120, 36, 10, 172, 227, 102, 135, 242, 141, 105, 111, 121, 123, 110, 85, 192, 209, 39, 52]
+
+[169, 175, 131, 99]
+Average List:
+[190.0, 119.0, 50.0, 119.0]
+Sample Maxima:
+[190, 119, 50, 119]
+Greedy Maxima:
+[190, 119, 50, 119]
+
+
+The maximum VALUE using SAMPLING was 190 so option 169 was chosen
+The length of the tree search is 50
+[4, 16, 28, 35, 50, 7, 11, 25, 8, 51, 19, 22, 5, 6, 15, 1, 41, 150, 116, 109, 106, 179, 173, 126, 178, 129, 189, 132, 88, 124, 120, 36, 10, 172, 227, 102, 135, 242, 141, 105, 111, 121, 123, 110, 85, 192, 209, 39, 52, 169]
+
+[176, 226]
+Average List:
+[191.0, 51.0]
+Sample Maxima:
+[191, 51]
+Greedy Maxima:
+[191, 51]
+
+
+The maximum VALUE using SAMPLING was 191 so option 176 was chosen
+The length of the tree search is 51
+[4, 16, 28, 35, 50, 7, 11, 25, 8, 51, 19, 22, 5, 6, 15, 1, 41, 150, 116, 109, 106, 179, 173, 126, 178, 129, 189, 132, 88, 124, 120, 36, 10, 172, 227, 102, 135, 242, 141, 105, 111, 121, 123, 110, 85, 192, 209, 39, 52, 169, 176]
+
+[119, 143]
+Average List:
+[198.0, 59.0]
+Sample Maxima:
+[198, 59]
+Greedy Maxima:
+[198, 59]
+
+
+The maximum VALUE using SAMPLING was 198 so option 119 was chosen
+The length of the tree search is 52
+[4, 16, 28, 35, 50, 7, 11, 25, 8, 51, 19, 22, 5, 6, 15, 1, 41, 150, 116, 109, 106, 179, 173, 126, 178, 129, 189, 132, 88, 124, 120, 36, 10, 172, 227, 102, 135, 242, 141, 105, 111, 121, 123, 110, 85, 192, 209, 39, 52, 169, 176, 119]
+
+[202, 246, 184, 207, 157]
+Average List:
+[185.0, 191.0, 120.0, 119.0, 53.0]
+Sample Maxima:
+[185, 191, 120, 119, 53]
+Greedy Maxima:
+[185, 191, 120, 119, 53]
+
+
+The maximum VALUE using SAMPLING was 191 so option 246 was chosen
+The length of the tree search is 53
+[4, 16, 28, 35, 50, 7, 11, 25, 8, 51, 19, 22, 5, 6, 15, 1, 41, 150, 116, 109, 106, 179, 173, 126, 178, 129, 189, 132, 88, 124, 120, 36, 10, 172, 227, 102, 135, 242, 141, 105, 111, 121, 123, 110, 85, 192, 209, 39, 52, 169, 176, 119, 246]
+
+[205, 254]
+Average List:
+[186.0, 55.0]
+Sample Maxima:
+[186, 55]
+Greedy Maxima:
+[186, 55]
+
+
+The maximum VALUE using SAMPLING was 186 so option 205 was chosen
+The length of the tree search is 54
+[4, 16, 28, 35, 50, 7, 11, 25, 8, 51, 19, 22, 5, 6, 15, 1, 41, 150, 116, 109, 106, 179, 173, 126, 178, 129, 189, 132, 88, 124, 120, 36, 10, 172, 227, 102, 135, 242, 141, 105, 111, 121, 123, 110, 85, 192, 209, 39, 52, 169, 176, 119, 246, 205]
+
+[188, 206]
+Average List:
+[55.0, 198.0]
+Sample Maxima:
+[55, 198]
+Greedy Maxima:
+[55, 198]
+
+
+The maximum VALUE using SAMPLING was 198 so option 206 was chosen
+The length of the tree search is 55
+[4, 16, 28, 35, 50, 7, 11, 25, 8, 51, 19, 22, 5, 6, 15, 1, 41, 150, 116, 109, 106, 179, 173, 126, 178, 129, 189, 132, 88, 124, 120, 36, 10, 172, 227, 102, 135, 242, 141, 105, 111, 121, 123, 110, 85, 192, 209, 39, 52, 169, 176, 119, 246, 205, 206]
+
+[157, 245, 151, 215, 251]
+Average List:
+[56.0, 56.0, 195.0, 59.0, 56.0]
+Sample Maxima:
+[56, 56, 195, 59, 56]
+Greedy Maxima:
+[56, 56, 195, 59, 56]
+
+
+The maximum VALUE using SAMPLING was 195 so option 151 was chosen
+The length of the tree search is 56
+[4, 16, 28, 35, 50, 7, 11, 25, 8, 51, 19, 22, 5, 6, 15, 1, 41, 150, 116, 109, 106, 179, 173, 126, 178, 129, 189, 132, 88, 124, 120, 36, 10, 172, 227, 102, 135, 242, 141, 105, 111, 121, 123, 110, 85, 192, 209, 39, 52, 169, 176, 119, 246, 205, 206, 151]
+
+[118]
+[222, 221, 256, 216, 99, 100]
+Average List:
+[187.0, 120.0, 189.0, 59.0, 59.0, 120.0]
+Sample Maxima:
+[187, 120, 189, 59, 59, 120]
+Greedy Maxima:
+[187, 120, 189, 59, 59, 120]
+
+
+The maximum VALUE using SAMPLING was 189 so option 256 was chosen
+The length of the tree search is 58
+[4, 16, 28, 35, 50, 7, 11, 25, 8, 51, 19, 22, 5, 6, 15, 1, 41, 150, 116, 109, 106, 179, 173, 126, 178, 129, 189, 132, 88, 124, 120, 36, 10, 172, 227, 102, 135, 242, 141, 105, 111, 121, 123, 110, 85, 192, 209, 39, 52, 169, 176, 119, 246, 205, 206, 151, 118, 256]
+
+[98, 244, 159, 130]
+Average List:
+[120.0, 185.0, 59.0, 59.0]
+Sample Maxima:
+[120, 185, 59, 59]
+Greedy Maxima:
+[120, 185, 59, 59]
+
+
+The maximum VALUE using SAMPLING was 185 so option 244 was chosen
+The length of the tree search is 59
+[4, 16, 28, 35, 50, 7, 11, 25, 8, 51, 19, 22, 5, 6, 15, 1, 41, 150, 116, 109, 106, 179, 173, 126, 178, 129, 189, 132, 88, 124, 120, 36, 10, 172, 227, 102, 135, 242, 141, 105, 111, 121, 123, 110, 85, 192, 209, 39, 52, 169, 176, 119, 246, 205, 206, 151, 118, 256, 244]
+
+[243, 247]
+Average List:
+[61.0, 184.0]
+Sample Maxima:
+[61, 184]
+Greedy Maxima:
+[61, 184]
+
+
+The maximum VALUE using SAMPLING was 184 so option 247 was chosen
+The length of the tree search is 60
+[4, 16, 28, 35, 50, 7, 11, 25, 8, 51, 19, 22, 5, 6, 15, 1, 41, 150, 116, 109, 106, 179, 173, 126, 178, 129, 189, 132, 88, 124, 120, 36, 10, 172, 227, 102, 135, 242, 141, 105, 111, 121, 123, 110, 85, 192, 209, 39, 52, 169, 176, 119, 246, 205, 206, 151, 118, 256, 244, 247]
+
+[89]
+[250]
+[219]
+[54, 55]
+Average List:
+[189.0, 189.0]
+Sample Maxima:
+[189, 189]
+Greedy Maxima:
+[189, 189]
+
+
+The maximum VALUE using SAMPLING was 189 so option 54 was chosen
+The length of the tree search is 64
+[4, 16, 28, 35, 50, 7, 11, 25, 8, 51, 19, 22, 5, 6, 15, 1, 41, 150, 116, 109, 106, 179, 173, 126, 178, 129, 189, 132, 88, 124, 120, 36, 10, 172, 227, 102, 135, 242, 141, 105, 111, 121, 123, 110, 85, 192, 209, 39, 52, 169, 176, 119, 246, 205, 206, 151, 118, 256, 244, 247, 89, 250, 219, 54]
+
+[23, 18, 38, 55, 58, 49, 13, 17, 30]
+Average List:
+[191.0, 184.0, 191.0, 191.0, 65.0, 189.0, 120.0, 189.0, 188.0]
+Sample Maxima:
+[191, 184, 191, 191, 65, 189, 120, 189, 188]
+Greedy Maxima:
+[191, 184, 191, 191, 65, 189, 120, 189, 188]
+
+
+The maximum VALUE using SAMPLING was 191 so option 23 was chosen
+The length of the tree search is 65
+[4, 16, 28, 35, 50, 7, 11, 25, 8, 51, 19, 22, 5, 6, 15, 1, 41, 150, 116, 109, 106, 179, 173, 126, 178, 129, 189, 132, 88, 124, 120, 36, 10, 172, 227, 102, 135, 242, 141, 105, 111, 121, 123, 110, 85, 192, 209, 39, 52, 169, 176, 119, 246, 205, 206, 151, 118, 256, 244, 247, 89, 250, 219, 54, 23]
+
+[185, 238]
+Average List:
+[197.0, 188.0]
+Sample Maxima:
+[197, 188]
+Greedy Maxima:
+[197, 188]
+
+
+The maximum VALUE using SAMPLING was 197 so option 185 was chosen
+The length of the tree search is 66
+[4, 16, 28, 35, 50, 7, 11, 25, 8, 51, 19, 22, 5, 6, 15, 1, 41, 150, 116, 109, 106, 179, 173, 126, 178, 129, 189, 132, 88, 124, 120, 36, 10, 172, 227, 102, 135, 242, 141, 105, 111, 121, 123, 110, 85, 192, 209, 39, 52, 169, 176, 119, 246, 205, 206, 151, 118, 256, 244, 247, 89, 250, 219, 54, 23, 185]
+
+[167]
+[63, 112, 113]
+Average List:
+[69.0, 69.0, 186.0]
+Sample Maxima:
+[69, 69, 186]
+Greedy Maxima:
+[69, 69, 186]
+
+
+The maximum VALUE using SAMPLING was 186 so option 113 was chosen
+The length of the tree search is 68
+[4, 16, 28, 35, 50, 7, 11, 25, 8, 51, 19, 22, 5, 6, 15, 1, 41, 150, 116, 109, 106, 179, 173, 126, 178, 129, 189, 132, 88, 124, 120, 36, 10, 172, 227, 102, 135, 242, 141, 105, 111, 121, 123, 110, 85, 192, 209, 39, 52, 169, 176, 119, 246, 205, 206, 151, 118, 256, 244, 247, 89, 250, 219, 54, 23, 185, 167, 113]
+
+[254]
+[218, 78, 212]
+Average List:
+[191.0, 186.0, 189.0]
+Sample Maxima:
+[191, 186, 189]
+Greedy Maxima:
+[191, 186, 189]
+
+
+The maximum VALUE using SAMPLING was 191 so option 218 was chosen
+The length of the tree search is 70
+[4, 16, 28, 35, 50, 7, 11, 25, 8, 51, 19, 22, 5, 6, 15, 1, 41, 150, 116, 109, 106, 179, 173, 126, 178, 129, 189, 132, 88, 124, 120, 36, 10, 172, 227, 102, 135, 242, 141, 105, 111, 121, 123, 110, 85, 192, 209, 39, 52, 169, 176, 119, 246, 205, 206, 151, 118, 256, 244, 247, 89, 250, 219, 54, 23, 185, 167, 113, 254, 218]
+
+[203, 204]
+Average List:
+[196.0, 191.0]
+Sample Maxima:
+[196, 191]
+Greedy Maxima:
+[196, 191]
+
+
+The maximum VALUE using SAMPLING was 196 so option 203 was chosen
+The length of the tree search is 71
+[4, 16, 28, 35, 50, 7, 11, 25, 8, 51, 19, 22, 5, 6, 15, 1, 41, 150, 116, 109, 106, 179, 173, 126, 178, 129, 189, 132, 88, 124, 120, 36, 10, 172, 227, 102, 135, 242, 141, 105, 111, 121, 123, 110, 85, 192, 209, 39, 52, 169, 176, 119, 246, 205, 206, 151, 118, 256, 244, 247, 89, 250, 219, 54, 23, 185, 167, 113, 254, 218, 203]
+
+[66, 145]
+Average List:
+[195.0, 190.0]
+Sample Maxima:
+[195, 190]
+Greedy Maxima:
+[195, 190]
+
+
+The maximum VALUE using SAMPLING was 195 so option 66 was chosen
+The length of the tree search is 72
+[4, 16, 28, 35, 50, 7, 11, 25, 8, 51, 19, 22, 5, 6, 15, 1, 41, 150, 116, 109, 106, 179, 173, 126, 178, 129, 189, 132, 88, 124, 120, 36, 10, 172, 227, 102, 135, 242, 141, 105, 111, 121, 123, 110, 85, 192, 209, 39, 52, 169, 176, 119, 246, 205, 206, 151, 118, 256, 244, 247, 89, 250, 219, 54, 23, 185, 167, 113, 254, 218, 203, 66]
+
+[96, 79, 63, 75]
+Average List:
+[185.0, 196.0, 195.0, 191.0]
+Sample Maxima:
+[185, 196, 195, 191]
+Greedy Maxima:
+[185, 196, 195, 191]
+
+
+The maximum VALUE using SAMPLING was 196 so option 79 was chosen
+The length of the tree search is 73
+[4, 16, 28, 35, 50, 7, 11, 25, 8, 51, 19, 22, 5, 6, 15, 1, 41, 150, 116, 109, 106, 179, 173, 126, 178, 129, 189, 132, 88, 124, 120, 36, 10, 172, 227, 102, 135, 242, 141, 105, 111, 121, 123, 110, 85, 192, 209, 39, 52, 169, 176, 119, 246, 205, 206, 151, 118, 256, 244, 247, 89, 250, 219, 54, 23, 185, 167, 113, 254, 218, 203, 66, 79]
+
+[255, 98, 245]
+Average List:
+[190.0, 188.0, 189.0]
+Sample Maxima:
+[190, 188, 189]
+Greedy Maxima:
+[190, 188, 189]
+
+
+The maximum VALUE using SAMPLING was 190 so option 255 was chosen
+The length of the tree search is 74
+[4, 16, 28, 35, 50, 7, 11, 25, 8, 51, 19, 22, 5, 6, 15, 1, 41, 150, 116, 109, 106, 179, 173, 126, 178, 129, 189, 132, 88, 124, 120, 36, 10, 172, 227, 102, 135, 242, 141, 105, 111, 121, 123, 110, 85, 192, 209, 39, 52, 169, 176, 119, 246, 205, 206, 151, 118, 256, 244, 247, 89, 250, 219, 54, 23, 185, 167, 113, 254, 218, 203, 66, 79, 255]
+
+[234, 211, 180, 80, 158, 190]
+Average List:
+[76.0, 186.0, 75.0, 188.0, 75.0, 182.0]
+Sample Maxima:
+[76, 186, 75, 188, 75, 182]
+Greedy Maxima:
+[76, 186, 75, 188, 75, 182]
+
+
+The maximum VALUE using SAMPLING was 188 so option 80 was chosen
+The length of the tree search is 75
+[4, 16, 28, 35, 50, 7, 11, 25, 8, 51, 19, 22, 5, 6, 15, 1, 41, 150, 116, 109, 106, 179, 173, 126, 178, 129, 189, 132, 88, 124, 120, 36, 10, 172, 227, 102, 135, 242, 141, 105, 111, 121, 123, 110, 85, 192, 209, 39, 52, 169, 176, 119, 246, 205, 206, 151, 118, 256, 244, 247, 89, 250, 219, 54, 23, 185, 167, 113, 254, 218, 203, 66, 79, 255, 80]
+
+[94, 100]
+Average List:
+[184.0, 194.0]
+Sample Maxima:
+[184, 194]
+Greedy Maxima:
+[184, 194]
+
+
+The maximum VALUE using SAMPLING was 194 so option 100 was chosen
+The length of the tree search is 76
+[4, 16, 28, 35, 50, 7, 11, 25, 8, 51, 19, 22, 5, 6, 15, 1, 41, 150, 116, 109, 106, 179, 173, 126, 178, 129, 189, 132, 88, 124, 120, 36, 10, 172, 227, 102, 135, 242, 141, 105, 111, 121, 123, 110, 85, 192, 209, 39, 52, 169, 176, 119, 246, 205, 206, 151, 118, 256, 244, 247, 89, 250, 219, 54, 23, 185, 167, 113, 254, 218, 203, 66, 79, 255, 80, 100]
+
+[98, 99, 97]
+Average List:
+[79.0, 180.0, 191.0]
+Sample Maxima:
+[79, 180, 191]
+Greedy Maxima:
+[79, 180, 191]
+
+
+The maximum VALUE using SAMPLING was 191 so option 97 was chosen
+The length of the tree search is 77
+[4, 16, 28, 35, 50, 7, 11, 25, 8, 51, 19, 22, 5, 6, 15, 1, 41, 150, 116, 109, 106, 179, 173, 126, 178, 129, 189, 132, 88, 124, 120, 36, 10, 172, 227, 102, 135, 242, 141, 105, 111, 121, 123, 110, 85, 192, 209, 39, 52, 169, 176, 119, 246, 205, 206, 151, 118, 256, 244, 247, 89, 250, 219, 54, 23, 185, 167, 113, 254, 218, 203, 66, 79, 255, 80, 100, 97]
+
+[190, 238, 103, 128]
+Average List:
+[191.0, 186.0, 191.0, 120.0]
+Sample Maxima:
+[191, 186, 191, 120]
+Greedy Maxima:
+[191, 186, 191, 120]
+
+
+The maximum VALUE using SAMPLING was 191 so option 190 was chosen
+The length of the tree search is 78
+[4, 16, 28, 35, 50, 7, 11, 25, 8, 51, 19, 22, 5, 6, 15, 1, 41, 150, 116, 109, 106, 179, 173, 126, 178, 129, 189, 132, 88, 124, 120, 36, 10, 172, 227, 102, 135, 242, 141, 105, 111, 121, 123, 110, 85, 192, 209, 39, 52, 169, 176, 119, 246, 205, 206, 151, 118, 256, 244, 247, 89, 250, 219, 54, 23, 185, 167, 113, 254, 218, 203, 66, 79, 255, 80, 100, 97, 190]
+
+[226, 193, 115]
+Average List:
+[188.0, 187.0, 79.0]
+Sample Maxima:
+[188, 187, 79]
+Greedy Maxima:
+[188, 187, 79]
+
+
+The maximum VALUE using SAMPLING was 188 so option 226 was chosen
+The length of the tree search is 79
+[4, 16, 28, 35, 50, 7, 11, 25, 8, 51, 19, 22, 5, 6, 15, 1, 41, 150, 116, 109, 106, 179, 173, 126, 178, 129, 189, 132, 88, 124, 120, 36, 10, 172, 227, 102, 135, 242, 141, 105, 111, 121, 123, 110, 85, 192, 209, 39, 52, 169, 176, 119, 246, 205, 206, 151, 118, 256, 244, 247, 89, 250, 219, 54, 23, 185, 167, 113, 254, 218, 203, 66, 79, 255, 80, 100, 97, 190, 226]
+
+[43, 42, 44]
+Average List:
+[188.0, 189.0, 198.0]
+Sample Maxima:
+[188, 189, 198]
+Greedy Maxima:
+[188, 189, 198]
+
+
+The maximum VALUE using SAMPLING was 198 so option 44 was chosen
+The length of the tree search is 80
+[4, 16, 28, 35, 50, 7, 11, 25, 8, 51, 19, 22, 5, 6, 15, 1, 41, 150, 116, 109, 106, 179, 173, 126, 178, 129, 189, 132, 88, 124, 120, 36, 10, 172, 227, 102, 135, 242, 141, 105, 111, 121, 123, 110, 85, 192, 209, 39, 52, 169, 176, 119, 246, 205, 206, 151, 118, 256, 244, 247, 89, 250, 219, 54, 23, 185, 167, 113, 254, 218, 203, 66, 79, 255, 80, 100, 97, 190, 226, 44]
+
+[31, 59, 33, 40, 26, 20, 43]
+Average List:
+[187.0, 189.0, 189.0, 187.0, 188.0, 185.0, 185.0]
+Sample Maxima:
+[187, 189, 189, 187, 188, 185, 185]
+Greedy Maxima:
+[187, 189, 189, 187, 188, 185, 185]
+
+
+The maximum VALUE using SAMPLING was 189 so option 59 was chosen
+The length of the tree search is 81
+[4, 16, 28, 35, 50, 7, 11, 25, 8, 51, 19, 22, 5, 6, 15, 1, 41, 150, 116, 109, 106, 179, 173, 126, 178, 129, 189, 132, 88, 124, 120, 36, 10, 172, 227, 102, 135, 242, 141, 105, 111, 121, 123, 110, 85, 192, 209, 39, 52, 169, 176, 119, 246, 205, 206, 151, 118, 256, 244, 247, 89, 250, 219, 54, 23, 185, 167, 113, 254, 218, 203, 66, 79, 255, 80, 100, 97, 190, 226, 44, 59]
+
+[204, 188]
+Average List:
+[82.0, 191.0]
+Sample Maxima:
+[82, 191]
+Greedy Maxima:
+[82, 191]
+
+
+The maximum VALUE using SAMPLING was 191 so option 188 was chosen
+The length of the tree search is 82
+[4, 16, 28, 35, 50, 7, 11, 25, 8, 51, 19, 22, 5, 6, 15, 1, 41, 150, 116, 109, 106, 179, 173, 126, 178, 129, 189, 132, 88, 124, 120, 36, 10, 172, 227, 102, 135, 242, 141, 105, 111, 121, 123, 110, 85, 192, 209, 39, 52, 169, 176, 119, 246, 205, 206, 151, 118, 256, 244, 247, 89, 250, 219, 54, 23, 185, 167, 113, 254, 218, 203, 66, 79, 255, 80, 100, 97, 190, 226, 44, 59, 188]
+
+[211, 70, 71, 210]
+Average List:
+[188.0, 84.0, 195.0, 175.0]
+Sample Maxima:
+[188, 84, 195, 175]
+Greedy Maxima:
+[188, 84, 195, 175]
+
+
+The maximum VALUE using SAMPLING was 195 so option 71 was chosen
+The length of the tree search is 83
+[4, 16, 28, 35, 50, 7, 11, 25, 8, 51, 19, 22, 5, 6, 15, 1, 41, 150, 116, 109, 106, 179, 173, 126, 178, 129, 189, 132, 88, 124, 120, 36, 10, 172, 227, 102, 135, 242, 141, 105, 111, 121, 123, 110, 85, 192, 209, 39, 52, 169, 176, 119, 246, 205, 206, 151, 118, 256, 244, 247, 89, 250, 219, 54, 23, 185, 167, 113, 254, 218, 203, 66, 79, 255, 80, 100, 97, 190, 226, 44, 59, 188, 71]
+
+[87]
+[230, 171]
+Average List:
+[120.0, 189.0]
+Sample Maxima:
+[120, 189]
+Greedy Maxima:
+[120, 189]
+
+
+The maximum VALUE using SAMPLING was 189 so option 171 was chosen
+The length of the tree search is 85
+[4, 16, 28, 35, 50, 7, 11, 25, 8, 51, 19, 22, 5, 6, 15, 1, 41, 150, 116, 109, 106, 179, 173, 126, 178, 129, 189, 132, 88, 124, 120, 36, 10, 172, 227, 102, 135, 242, 141, 105, 111, 121, 123, 110, 85, 192, 209, 39, 52, 169, 176, 119, 246, 205, 206, 151, 118, 256, 244, 247, 89, 250, 219, 54, 23, 185, 167, 113, 254, 218, 203, 66, 79, 255, 80, 100, 97, 190, 226, 44, 59, 188, 71, 87, 171]
+
+[235, 156, 175, 236, 155]
+Average List:
+[187.0, 133.0, 86.0, 194.0, 189.0]
+Sample Maxima:
+[187, 133, 86, 194, 189]
+Greedy Maxima:
+[187, 133, 86, 194, 189]
+
+
+The maximum VALUE using SAMPLING was 194 so option 236 was chosen
+The length of the tree search is 86
+[4, 16, 28, 35, 50, 7, 11, 25, 8, 51, 19, 22, 5, 6, 15, 1, 41, 150, 116, 109, 106, 179, 173, 126, 178, 129, 189, 132, 88, 124, 120, 36, 10, 172, 227, 102, 135, 242, 141, 105, 111, 121, 123, 110, 85, 192, 209, 39, 52, 169, 176, 119, 246, 205, 206, 151, 118, 256, 244, 247, 89, 250, 219, 54, 23, 185, 167, 113, 254, 218, 203, 66, 79, 255, 80, 100, 97, 190, 226, 44, 59, 188, 71, 87, 171, 236]
+
+ROTATION: This list contains tile 233 that may have two positions
+[77, 233]
+Current tile is 233 with position [9, 13, 13, 13]
+Second potential rotation needs to be tested
+The new position is [13, 9, 13, 13]
+Counter({196: 1})
+Final rotation used was 13 9 13 13
+Average List:
+[103.0, 196.0]
+Sample Maxima:
+[103, 196]
+Greedy Maxima:
+[103, 196]
+
+
+The maximum VALUE using SAMPLING was 196 so option 233 was chosen
+The length of the tree search is 87
+[4, 16, 28, 35, 50, 7, 11, 25, 8, 51, 19, 22, 5, 6, 15, 1, 41, 150, 116, 109, 106, 179, 173, 126, 178, 129, 189, 132, 88, 124, 120, 36, 10, 172, 227, 102, 135, 242, 141, 105, 111, 121, 123, 110, 85, 192, 209, 39, 52, 169, 176, 119, 246, 205, 206, 151, 118, 256, 244, 247, 89, 250, 219, 54, 23, 185, 167, 113, 254, 218, 203, 66, 79, 255, 80, 100, 97, 190, 226, 44, 59, 188, 71, 87, 171, 236, 233]
+
+ROTATION: This list contains tile 199 that may have two positions
+[198, 199, 162, 197]
+Current tile is 199 with position [9, 9, 11, 9]
+Average List:
+[88.0, 88.0, 189.0, 181.0]
+Sample Maxima:
+[88, 88, 189, 181]
+Greedy Maxima:
+[88, 88, 189, 181]
+
+
+The maximum VALUE using SAMPLING was 189 so option 162 was chosen
+The length of the tree search is 88
+[4, 16, 28, 35, 50, 7, 11, 25, 8, 51, 19, 22, 5, 6, 15, 1, 41, 150, 116, 109, 106, 179, 173, 126, 178, 129, 189, 132, 88, 124, 120, 36, 10, 172, 227, 102, 135, 242, 141, 105, 111, 121, 123, 110, 85, 192, 209, 39, 52, 169, 176, 119, 246, 205, 206, 151, 118, 256, 244, 247, 89, 250, 219, 54, 23, 185, 167, 113, 254, 218, 203, 66, 79, 255, 80, 100, 97, 190, 226, 44, 59, 188, 71, 87, 171, 236, 233, 162]
+
+The lookahead for each iteration for sample size 1 and count 300000 was [198, 191, 195, 191, 191, 204, 195, 197, 193, 198, 189, 193, 190, 191, 191, 196, 196, 191, 196, 189, 191, 191, 194, 196, 196, 193, 196, 196, 196, 196, 194, 194, 185, 185, 194, 197, 197, 196, 196, 197, 197, 198, 189, 189, 189, 191, 190, 191, 198, 191, 186, 198, 195, 195, 189, 185, 184, 184, 184, 184, 189, 191, 197, 197, 186, 186, 191, 196, 195, 196, 190, 188, 194, 191, 191, 188, 198, 189, 191, 195, 195, 189, 194, 196, 189] and maximum was 204 with average 192.518

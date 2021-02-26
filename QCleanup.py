@@ -44,7 +44,7 @@ class QCleanup:
 		print(sorted(Counter(a).items()))
 		print(f"Revised maximum and average lengths are {max(b)} and {sum(b)/len(b):.5f}")
 		print(sorted(Counter(b).items()))
-		#with open("Q-table-180.txt","w") as handler:
+		#with open("QTable-180.txt","w") as handler:
 		#	json.dump(Q,handler) 
 		#handler.close()    
 
@@ -125,7 +125,7 @@ class QCleanup:
 				line = file.readline()		
 				while line != "":	
 					if line.startswith("["):
-						match = line[:50]
+						match = line[:53]
 					if line.startswith("The lookahead"):
 						count1 += 1
 						file.readline()
@@ -314,10 +314,10 @@ class QCleanup:
 			json.dump(dist,handler)
 		handler.close()
 
-#for x in range(0,14):
+#for x in range(0,15):
 #	QCleanup.reader(x,207,True)
-#QCleanup.reader(12,1,True,"[4, 16, 28, 31, 25, 13, 52, 6, 19, 24, 10")
-QCleanup.reader(0,205,True)
+#QCleanup.reader(16,200,True,"[4, 16, 28, 31, 25, 13, 52, 6, 19, 24, 10")
+QCleanup.reader(0,207,True)
 #QCleanup.viewer()
 #QCleanup.table(180)
-#QCleanup.runParser(300000,197,3082)
+#QCleanup.runParser(300000,197,3254)
