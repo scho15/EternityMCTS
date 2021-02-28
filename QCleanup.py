@@ -120,6 +120,7 @@ class QCleanup:
 		cnt3 = Counter() # time taken
 		cnt4 = Counter() # count for final iteration
 		cnt5 = Counter() # iterations skipped through greedy runs
+		cnt6 = Counter() # number of (remaining) viable iterations
 		if (os.path.isfile('MCTSRunSummary.txt') == True):
 			with open("MCTSRunSummary.txt","r") as file:
 				line = file.readline()		
@@ -147,6 +148,9 @@ class QCleanup:
 								longlist = next[0:].split()
 								compact.append(int(longlist[8]))
 								compact.append(int(longlist[9]))
+								# Capturing number of viable iterations if these exist
+								if len(longlist) > 10:
+									compact.append(int(longlist[10]))
 							if ((compact[2]>=cutoff or compact[3]>=cutoff) and count2 >= minimum):
 								print(f"{match}] {compact}")
 							count2 += 1
@@ -161,6 +165,8 @@ class QCleanup:
 							if (len(compact) > 6):
 								cnt4[compact[6]] += 1
 								cnt5[compact[7]] += 1
+								if (len(compact) > 8):
+									cnt6[compact[8]] += 1
 					compact.clear()
 					line = file.readline()						
 			if (count1 != count2):
@@ -170,6 +176,7 @@ class QCleanup:
 			print(f"The counter of final values for {size} summed to {sum(cnt2.values())} and was:\n {sorted(cnt2.items())}")
 			print(f"Long Form Information: The length of the final iteration (normally 5m) for {sum(cnt4.values())} runs was :\n {sorted(cnt4.items())}")
 			print(f"Long Form Information: The number of greedy iterations skipped for {sum(cnt5.values())} runs was :\n {sorted(cnt5.items())}")
+			print(f"Long Form Information: The number of remaining viable iterations had an average of {sum(cnt6.elements())/sum(cnt6.values()):.2f} for {sum(cnt6.values())} runs:\n{sorted(cnt6.items())}")
 			print(f"Time to Complete: There were {sum(cnt3.values())} entries less than one hour and the average was {sum(cnt3.elements())/sum(cnt3.values()):.2f}")
 
 			file.close()
@@ -313,11 +320,12 @@ class QCleanup:
 		with open("Count-Distribution.txt","w") as handler:
 			json.dump(dist,handler)
 		handler.close()
+		return length # output number of viable options
 
 #for x in range(0,15):
 #	QCleanup.reader(x,207,True)
-#QCleanup.reader(16,200,True,"[4, 16, 28, 31, 25, 13, 52, 6, 19, 24, 10")
-QCleanup.reader(0,207,True)
+#QCleanup.reader(1,1,True,"[")
+#QCleanup.reader(0,207,True)
 #QCleanup.viewer()
 #QCleanup.table(180)
-#QCleanup.runParser(300000,197,3254)
+QCleanup.runParser(300000,1,3290)
