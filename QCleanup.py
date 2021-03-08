@@ -160,7 +160,13 @@ class QCleanup:
 							cnt1[compact[2]] += 1
 							cnt2[compact[4]] += 1
 							# May need tuning for higher iterations - set at 1 hr at present
-							if compact[5] < 3600:
+							if (size == 300000):
+								timing = 3600
+							elif (size == 350000):
+								timing = 3800
+							elif (size > 350000):
+								timing = 1000000
+							if compact[5] < timing:
 								cnt3[compact[5]] += 1	
 							if (len(compact) > 6):
 								cnt4[compact[6]] += 1
@@ -172,12 +178,12 @@ class QCleanup:
 			if (count1 != count2):
 				print("ERROR: Mismatch of counts between lookahead and shortened text lines")
 			print(f"There are {count1} shortened entries in the file but only {count1-minimum} are shown above")
-			print(f"The counter of iteration values for {size} summed to {sum(cnt1.values())} and was:\n {sorted(cnt1.items())}")
-			print(f"The counter of final values for {size} summed to {sum(cnt2.values())} and was:\n {sorted(cnt2.items())}")
+			print(f"The counter of iteration values for {size} had an average of {sum(cnt1.elements())/sum(cnt1.values()):.2f} for {sum(cnt1.values())} runs and was:\n {sorted(cnt1.items())}")
+			print(f"The counter of final values for {size} had an average of {sum(cnt2.elements())/sum(cnt2.values()):.2f} for {sum(cnt2.values())} runs and was:\n {sorted(cnt2.items())}")
 			print(f"Long Form Information: The length of the final iteration (normally 5m) for {sum(cnt4.values())} runs was :\n {sorted(cnt4.items())}")
-			print(f"Long Form Information: The number of greedy iterations skipped for {sum(cnt5.values())} runs was :\n {sorted(cnt5.items())}")
+			print(f"Long Form Information: The number of greedy iterations skipped had an average of {sum(cnt5.elements())/sum(cnt5.values()):.2f} for {sum(cnt5.values())} runs:\n {sorted(cnt5.items())}")
 			print(f"Long Form Information: The number of remaining viable iterations had an average of {sum(cnt6.elements())/sum(cnt6.values()):.2f} for {sum(cnt6.values())} runs:\n{sorted(cnt6.items())}")
-			print(f"Time to Complete: There were {sum(cnt3.values())} entries less than one hour and the average was {sum(cnt3.elements())/sum(cnt3.values()):.2f}")
+			print(f"Time to Complete: There were {sum(cnt3.values())} entries less than {timing} seconds and the average was {sum(cnt3.elements())/sum(cnt3.values()):.2f}")
 
 			file.close()
 
@@ -322,10 +328,10 @@ class QCleanup:
 		handler.close()
 		return length # output number of viable options
 
-#for x in range(0,15):
+#for x in range(0,19):
 #	QCleanup.reader(x,207,True)
-#QCleanup.reader(1,1,True,"[")
-#QCleanup.reader(0,207,True)
+#QCleanup.reader(13,1,True,"[4, 16, 28, 31, 25, 13, 52, 6, 19, 24, 10, 47")
+QCleanup.reader(0,209,True,"[")
 #QCleanup.viewer()
 #QCleanup.table(180)
-QCleanup.runParser(300000,1,3290)
+#QCleanup.runParser(350000,1,3542)

@@ -32,6 +32,7 @@ class EternityStart():
         maximaList = [] # list of maxima at each iteration 
         iterationList = [] # list of all iterations
         lowIteration = [] # list of lowest iteration explored
+        miniCount = 0 # Used to prevent viable iteration loop repeating
         #Special characters seem to create issues for file locations
         if (os.path.isfile('QTable.txt') == True):
             with open("QTable.txt", "r") as QTablefile:
@@ -117,8 +118,13 @@ class EternityStart():
                         # 250 = 2m 250k likely a day
                         if (sampleMax == True):
                             for count in range(sampleSize):
-                                # Now working with solution list so need length                                
+                                # Big change to run test again if viable minimum not reached on full run count - trying while instead of if                               
                                 limitedRunList, runCount, lowestItn = EternityMCTS.fullSolutionCheckWithSwap(256, countLimit, testList.copy(), MCTSPosition.copy(), useHints)
+                                miniCount = 0
+                                while (runCount == countLimit and miniCount < 5 and len(limitedRunList) < viableMinimum):
+                                    print(f"Rerunning sample once again as value reached of {len(limitedRunList)} was less than viable minimum set of {viableMinimum}")
+                                    limitedRunList, runCount, lowestItn = EternityMCTS.fullSolutionCheckWithSwap(256, countLimit, testList.copy(), MCTSPosition.copy(), useHints)
+                                    miniCount += 1
                                 if (len(limitedRunList) >= solutionPrint):                                    
                                     print(f"{len(limitedRunList)} solution reached of \n{limitedRunList}")
                                     file2.write(f"{len(limitedRunList)} solution reached of \n{limitedRunList}\n")
