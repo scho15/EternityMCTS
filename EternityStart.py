@@ -12,7 +12,7 @@ class EternityStart():
     def main():
         # DECISIONS REQUIRED
         useHints = False # Use only centre tile or 4 corner hints as well
-        maxEpisodes = 125 # number of episodes to run
+        maxEpisodes = 10 # number of episodes to run
         sampleSize = 1 # number of runs/samples to take - 1 for no hints and 2 for hints typically
         CreateTile.firstCountLimit = 350000 # cutoff for run - normally at least 1m
         CreateTile.terminalCountLimit = 5000000 # cutoff for final iteration at 88
@@ -335,13 +335,14 @@ class EternityStart():
                     else:
                         print(f"The maximum VALUE using GREEDY MAX was {max(epsilonMaxList)} so option {epsilonMaxOption} was chosen with position {MCTSPosition[-1]} and tree search is {MCTSList}")
                         file1.write(f"\nThe maximum VALUE using GREEDY MAX was {max(epsilonMaxList)} so option {epsilonMaxOption} was chosen\n")                    
-                    print(f"The length of the tree search is {len(MCTSList)}\n")
-                    file1.write(f"The length of the tree search is {len(MCTSList)}\n")
-                    file1.write(f"{MCTSList}\n\n")
                     if (sampleMax == True):
                         maximaList.append(max(maxList)) # work out look ahead value
                     elif (maximaList != []):
                         maximaList.append(maximaList[-1])
+                    if maximaList!=[]:
+                        print(f"The length of the tree search is {len(MCTSList)} and maximum so far is {max(maximaList)}\n")
+                        file1.write(f"The length of the tree search is {len(MCTSList)} and maximum so far is {max(maximaList)}\n")
+                        file1.write(f"{MCTSList}\n\n")
                 elif (len(options) == 1):
                     MCTSList.append(options[0])
                     MCTSPosition.append(CreateTile.tileList[options[0]].copy())
