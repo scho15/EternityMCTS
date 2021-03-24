@@ -112,6 +112,10 @@ class QCleanup:
 
 	# Extract information on sample size, iteration and then "shortened" info
 	def runParser(size, cutoff, minimum):	
+		# VARIABLES TO SET
+		# clock = 3600 (not used for longer iterations)
+		limit = 30 #length of matches list to print - 50 is used on lower iterations
+		# INITIALISATION
 		count1 = 0
 		count2 = 0
 		compact = list()
@@ -125,7 +129,7 @@ class QCleanup:
 				line = file.readline()		
 				while line != "":	
 					if line.startswith("["):
-						match = line[:50]
+						match = line[:limit]
 					if line.startswith("The lookahead"):
 						count1 += 1
 						file.readline()
@@ -134,9 +138,9 @@ class QCleanup:
 						if nextline.startswith("Shortened"):
 							compact.append(int(line[49:50]))
 							if line[68] == "w":							
-								compact.append(int(line[60:68]))
+								compact.append(int(line[60:69]))
 							else:
-								compact.append(int(line[60:68]))
+								compact.append(int(line[60:69]))
 							shortlist = nextline[16:].split()
 							compact.append(int(shortlist[0]))
 							compact.append(float(shortlist[1]))
@@ -155,9 +159,8 @@ class QCleanup:
 						if size in compact:
 							cnt1[compact[2]] += 1
 							cnt2[compact[4]] += 1
-							# May need tuning for higher iterations - set at 1 hr at present
-							if compact[5] < 3600:
-								cnt3[compact[5]] += 1	
+							# No clock used for higher iterations
+							cnt3[compact[5]] += 1	
 							if (len(compact) > 6):
 								cnt4[compact[6]] += 1
 								cnt5[compact[7]] += 1
@@ -170,7 +173,7 @@ class QCleanup:
 			print(f"The counter of final values for {size} summed to {sum(cnt2.values())} and was:\n {sorted(cnt2.items())}")
 			print(f"Long Form Information: The length of the final iteration (normally 5m) for {sum(cnt4.values())} runs was :\n {sorted(cnt4.items())}")
 			print(f"Long Form Information: The number of greedy iterations skipped for {sum(cnt5.values())} runs was :\n {sorted(cnt5.items())}")
-			print(f"Time to Complete: There were {sum(cnt3.values())} entries less than one hour and the average was {sum(cnt3.elements())/sum(cnt3.values()):.2f}")
+			print(f"Time to Complete: There were {sum(cnt3.values())} entries and the average was {sum(cnt3.elements())/sum(cnt3.values()):.2f}")
 
 			file.close()
 
@@ -314,10 +317,10 @@ class QCleanup:
 			json.dump(dist,handler)
 		handler.close()
 
-#for x in range(0,14):
-#	QCleanup.reader(x,207,True)
-#QCleanup.reader(12,1,True,"[4, 16, 28, 31, 25, 13, 52, 6, 19, 24, 10")
-QCleanup.reader(0,205,True)
+#for x in range(0,7):
+#	QCleanup.reader(x,210,True)
+#QCleanup.reader(6,1,True,"[")
+#QCleanup.reader(88,205,False)
 #QCleanup.viewer()
 #QCleanup.table(180)
-#QCleanup.runParser(300000,197,3082)
+#QCleanup.runParser(4000000,1,0)
