@@ -12,7 +12,7 @@ class EternityStart():
     def main():
         # DECISIONS REQUIRED
         useHints = False # Use only centre tile or 4 corner hints as well
-        maxEpisodes = 10 # number of episodes to run
+        maxEpisodes = 47 # number of episodes to run
         sampleSize = 1 # number of runs/samples to take - 1 for no hints and 2 for hints typically
         CreateTile.firstCountLimit = 350000 # cutoff for run - normally at least 1m
         CreateTile.terminalCountLimit = 5000000 # cutoff for final iteration at 88
@@ -53,6 +53,7 @@ class EternityStart():
             #testPosition = [] # What worries me a little is whether double rotation gets overwritten if only testPosition is aligned
             averageList = []
             maxList = []
+            maximum = 0 # Used to work out maximum of various lists
             epsilonMaxList = []
             maximaList = [] # depth of lookahead at each iteration - changed to iteration length
             iterationList = [] # list of viable iterations
@@ -351,7 +352,7 @@ class EternityStart():
                     #print(f"TEMP Line 267: testPosition for single option with alignment is: {testPosition}")
                     if (maximaList != []):
                         maximaList.append(maximaList[-1])
-                    maximum = maximaList[-1]
+                        maximum = maximaList[-1]
                     itemFound = False
                     for item in Q:
                         if MCTSList == item[0]:

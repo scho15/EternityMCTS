@@ -126,7 +126,8 @@ class QCleanup:
 				line = file.readline()		
 				while line != "":	
 					if line.startswith("["):
-						match = line[:57]
+						# normally 60 but can be lengthened
+						match = line[:60]
 					if line.startswith("The lookahead"):
 						count1 += 1
 						file.readline()
@@ -328,10 +329,10 @@ class QCleanup:
 		handler.close()
 		return length # output number of viable options
 
-#for x in range(0,21):
+#for x in range(12,21):
 #	QCleanup.reader(x,209,True)
-#QCleanup.reader(18,1,True,"[4, 16, 28, 31, 25, 13, 52, 6, 19, 24, 10, 47, 45, 7, 11, 3, 27")
-#QCleanup.reader(16,200,True,"[4, 16, 28, 31, 25, 13, 52, 6, 19, 24, 10")
+#QCleanup.reader(17,1,True,"[4, 16, 28, 31, 25, 13, 52, 6, 19, 24, 10, 47, 48, 41, 26, 3")
+#QCleanup.reader(0,1,True,"[")
 #QCleanup.viewer()
 #QCleanup.table(180)
-#QCleanup.runParser(350000,1,3782)
+QCleanup.runParser(350000,1,4031)
