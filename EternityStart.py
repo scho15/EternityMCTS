@@ -12,7 +12,7 @@ class EternityStart():
     def main():
         # DECISIONS REQUIRED
         useHints = False # Use only centre tile or 4 corner hints as well
-        maxEpisodes = 47 # number of episodes to run
+        maxEpisodes = 250 # number of episodes to run
         sampleSize = 1 # number of runs/samples to take - 1 for no hints and 2 for hints typically
         CreateTile.firstCountLimit = 350000 # cutoff for run - normally at least 1m
         CreateTile.terminalCountLimit = 5000000 # cutoff for final iteration at 88
@@ -105,7 +105,7 @@ class EternityStart():
                         testList.append(tile)
                         MCTSPosition.append(CreateTile.tileList[tile].copy())
                         MCTSPosition = EternityMCTS.tileAlignmentOnLastPosition(testList, MCTSPosition)
-                        print(f"\nThe test list is {testList}")
+                        # LESS VERBOSE 1: print(f"\nThe test list is {testList}")
                         # Implicitly does not deal with tiles that can have two positions - ideally stop using this
                         #tilePositions = EternityMCTS.tileAlignment(testList)
                         # print(f"TEMP: The tile positions are {tilePositions} using rotations to CreateTile tiles")                        
@@ -142,14 +142,15 @@ class EternityStart():
                                     iterationList.append(len(limitedRunList))
                                 runLength.append(runCount)  
                                 lowIteration.append(lowestItn)
-                            print("The distribution for runs is as follows:")
-                            print(sorted(Counter(a).items())) 
-                            print(sorted(Counter(runLength).items()))
-                            print(sorted(Counter(lowIteration).items()))
+                            #LESS VERBOSE 2-5
+                            #print("The distribution for runs is as follows:")
+                            #print(sorted(Counter(a).items())) 
+                            #print(sorted(Counter(runLength).items()))
+                            #print(sorted(Counter(lowIteration).items()))
                             #file1.write(f"{Counter(a)}\n")
                             average = sum(a)/len(a)
                             maximum = max(Counter(a))
-                            print(f"The average is {average:.5f} and maximum was {maximum}")
+                            # LESS VERBOSE 6: print(f"The average is {average:.5f} and maximum was {maximum}")
                             # Extremely long section to deal with 173 and 233 edge cases of double rotation
                             # As these tiles are not rotated yet, it's taking default position which is misleading
                             # Need to force alignment first
