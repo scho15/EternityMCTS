@@ -53,6 +53,7 @@ class EternityStart():
             #testPosition = [] # What worries me a little is whether double rotation gets overwritten if only testPosition is aligned
             averageList = []
             maxList = []
+            maximum = 0 # Used to work out maximum of various lists
             epsilonMaxList = []
             maximaList = [] # depth of lookahead at each iteration - changed to iteration length
             iterationList = [] # list of viable iterations
@@ -350,7 +351,7 @@ class EternityStart():
                     #print(f"TEMP Line 267: testPosition for single option with alignment is: {testPosition}")
                     if (maximaList != []):
                         maximaList.append(maximaList[-1])
-                    maximum = maximaList[-1]
+                        maximum = maximaList[-1]
                     itemFound = False
                     for item in Q:
                         if MCTSList == item[0]:

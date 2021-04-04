@@ -323,4 +323,4 @@ class QCleanup:
 #QCleanup.reader(88,205,False)
 #QCleanup.viewer()
 #QCleanup.table(180)
-#QCleanup.runParser(4000000,1,0)
+QCleanup.runParser(25000000,1,0)
