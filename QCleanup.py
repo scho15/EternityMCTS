@@ -111,7 +111,7 @@ class QCleanup:
 				print(f"{element[0]}, {element[1]}, {QDictVisits[element[0]]}")
 
 	# Extract information on sample size, iteration and then "shortened" info
-	def runParser(size, cutoff, minimum):	
+	def runParser(size, cutoff, length, minimum):	
 		count1 = 0
 		count2 = 0
 		compact = list()
@@ -127,7 +127,7 @@ class QCleanup:
 				while line != "":	
 					if line.startswith("["):
 						# normally 60 but can be lengthened
-						match = line[:60]
+						match = line[:length]
 					if line.startswith("The lookahead"):
 						count1 += 1
 						file.readline()
@@ -168,12 +168,12 @@ class QCleanup:
 							elif (size > 350000):
 								timing = 1000000
 							if compact[5] < timing:
-								cnt3[compact[5]] += 1	
+								cnt3[compact[5]] += 1									
 							if (len(compact) > 6):
 								cnt4[compact[6]] += 1
 								cnt5[compact[7]] += 1
 								if (len(compact) > 8):
-									cnt6[compact[8]] += 1
+									cnt6[compact[8]] += 1			
 					compact.clear()
 					line = file.readline()						
 			if (count1 != count2):
@@ -329,10 +329,10 @@ class QCleanup:
 		handler.close()
 		return length # output number of viable options
 
-#for x in range(12,21):
-#	QCleanup.reader(x,209,True)
-#QCleanup.reader(17,1,True,"[4, 16, 28, 31, 25, 13, 52, 6, 19, 24, 10, 47, 48, 41, 26, 3")
-#QCleanup.reader(0,1,True,"[")
+#for x in range(49,89):
+#	QCleanup.reader(x,211,True)
+#QCleanup.reader(2,1,True,"[3")
+QCleanup.reader(16,205,True,"[")
 #QCleanup.viewer()
 #QCleanup.table(180)
-QCleanup.runParser(350000,1,4031)
+#QCleanup.runParser(350000,1,60,4289)

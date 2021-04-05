@@ -12,7 +12,7 @@ class EternityStart():
     def main():
         # DECISIONS REQUIRED
         useHints = False # Use only centre tile or 4 corner hints as well
-        maxEpisodes = 250 # number of episodes to run
+        maxEpisodes =  # number of episodes to run
         sampleSize = 1 # number of runs/samples to take - 1 for no hints and 2 for hints typically
         CreateTile.firstCountLimit = 350000 # cutoff for run - normally at least 1m
         CreateTile.terminalCountLimit = 5000000 # cutoff for final iteration at 88
@@ -117,7 +117,7 @@ class EternityStart():
                                 limitedRunList, runCount, lowestItn = EternityMCTS.fullSolutionCheckWithSwap(256, countLimit, testList.copy(), MCTSPosition.copy(), useHints)
                                 miniCount = 0
                                 while (runCount == countLimit and miniCount < 5 and len(limitedRunList) < viableMinimum):
-                                    print(f"Rerunning sample once again as value reached of {len(limitedRunList)} was less than viable minimum set of {viableMinimum}")
+                                    # LESS VERBOSE 8: print(f"Rerunning sample once again as value reached of {len(limitedRunList)} was less than viable minimum set of {viableMinimum}")
                                     limitedRunList, runCount, lowestItn = EternityMCTS.fullSolutionCheckWithSwap(256, countLimit, testList.copy(), MCTSPosition.copy(), useHints)
                                     miniCount += 1
                                 if (len(limitedRunList) >= solutionPrint):                                    
@@ -275,7 +275,7 @@ class EternityStart():
                         runLength.clear()
                         lowIteration.clear()
                         end = time.time()
-                        print(f"Time taken so far is: {end - start:.3f} seconds")
+                        #LESS VERBOSE 7: print(f"Time taken so far is: {end - start:.3f} seconds")
                     print(f"\nFor options {options}")
                     # Choice of using average list or maximum list
                     if (sampleMax == True):
@@ -336,7 +336,8 @@ class EternityStart():
                     elif (maximaList != []):
                         maximaList.append(maximaList[-1])
                     if maximaList!=[]:
-                        print(f"The length of the tree search is {len(MCTSList)} and maximum so far is {max(maximaList)}\n")
+                        print(f"The length of the tree search is {len(MCTSList)} and maximum so far is {max(maximaList)}")
+                        print(f"Time taken so far is: {end - start:.3f} seconds\n")
                         #file1.write(f"The length of the tree search is {len(MCTSList)} and maximum so far is {max(maximaList)}\n")
                         #file1.write(f"{MCTSList}\n\n")
                 elif (len(options) == 1):
