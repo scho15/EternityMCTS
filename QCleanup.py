@@ -317,10 +317,10 @@ class QCleanup:
 			json.dump(dist,handler)
 		handler.close()
 
-#for x in range(0,7):
-#	QCleanup.reader(x,210,True)
+for x in range(0,7):
+	QCleanup.reader(x,210,True)
 #QCleanup.reader(6,1,True,"[")
-#QCleanup.reader(88,205,False)
+#QCleanup.reader(88,205,True)
 #QCleanup.viewer()
 #QCleanup.table(180)
-QCleanup.runParser(25000000,1,0)
+#QCleanup.runParser(50000000,1,322)
