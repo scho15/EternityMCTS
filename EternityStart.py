@@ -12,7 +12,7 @@ class EternityStart():
     def main():
         # DECISIONS REQUIRED
         useHints = False # Use only centre tile or 4 corner hints as well
-        maxEpisodes = 22 # number of episodes to run
+        maxEpisodes = 250 # number of episodes to run
         sampleSize = 1 # number of runs/samples to take - 1 for no hints and 2 for hints typically
         CreateTile.firstCountLimit = 350000 # cutoff for run - normally at least 1m
         CreateTile.terminalCountLimit = 5000000 # cutoff for final iteration at 88
@@ -180,7 +180,12 @@ class EternityStart():
                                     lowIteration.clear()
                                     for count in range(sampleSize):
                                         limitedRunList, runCount, lowestItn = EternityMCTS.fullSolutionCheckWithSwap(256, countLimit, testList.copy(), MCTSPosition.copy(), useHints)
-                                        if (len(limitedRunList) >= 205):                                    
+                                        miniCount = 0
+                                        while (runCount == countLimit and miniCount < 5 and len(limitedRunList) < viableMinimum):
+                                        # LESS VERBOSE 8: print(f"Rerunning sample once again as value reached of {len(limitedRunList)} was less than viable minimum set of {viableMinimum}")
+                                            limitedRunList, runCount, lowestItn = EternityMCTS.fullSolutionCheckWithSwap(256, countLimit, testList.copy(), MCTSPosition.copy(), useHints)
+                                            miniCount += 1
+                                        if (len(limitedRunList) >= solutionPrint):                                    
                                             print(f"{len(limitedRunList)} solution reached of \n{limitedRunList}")
                                             file2.write(f"{len(limitedRunList)} solution reached of \n{limitedRunList}\n")
                                             print(f"The solution of {len(limitedRunList)} has been used to create new Q table values in later iterations but with no visitCount\n")
