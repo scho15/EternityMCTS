@@ -319,8 +319,8 @@ class QCleanup:
 
 for x in range(0,7):
 	QCleanup.reader(x,210,True)
-#QCleanup.reader(6,1,True,"[")
+#QCleanup.reader(2,1,True,"[2")
 #QCleanup.reader(88,205,True)
 #QCleanup.viewer()
 #QCleanup.table(180)
-#QCleanup.runParser(50000000,1,322)
+#QCleanup.runParser(5000000,1,348)
