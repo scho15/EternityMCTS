@@ -12,7 +12,7 @@ class EternityStart():
     def main():
         # DECISIONS REQUIRED
         useHints = False # Use only centre tile or 4 corner hints as well
-        maxEpisodes = 250 # number of episodes to run
+        maxEpisodes = 84 # number of episodes to run
         sampleSize = 1 # number of runs/samples to take - 1 for no hints and 2 for hints typically
         CreateTile.firstCountLimit = 350000 # cutoff for run - normally at least 1m
         CreateTile.terminalCountLimit = 5000000 # cutoff for final iteration at 88
@@ -33,6 +33,8 @@ class EternityStart():
         iterationList = [] # list of all iterations
         lowIteration = [] # list of lowest iteration explored
         miniCount = 0 # Used to prevent viable iteration loop repeating
+        tempMaxList = [] # used to store greedy max for first rotation of double tile
+        secondMaxList = [] # used to store second rotation for double tile
         #Special characters seem to create issues for file locations
         if (os.path.isfile('QTable.txt') == True):
             with open("QTable.txt", "r") as QTablefile:
@@ -311,14 +313,14 @@ class EternityStart():
                         if (epsilonMaxOption != 173 and epsilonMaxOption != 199 and epsilonMaxOption != 233):
                             MCTSPosition.append(CreateTile.tileList[epsilonMaxOption].copy())
                             MCTSPosition = EternityMCTS.tileAlignmentOnLastPosition(MCTSList, MCTSPosition)
-                        else:
+                        else:                            
                             MCTSPosition.append(CreateTile.tileList[epsilonMaxOption].copy())
                             MCTSPosition = EternityMCTS.tileAlignmentOnLastPosition(MCTSList, MCTSPosition)
                             northMatch = MCTSPosition[-1][0]
                             eastMatch = MCTSPosition[-1][1]
                             southMatch = MCTSPosition[-1][2]
                             westMatch = MCTSPosition[-1][3]
-                            print(f"NEW: Current tile is a double rotation tile {tile} with position {MCTSPosition[-1]}")
+                            print(f"NEW: Current tile is a double rotation tile {epsilonMaxOption} with position {MCTSPosition[-1]}")
                             firstOptions = EternityMCTS.findNextPositionMatches(MCTSList,MCTSPosition, useHints)
                             print(f"NEW: Next available options would be {firstOptions}")
                             testList = MCTSList.copy()
