@@ -329,12 +329,12 @@ class QCleanup:
 		handler.close()
 		return length # output number of viable options
 
-#for x in range(0,23):
+#for x in range(0,24):
 #	QCleanup.reader(x,209,True)
-#QCleanup.reader(13,1,True,"[4, 16, 28, 31, 25, 13, 52, 5, 11, 15, 8, 60")
+#QCleanup.reader(12,1,True,"[4, 16, 28, 31, 25, 13, 52, 5, 11, 15, 8")
 #QCleanup.reader(16,1,True,"[4, 16, 28, 31, 25, 13, 52, 6, 19, 24, 10, 47, 48")
 #QCleanup.reader(20,1,True,"[4, 16, 28, 31, 25, 13, 52, 6, 19, 24, 10, 47, 48, 41, 26, 3, 56, 160, 131")
-#QCleanup.reader(2,1,True,"[3")
+#QCleanup.reader(16,200,True,"[")
 #QCleanup.viewer()
 #QCleanup.table(180)
-QCleanup.runParser(350000,1,89,5223)
+QCleanup.runParser(350000,1,89,5295)
