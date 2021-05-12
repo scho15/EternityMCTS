@@ -56,7 +56,7 @@ class QCleanup:
 		minimumIteration = 88
 		counter = 0
 		kept = 0
-		if (os.path.isfile('QTable.txt') == True):
+		if (os.path.isfile('C:/Users/scho1/QTableMCTS/QTable.txt') == True):
 			with open("QTable.txt", "r") as QTablefile:
 				Q = json.load(QTablefile)
 				print(f"Q-table uploaded with {len(Q)} lines")
@@ -335,6 +335,6 @@ class QCleanup:
 #QCleanup.reader(16,1,True,"[4, 16, 28, 31, 25, 13, 52, 6, 19, 24, 10, 47, 48")
 #QCleanup.reader(20,1,True,"[4, 16, 28, 31, 25, 13, 52, 6, 19, 24, 10, 47, 48, 41, 26, 3, 56, 160, 131")
 #QCleanup.reader(6,1,True,"[")
-#QCleanup.viewer()
+QCleanup.viewer()
 #QCleanup.table(180)
-QCleanup.runParser(400000,1,89,5299)
+#QCleanup.runParser(400000,1,89,5299)

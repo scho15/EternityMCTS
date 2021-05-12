@@ -36,8 +36,8 @@ class EternityStart():
         tempMaxList = [] # used to store greedy max for first rotation of double tile
         secondMaxList = [] # used to store second rotation for double tile
         #Special characters seem to create issues for file locations
-        if (os.path.isfile('QTable.txt') == True):
-            with open("QTable.txt", "r") as QTablefile:
+        if (os.path.isfile('C:/Users/scho1/QTableMCTS/QTable.txt') == True):
+            with open("C:/Users/scho1/QTableMCTS/QTable.txt", "r") as QTablefile:
                 Q = json.load(QTablefile)
             print(f"QTable uploaded with {len(Q)} lines")
         CreateTile.createTile()
@@ -492,7 +492,7 @@ class EternityStart():
             Q[0][1] = max(Q[0][1],finalLength)
             Q[0][2] = Q[0][2] + 1
             # Do Not Use if Testing
-            with open("QTable.txt","w") as handler:
+            with open("C:/Users/scho1/QTableMCTS/QTable.txt","w") as handler:
                 json.dump(Q,handler) 
             handler.close()             
             episode += 1    
