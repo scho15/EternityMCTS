@@ -47,4 +47,3 @@
 #*.PDF   diff=astextplain
 #*.rtf   diff=astextplain
 #*.RTF   diff=astextplain
-QTable.txt filter=lfs diff=lfs merge=lfs -text
