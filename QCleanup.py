@@ -13,8 +13,8 @@ class QCleanup:
 		minimumIteration = 6
 		counter = 0
 		kept = 0
-		if (os.path.isfile('QTable.txt') == True):
-			with open("QTable.txt", "r") as QTablefile:
+		if (os.path.isfile('C:/Users/scho1/QTableMCTS/QTable.txt') == True):
+			with open("C:/Users/scho1/QTableMCTS/QTable.txt", "r") as QTablefile:
 				Q = json.load(QTablefile)
 				print(f"QTable uploaded with {len(Q)} lines")
 		for item in Q:
@@ -57,7 +57,7 @@ class QCleanup:
 		counter = 0
 		kept = 0
 		if (os.path.isfile('C:/Users/scho1/QTableMCTS/QTable.txt') == True):
-			with open("QTable.txt", "r") as QTablefile:
+			with open("C:/Users/scho1/QTableMCTS/QTable.txt", "r") as QTablefile:
 				Q = json.load(QTablefile)
 				print(f"Q-table uploaded with {len(Q)} lines")
 		for item in Q:
@@ -74,8 +74,8 @@ class QCleanup:
 	def massedit(iteration):
 		Q = []
 		counter = 0
-		if (os.path.isfile('Q-Table.txt') == True):
-			with open("Q-table.txt", "r") as QTablefile:
+		if (os.path.isfile('C:/Users/scho1/QTableMCTS/QTable.txt') == True):
+			with open("C:/Users/scho1/QTableMCTS/QTable.txt", "r") as QTablefile:
 				Q = json.load(QTablefile)
 				print(f"Q-table uploaded with {len(Q)} lines")
 		for item in Q.copy():
@@ -83,7 +83,7 @@ class QCleanup:
 				item[2] = 0
 				counter = counter + 1
 		print(f"Number of items amended to length 0 for iteration {iteration} was {counter}")
-		with open("Q-table.txt","w") as handler:
+		with open("C:/Users/scho1/QTableMCTS/QTable.txt","w") as handler:
 			json.dump(Q,handler) 
 		handler.close()    
 
@@ -94,8 +94,8 @@ class QCleanup:
 		verbose = entries
 		QDictLength = {}
 		QDictVisits = {}
-		if (os.path.isfile('QTable.txt') == True):
-			with open("QTable.txt", "r") as QTablefile:
+		if (os.path.isfile('C:/Users/scho1/QTableMCTS/QTable.txt') == True):
+			with open("C:/Users/scho1/QTableMCTS/QTable.txt", "r") as QTablefile:
 				Q = json.load(QTablefile)
 				print(f"Q Table uploaded with {len(Q)} lines")
 		for item in Q:
@@ -195,8 +195,8 @@ class QCleanup:
 		output = ""
 		QDictLength = {}
 		QDictVisits = {}
-		if (os.path.isfile('QTable.txt') == True):
-			with open("QTable.txt", "r") as QTablefile:
+		if (os.path.isfile('C:/Users/scho1/QTableMCTS/QTable.txt') == True):
+			with open("C:/Users/scho1/QTableMCTS/QTable.txt", "r") as QTablefile:
 				Q = json.load(QTablefile)
 				print(f"Q Table uploaded with {len(Q)} lines")
 		print(f"Entries which are {minimum} or more for iterations 1 to 6:")
@@ -219,8 +219,8 @@ class QCleanup:
 		updateList = []
 		textInput = ""
 		errorNote = False
-		if (os.path.isfile('Q-Table.txt') == True):
-			with open("Q-table.txt", "r") as QTablefile:
+		if (os.path.isfile('C:/Users/scho1/QTableMCTS/QTable.txt') == True):
+			with open("C:/Users/scho1/QTableMCTS/QTable.txt", "r") as QTablefile:
 				Q = json.load(QTablefile)
 				print(f"Q-table uploaded with {len(Q)} lines")	
 		textInput = input("Enter the iteration to be updated in Q with brackets: ")
@@ -242,7 +242,7 @@ class QCleanup:
 			print("There was a problem on at least one update")
 		else:
 			print("All entries were updated successfully")
-		with open("Q-table.txt","w") as handler:
+		with open("C:/Users/scho1/QTableMCTS/QTable.txt","w") as handler:
 			json.dump(Q,handler) 
 		handler.close()  
 		
@@ -329,12 +329,13 @@ class QCleanup:
 		handler.close()
 		return length # output number of viable options
 
-#for x in range(0,24):
-#	QCleanup.reader(x,209,True)
-#QCleanup.reader(9,1,True,"[4, 16, 28, 31, 25, 13, 52, 5")
-#QCleanup.reader(16,1,True,"[4, 16, 28, 31, 25, 13, 52, 6, 19, 24, 10, 47, 48")
+for x in range(0,26):
+	QCleanup.reader(x,209,True)
+#QCleanup.reader(13,1,True,"[4, 16, 28, 31, 25, 13, 52, 5, 11, 15, 8, 60")
+#QCleanup.reader(25,1,True,"[4, 16, 28, 31, 25, 13, 52, 6, 19, 24, 10, 47, 45, 7, 11, 3, 27, 72, 111, 173, 175, 244, 131, 132")
 #QCleanup.reader(20,1,True,"[4, 16, 28, 31, 25, 13, 52, 6, 19, 24, 10, 47, 48, 41, 26, 3, 56, 160, 131")
+#QCleanup.reader(16,200,True,"[4, 16, 28, 31, 25, 13, 52, 6, 19, 24, 10, 47, 48")
 #QCleanup.reader(6,1,True,"[")
-QCleanup.viewer()
+#QCleanup.viewer()
 #QCleanup.table(180)
-#QCleanup.runParser(400000,1,89,5299)
+#QCleanup.runParser(400000,1,89,5619)

@@ -30,7 +30,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="MCTS Notes.txt" />
-    <Content Include="MCTS.txt" />
     <Content Include="MCTSRunSummary.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />

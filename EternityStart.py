@@ -12,7 +12,7 @@ class EternityStart():
     def main():
         # DECISIONS REQUIRED
         useHints = False # Use only centre tile or 4 corner hints as well
-        maxEpisodes = 246 # number of episodes to run
+        maxEpisodes = 175 # number of episodes to run
         sampleSize = 1 # number of runs/samples to take - 1 for no hints and 2 for hints typically
         CreateTile.firstCountLimit = 400000 # cutoff for run - normally at least 1m
         CreateTile.terminalCountLimit = 5000000 # cutoff for final iteration at 88
@@ -322,15 +322,13 @@ class EternityStart():
                             westMatch = MCTSPosition[-1][3]
                             print(f"NEW: Current tile is a double rotation tile {epsilonMaxOption} with position {MCTSPosition[-1]}")
                             firstOptions = EternityMCTS.findNextPositionMatches(MCTSList,MCTSPosition, useHints)
-                            print(f"NEW: Next available options would be {firstOptions}")
-                            testList = MCTSList.copy()
+                            print(f"NEW: Next available options would be {firstOptions}")                           
                             for tile in firstOptions:
+                                testList = MCTSList.copy()
                                 testList.append(tile)
-                                itemFound = False
                                 for item in Q:                                     
                                     if testList == item[0]:                                        
                                         tempMaxList.append(item[1])
-                                        itemFound = True
                                         break;
                             print(f"NEW: Largest item found in first position is {max(tempMaxList)}")
                             if (southMatch == westMatch):
@@ -343,15 +341,13 @@ class EternityStart():
                                         CreateTile.rotatePosition(-1, MCTSPosition)
                                     print(f"The new position is {MCTSPosition[-1]}\n")
                                     secondOptions = EternityMCTS.findNextPositionMatches(MCTSList,MCTSPosition, useHints)
-                                    print(f"NEW: Next set of available options would be {secondOptions}")
-                                    testList = MCTSList.copy()
+                                    print(f"NEW: Next set of available options would be {secondOptions}")                                    
                                     for tile in secondOptions:
+                                        testList = MCTSList.copy() # Moved so this is reset each time
                                         testList.append(tile)
-                                        itemFound = False
                                         for item in Q:                                     
                                             if testList == item[0]:                                        
                                                 secondMaxList.append(item[1])
-                                                itemFound = True
                                                 break;
                                     print(f"NEW: Largest item found in second position is {max(secondMaxList)}")
                                     if (max(tempMaxList) >= max(secondMaxList)):
