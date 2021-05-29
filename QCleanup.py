@@ -317,10 +317,27 @@ class QCleanup:
 			json.dump(dist,handler)
 		handler.close()
 
-for x in range(0,7):
-	QCleanup.reader(x,210,True)
+	def viewCounter(cutoff):
+		if (os.path.isfile('Count-Distribution.txt') == True):
+			with open("Count-Distribution.txt", "r") as CountDistributionfile:
+				dist = json.load(CountDistributionfile)
+			print(f"Count distribution uploaded with {len(dist)} entries")
+		for item in dist:
+			if cutoff == item[0]:
+				storedCntr = item[1]
+				print(f"Counter for cutoff {cutoff} uploaded as: \n{sorted(storedCntr.items())}")
+				itemFound = True
+		if (itemFound == False):
+			print(f"No initial count distribution was found for cutoff {cutoff}")
+		storedCntr = Counter(storedCntr)
+		print(f"The total count was {sum(storedCntr.values())} and the 3 most common values were {storedCntr.most_common(3)}")
+
+
+#for x in range(0,7):
+#	QCleanup.reader(x,210,True)
 #QCleanup.reader(2,1,True,"[2")
-#QCleanup.reader(88,205,True)
+#QCleanup.reader(6,1,True)
 #QCleanup.viewer()
 #QCleanup.table(180)
-#QCleanup.runParser(5000000,1,348)
+#QCleanup.runParser(5000000,1,379)
+#QCleanup.viewCounter(5000000)
