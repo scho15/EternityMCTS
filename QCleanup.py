@@ -329,13 +329,33 @@ class QCleanup:
 		handler.close()
 		return length # output number of viable options
 
-for x in range(0,26):
-	QCleanup.reader(x,209,True)
-#QCleanup.reader(13,1,True,"[4, 16, 28, 31, 25, 13, 52, 5, 11, 15, 8, 60")
+	def Fib(n):
+		if n <= 2:
+			return 1
+		else:
+			return QCleanup.Fib(n-1) + QCleanup.Fib(n-2)
+
+	#Example of memoization
+	def FibMemo(n, memo = {}):
+		if n in memo:
+			return memo[n]
+		if n <= 2:
+			return 1
+		memo[n] = QCleanup.FibMemo(n - 1, memo) + QCleanup.FibMemo(n - 2, memo) 
+		# Question is whether it's n-1, memo or just n-1...
+		print(f"memo {n} is {memo[n]}")
+		return memo[n]
+	#Memoization is amazing!!!!!
+
+#for x in range(0,26):
+#	QCleanup.reader(x,209,True)
+#QCleanup.reader(15,1,True,"[4, 16, 28, 31, 25, 13, 52, 5, 11, 15, 8, 60, 35, 58")
 #QCleanup.reader(25,1,True,"[4, 16, 28, 31, 25, 13, 52, 6, 19, 24, 10, 47, 45, 7, 11, 3, 27, 72, 111, 173, 175, 244, 131, 132")
-#QCleanup.reader(20,1,True,"[4, 16, 28, 31, 25, 13, 52, 6, 19, 24, 10, 47, 48, 41, 26, 3, 56, 160, 131")
+#QCleanup.reader(22,1,True,"[4, 16, 28, 31, 25, 13, 52, 6, 19, 24, 10, 47, 48, 41, 26, 3, 56, 160, 131, 192, 249")
 #QCleanup.reader(16,200,True,"[4, 16, 28, 31, 25, 13, 52, 6, 19, 24, 10, 47, 48")
-#QCleanup.reader(6,1,True,"[")
+#QCleanup.reader(3,1,True,"[3, 29")
 #QCleanup.viewer()
 #QCleanup.table(180)
-#QCleanup.runParser(400000,1,89,5619)
+#print(QCleanup.Fib(40))
+#print(QCleanup.FibMemo(50))
+#QCleanup.runParser(400000,1,89,5795)
