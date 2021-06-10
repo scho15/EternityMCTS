@@ -11,7 +11,7 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{B88BB04F-E7C1-4874-B30A-3CCE56071EE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B88BB04F-E7C1-4874-B30A-3CCE56071EE1}.Debug|Any CPU.ActiveCfg = Release|Any CPU
 		{B88BB04F-E7C1-4874-B30A-3CCE56071EE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution

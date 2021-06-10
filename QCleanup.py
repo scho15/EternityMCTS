@@ -347,15 +347,59 @@ class QCleanup:
 		return memo[n]
 	#Memoization is amazing!!!!!
 
-#for x in range(0,26):
+	def canSum( targetSum, numbers):
+		if targetSum == 0:
+			return True
+		if targetSum < 0:
+			return False
+
+		for num in numbers:
+			remainder = targetSum - num
+			if QCleanup.canSum(remainder, numbers) == True:
+				return True
+
+		return False
+
+	def canSumMemo( targetSum, numbers, memo = {}):
+		if targetSum in memo:
+			return memo[targetSum]
+		if targetSum == 0:
+			return True
+		if targetSum < 0:
+			return False
+
+		for num in numbers:
+			remainder = targetSum - num
+			if QCleanup.canSumMemo(remainder, numbers, memo) == True:
+				memo[remainder] = True
+				print(f"memo {remainder} is {memo[remainder]}")
+				return memo[remainder]
+		
+		memo[remainder] = False
+		print(f"memo {remainder} is {memo[remainder]}")
+		return memo[remainder]
+
+	def allConstruct(target, wordBank):
+		result = []		
+		if target == "":
+			return [[]]
+		for word in wordBank:
+			if target.startswith(word) == True:
+				suffix = target.replace(word,"")
+				suffixWays = QCleanup.allConstruct(suffix, wordBank)
+				for item in suffixWays:
+					item.insert(0,word)
+				result.extend(suffixWays)
+		return result
+
+#for x in range(0,27):
 #	QCleanup.reader(x,209,True)
 #QCleanup.reader(15,1,True,"[4, 16, 28, 31, 25, 13, 52, 5, 11, 15, 8, 60, 35, 58")
-#QCleanup.reader(25,1,True,"[4, 16, 28, 31, 25, 13, 52, 6, 19, 24, 10, 47, 45, 7, 11, 3, 27, 72, 111, 173, 175, 244, 131, 132")
+#QCleanup.reader(10,1,True,"[4, 16, 28, 31, 25, 13, 52, 5, 10")
+#QCleanup.reader(11,1,True,"[4, 16, 28, 31, 25, 13, 52, 6, 19, 24")
 #QCleanup.reader(22,1,True,"[4, 16, 28, 31, 25, 13, 52, 6, 19, 24, 10, 47, 48, 41, 26, 3, 56, 160, 131, 192, 249")
-#QCleanup.reader(16,200,True,"[4, 16, 28, 31, 25, 13, 52, 6, 19, 24, 10, 47, 48")
-#QCleanup.reader(3,1,True,"[3, 29")
+#QCleanup.reader(88,205,True)
+#QCleanup.reader(3,1,True,"[")
 #QCleanup.viewer()
 #QCleanup.table(180)
-#print(QCleanup.Fib(40))
-#print(QCleanup.FibMemo(50))
-#QCleanup.runParser(400000,1,89,5795)
+#QCleanup.runParser(400000,1,89,6046)
