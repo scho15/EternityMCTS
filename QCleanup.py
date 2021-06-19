@@ -394,12 +394,12 @@ class QCleanup:
 
 #for x in range(0,27):
 #	QCleanup.reader(x,209,True)
-#QCleanup.reader(15,1,True,"[4, 16, 28, 31, 25, 13, 52, 5, 11, 15, 8, 60, 35, 58")
-#QCleanup.reader(10,1,True,"[4, 16, 28, 31, 25, 13, 52, 5, 10")
-#QCleanup.reader(11,1,True,"[4, 16, 28, 31, 25, 13, 52, 6, 19, 24")
-#QCleanup.reader(22,1,True,"[4, 16, 28, 31, 25, 13, 52, 6, 19, 24, 10, 47, 48, 41, 26, 3, 56, 160, 131, 192, 249")
+#QCleanup.reader(14,1,True,"[4, 16, 28, 31, 25, 13, 52, 5, 11, 15, 8, 60, 35")
+#QCleanup.reader(11,1,True,"[4, 16, 28, 31, 25, 13, 52, 5, 10, 47")
+#QCleanup.reader(20,1,True,"[4, 16, 28, 31, 25, 13, 52, 6, 19, 24, 10, 47, 45, 7, 11, 3, 27, 72, 111")
+#QCleanup.reader(16,200,True,"[4, 16, 28, 31, 25, 13, 52, 6, 19, 24, 10, 47, 48")
 #QCleanup.reader(88,205,True)
 #QCleanup.reader(3,1,True,"[")
 #QCleanup.viewer()
 #QCleanup.table(180)
-#QCleanup.runParser(400000,1,89,6046)
+#QCleanup.runParser(400000,1,89,6295)
