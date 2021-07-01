@@ -121,6 +121,7 @@ class QCleanup:
 		cnt4 = Counter() # count for final iteration
 		cnt5 = Counter() # iterations skipped through greedy runs
 		cnt6 = Counter() # number of (remaining) viable iterations
+		comment = "" # classify what sequence the match falls under
 		if (os.path.isfile('MCTSRunSummary.txt') == True):
 			with open("MCTSRunSummary.txt","r") as file:
 				line = file.readline()		
@@ -152,8 +153,22 @@ class QCleanup:
 								# Capturing number of viable iterations if these exist
 								if len(longlist) > 10:
 									compact.append(int(longlist[10]))
-							if ((compact[2]>=cutoff or compact[3]>=cutoff) and count2 >= minimum):
-								print(f"{match}] {compact}")
+							if (match.startswith("[4, 16, 28, 31, 25, 13, 52, 6, 19, 24, 10, 47, 45")):
+								comment = "211 Sequence: 47 45"
+							elif (match.startswith("[4, 16, 28, 31, 25, 13, 52, 6, 19, 24, 10, 47, 48")):
+								comment = "211 Sequence: 47 48"
+							elif (match.startswith("[4, 16, 28, 31, 25, 13, 52, 6")):
+								comment = "211 Sequence: 6"
+							elif (match.startswith("[4, 16, 28, 31, 25, 13, 52, 5, 10")):
+								comment = "211 Sequence: 5 10"
+							elif (match.startswith("[4, 16, 28, 31, 25, 13, 52, 5, 11")):
+								comment = "211 Sequence: 5 11"
+							elif (match.startswith("[4")):
+								comment = "211 Sequence: Early 4"
+							else:
+								comment = "211 Sequence: Non 4"
+							if ((compact[2]>=cutoff or compact[4]>=cutoff) and count2 >= minimum):
+								print(f"{match}] {compact} {comment}")
 							count2 += 1
 						else:
 							count1 = 0
@@ -175,6 +190,7 @@ class QCleanup:
 								if (len(compact) > 8):
 									cnt6[compact[8]] += 1			
 					compact.clear()
+					comment = ""
 					line = file.readline()						
 			if (count1 != count2):
 				print("ERROR: Mismatch of counts between lookahead and shortened text lines")
@@ -392,14 +408,14 @@ class QCleanup:
 				result.extend(suffixWays)
 		return result
 
-#for x in range(0,27):
+#for x in range(0,28):
 #	QCleanup.reader(x,209,True)
-#QCleanup.reader(20,1,True,"[4, 16, 28, 31, 25, 13, 52, 5, 11, 15, 8, 60, 35, 58, 51, 3, 32, 137, 105")
+#QCleanup.reader(15,1,True,"[4, 16, 28, 31, 25, 13, 52, 5, 11, 15, 8, 60, 35, 58")
 #QCleanup.reader(13,1,True,"[4, 16, 28, 31, 25, 13, 52, 5, 10, 47, 44, 30")
-#QCleanup.reader(21,1,True,"[4, 16, 28, 31, 25, 13, 52, 6, 19, 24, 10, 47, 45, 7, 11, 3, 27, 72, 111, 173")
-#QCleanup.reader(14,1,True,"[4, 16, 28, 31, 25, 13, 52, 6, 19, 24, 10, 47, 48")
+#QCleanup.reader(20,1,True,"[4, 16, 28, 31, 25, 13, 52, 6, 19, 24, 10, 47, 45, 7, 11, 3, 27, 72, 111")
+#QCleanup.reader(25,1,True,"[4, 16, 28, 31, 25, 13, 52, 6, 19, 24, 10, 47, 48, 41, 26, 3, 56, 160, 131, 192, 249, 94, 99, 132")
 #QCleanup.reader(88,205,True)
-#QCleanup.reader(3,1,True,"[")
+#QCleanup.reader(6,1,True,"[")
 #QCleanup.viewer()
 #QCleanup.table(180)
-QCleanup.runParser(400000,1,89,6520)
+#QCleanup.runParser(400000,1,119,6795) 
