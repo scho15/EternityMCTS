@@ -94,7 +94,7 @@ class QCleanup:
 		verbose = entries
 		QDictLength = {}
 		QDictVisits = {}
-		if (os.path.isfile('C:/Users/scho1/QTableMCTS/QTable.txt') == True):
+		if (os.path.isfile('C:/Users/scho1/QTableMCTS/QTable.txt') == True and Q == []):
 			with open("C:/Users/scho1/QTableMCTS/QTable.txt", "r") as QTablefile:
 				Q = json.load(QTablefile)
 				print(f"Q Table uploaded with {len(Q)} lines")
@@ -109,6 +109,33 @@ class QCleanup:
 			entries = sorted(QDictLength.items(), key=lambda x: x[1], reverse=True)
 			for element in entries:			
 				print(f"{element[0]}, {element[1]}, {QDictVisits[element[0]]}")
+
+	def rangeReader(begin, end, min,entries,start = ""):
+		Q = []
+		sum = 0
+		minimum = min
+		verbose = entries
+		QDictLength = {}
+		QDictVisits = {}
+		if (os.path.isfile('C:/Users/scho1/QTableMCTS/QTable.txt') == True and Q == []):
+			with open("C:/Users/scho1/QTableMCTS/QTable.txt", "r") as QTablefile:
+				Q = json.load(QTablefile)
+				print(f"Q Table uploaded with {len(Q)} lines")
+		for iteration in range(begin,end):
+			for item in Q:
+				length = len(item[0])
+				if (length == iteration and item[1] >= minimum and str(item[0]).startswith(start)):
+					QDictLength[str(item[0])] = item[1] # 1 for iteration and 2 for visit
+					QDictVisits[str(item[0])] = item[2]
+					sum += 1
+			print(f"Entries which are {minimum} or more of length {iteration} are {sum}")
+			if verbose == True:
+				entries = sorted(QDictLength.items(), key=lambda x: x[1], reverse=True)
+				for element in entries:			
+					print(f"{element[0]}, {element[1]}, {QDictVisits[element[0]]}")
+			QDictLength = {}
+			QDictVisits = {}
+			sum = 0
 
 	# Extract information on sample size, iteration and then "shortened" info
 	def runParser(size, cutoff, length, minimum):	
@@ -153,18 +180,67 @@ class QCleanup:
 								# Capturing number of viable iterations if these exist
 								if len(longlist) > 10:
 									compact.append(int(longlist[10]))
+							# Specific to longest iterations
 							if (match.startswith("[4, 16, 28, 31, 25, 13, 52, 6, 19, 24, 10, 47, 45")):
-								comment = "211 Sequence: 47 45"
+								comment = "211 Sequence: 47 45 min 204"
+								if (match.startswith("[4, 16, 28, 31, 25, 13, 52, 6, 19, 24, 10, 47, 45, 8")):
+									comment = "211 Sequence: 47 45 8 min 203"
+								elif (match.startswith("[4, 16, 28, 31, 25, 13, 52, 6, 19, 24, 10, 47, 45, 7, 11, 3, 27, 72, 111, 173, 175, 244, 131, 132, 193, 197, 202, 120")):
+									comment = "211 Sequence: 47 45 7 11 3 27 72 111 ... 120 NEW AREA"
+								elif (match.startswith("[4, 16, 28, 31, 25, 13, 52, 6, 19, 24, 10, 47, 45, 7, 11, 3, 27, 72, 111, 173, 175, 244, 131, 132, 193")):
+									comment = "211 Sequence: 47 45 7 11 3 27 72 111 ... 132 min 187"
+								elif (match.startswith("[4, 16, 28, 31, 25, 13, 52, 6, 19, 24, 10, 47, 45, 7, 11, 3, 27, 72, 111, 173, 175, 244, 131, 132, 188")):
+									comment = "211 Sequence: 47 45 7 11 3 27 72 111 ... 188 min 201"
+								elif (match.startswith("[4, 16, 28, 31, 25, 13, 52, 6, 19, 24, 10, 47, 45, 7, 11, 3, 27, 72, 111, 173, 175, 244")):
+									comment = "211 Sequence: 47 45 7 11 3 27 72 111 ... 244 min 204"
+								elif (match.startswith("[4, 16, 28, 31, 25, 13, 52, 6, 19, 24, 10, 47, 45, 7, 11, 3, 27, 72, 111")):
+									comment = "211 Sequence: 47 45 7 11 3 27 72 111 min 202"
+								elif (match.startswith("[4, 16, 28, 31, 25, 13, 52, 6, 19, 24, 10, 47, 45, 7, 11, 3")):
+									comment = "211 Sequence: 47 45 7 11 3 min 204"
 							elif (match.startswith("[4, 16, 28, 31, 25, 13, 52, 6, 19, 24, 10, 47, 48")):
-								comment = "211 Sequence: 47 48"
+								comment = "211 Sequence: 47 48 min 204"
+								if (match.startswith("[4, 16, 28, 31, 25, 13, 52, 6, 19, 24, 10, 47, 48, 41, 26, 3, 56, 160, 131, 192, 249, 94, 99, 132, 193, 197")):
+									comment = "211 Sequence: 47 48 41 26 3 ... 197 NEW AREA"
+								elif (match.startswith("[4, 16, 28, 31, 25, 13, 52, 6, 19, 24, 10, 47, 48, 41, 26, 3, 56, 160, 131, 192, 249, 94, 99, 132, 188")):
+									comment = "211 Sequence: 47 48 41 26 3 ... 188 min 203"
+								elif (match.startswith("[4, 16, 28, 31, 25, 13, 52, 6, 19, 24, 10, 47, 48, 41, 26, 3")):
+									comment = "211 Sequence: 47 48 41 26 3 min 204"
 							elif (match.startswith("[4, 16, 28, 31, 25, 13, 52, 6")):
-								comment = "211 Sequence: 6"
+								comment = "211 Sequence: 6 min 204"
 							elif (match.startswith("[4, 16, 28, 31, 25, 13, 52, 5, 10")):
-								comment = "211 Sequence: 5 10"
+								comment = "211 Sequence: 5 10 min 204"
+								if (match.startswith("[4, 16, 28, 31, 25, 13, 52, 5, 10, 47, 44, 30, 56, 33")):
+									comment = "211 Sequence: 5 10 47 44 30 56 33 NEW AREA"
+								elif (match.startswith("[4, 16, 28, 31, 25, 13, 52, 5, 10, 47, 44, 30, 56")):
+									comment = "211 Sequence: 5 10 47 44 30 56 min 192"
+								elif (match.startswith("[4, 16, 28, 31, 25, 13, 52, 5, 10, 47, 44, 30")):
+									comment = "211 Sequence: 5 10 47 44 30 min 197"
+								elif (match.startswith("[4, 16, 28, 31, 25, 13, 52, 5, 10, 47, 44, 36")):
+									comment = "211 Sequence: 5 10 47 44 36 min 203"
+								elif (match.startswith("[4, 16, 28, 31, 25, 13, 52, 5, 10, 47, 44")):
+									comment = "211 Sequence: 5 10 47 44 min 204"
+								elif (match.startswith("[4, 16, 28, 31, 25, 13, 52, 5, 10, 47")):
+									comment = "211 Sequence: 5 10 47 min 203"
 							elif (match.startswith("[4, 16, 28, 31, 25, 13, 52, 5, 11")):
-								comment = "211 Sequence: 5 11"
+								comment = "211 Sequence: 5 11 min 204"
+								if (match.startswith("[4, 16, 28, 31, 25, 13, 52, 5, 11, 15, 8, 60, 35, 58, 51, 3, 32, 137, 105, 192, 188, 198")):
+									comment = "211 Sequence: 5 11 15...58 51 3 32...198 NEW AREA"
+								elif (match.startswith("[4, 16, 28, 31, 25, 13, 52, 5, 11, 15, 8, 60, 35, 58, 51, 3, 32, 137, 105, 192, 188")):
+									comment = "211 Sequence: 5 11 15...58 51 3 32...188 min 191"
+								elif (match.startswith("[4, 16, 28, 31, 25, 13, 52, 5, 11, 15, 8, 60, 35, 58, 51, 3, 32")):
+									comment = "211 Sequence: 5 11 15...58 51 3 32 min 201"
+								elif (match.startswith("[4, 16, 28, 31, 25, 13, 52, 5, 11, 15, 8, 60, 35, 58, 51, 3")):
+									comment = "211 Sequence: 5 11 15...58 51 3 min 204"
+								elif (match.startswith("[4, 16, 28, 31, 25, 13, 52, 5, 11, 15, 8, 60, 35, 57")):
+									comment = "211 Sequence: 5 11 15...57 min 203"
+								elif (match.startswith("[4, 16, 28, 31, 25, 13, 52, 5, 11, 15, 8, 60, 29")):
+									comment = "211 Sequence: 5 11 15...29 min 203"
+							elif (match.startswith("[4, 16, 28, 31, 25, 13, 52, 5")):
+								comment = "211 Sequence: 5 min 205"
 							elif (match.startswith("[4")):
-								comment = "211 Sequence: Early 4"
+								comment = "211 Sequence: Early 4 min 204"
+								if (match.startswith("[4, 16, 28, 31, 25, 13, 60")):
+									comment = "211 Sequence: Early 4 60 min 203"
 							else:
 								comment = "211 Sequence: Non 4"
 							if ((compact[2]>=cutoff or compact[4]>=cutoff) and count2 >= minimum):
@@ -181,7 +257,7 @@ class QCleanup:
 							elif (size == 350000):
 								timing = 4100
 							elif (size > 350000):
-								timing = 1000000
+								timing = 1000
 							if compact[5] < timing:
 								cnt3[compact[5]] += 1									
 							if (len(compact) > 6):
@@ -408,14 +484,13 @@ class QCleanup:
 				result.extend(suffixWays)
 		return result
 
-#for x in range(0,28):
-#	QCleanup.reader(x,209,True)
-#QCleanup.reader(15,1,True,"[4, 16, 28, 31, 25, 13, 52, 5, 11, 15, 8, 60, 35, 58")
-#QCleanup.reader(13,1,True,"[4, 16, 28, 31, 25, 13, 52, 5, 10, 47, 44, 30")
-#QCleanup.reader(20,1,True,"[4, 16, 28, 31, 25, 13, 52, 6, 19, 24, 10, 47, 45, 7, 11, 3, 27, 72, 111")
-#QCleanup.reader(25,1,True,"[4, 16, 28, 31, 25, 13, 52, 6, 19, 24, 10, 47, 48, 41, 26, 3, 56, 160, 131, 192, 249, 94, 99, 132")
+#QCleanup.rangeReader(0,29,209,True)
+#QCleanup.reader(18,1,True,"[4, 16, 28, 31, 25, 13, 52, 5, 11, 15, 8, 60, 35, 58, 51, 3, 32")
+#QCleanup.reader(12,1,True,"[4, 16, 28, 31, 25, 13, 52, 5, 10, 47, 44")
+#QCleanup.reader(28,1,True,"[4, 16, 28, 31, 25, 13, 52, 6, 19, 24, 10, 47, 45, 7, 11, 3, 27, 72, 111, 173, 175, 244, 131, 132, 193, 197, 202")
+#QCleanup.reader(14,1,True,"[4, 16, 28, 31, 25, 13, 52, 6, 19, 24, 10, 47, 48")
 #QCleanup.reader(88,205,True)
 #QCleanup.reader(6,1,True,"[")
 #QCleanup.viewer()
 #QCleanup.table(180)
-#QCleanup.runParser(400000,1,119,6795) 
+#QCleanup.runParser(400000,1,119,7295) 
