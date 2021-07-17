@@ -44,9 +44,9 @@ class QCleanup:
 		print(sorted(Counter(a).items()))
 		print(f"Revised maximum and average lengths are {max(b)} and {sum(b)/len(b):.5f}")
 		print(sorted(Counter(b).items()))
-		#with open("QTable-190.txt","w") as handler:
-		#	json.dump(Q,handler) 
-		#handler.close()    
+		with open("QTable-190.txt","w") as handler:
+			json.dump(Q,handler) 
+		handler.close()    
 
 	def viewer():
 		#Simple method of viewing Q table without amendments
@@ -192,14 +192,14 @@ class QCleanup:
 									comment = "211 Sequence: 47 45 7 11 3 27 72 111 ... 120 NEW AREA"
 									newmin = 0
 								elif (match.startswith("[4, 16, 28, 31, 25, 13, 52, 6, 19, 24, 10, 47, 45, 7, 11, 3, 27, 72, 111, 173, 175, 244, 131, 132, 193, 197")):
-									comment = "211 Sequence: 47 45 7 11 3 27 72 111 ... 193 197 min 192"
-									newmin = 192
+									comment = "211 Sequence: 47 45 7 11 3 27 72 111 ... 193 197 min 201"
+									newmin = 201
 								elif (match.startswith("[4, 16, 28, 31, 25, 13, 52, 6, 19, 24, 10, 47, 45, 7, 11, 3, 27, 72, 111, 173, 175, 244, 131, 132, 193, 231")):
 									comment = "211 Sequence: 47 45 7 11 3 27 72 111 ... 193 231 min 203"
 									newmin = 203
 								elif (match.startswith("[4, 16, 28, 31, 25, 13, 52, 6, 19, 24, 10, 47, 45, 7, 11, 3, 27, 72, 111, 173, 175, 244, 131, 132")):
-									comment = "211 Sequence: 47 45 7 11 3 27 72 111 ... 132 min 204"
-									newmin = 204
+									comment = "211 Sequence: 47 45 7 11 3 27 72 111 ... 132 min 205"
+									newmin = 205
 								elif (match.startswith("[4, 16, 28, 31, 25, 13, 52, 6, 19, 24, 10, 47, 45, 7, 11, 3, 27, 72, 111, 173, 175, 244")):
 									comment = "211 Sequence: 47 45 7 11 3 27 72 111 ... 244 min 206"
 									newmin = 206
@@ -215,15 +215,21 @@ class QCleanup:
 							elif (match.startswith("[4, 16, 28, 31, 25, 13, 52, 6, 19, 24, 10, 47, 48")):
 								comment = "211 Sequence: 47 48 min 204"
 								newmin = 204
-								if (match.startswith("[4, 16, 28, 31, 25, 13, 52, 6, 19, 24, 10, 47, 48, 41, 26, 3, 56, 160, 131, 192, 249, 94, 99, 132, 193, 197, 188")):
-									comment = "211 Sequence: 47 48 41 26 3 ... 188 NEW AREA"
+								if (match.startswith("[4, 16, 28, 31, 25, 13, 52, 6, 19, 24, 10, 47, 48, 41, 26, 3, 56, 160, 131, 192, 249, 94, 99, 132, 193, 197, 188, 204")):
+									comment = "211 Sequence: 47 48 41 26 3 ... 204 NEW AREA"
 									newmin = 0
+								elif (match.startswith("[4, 16, 28, 31, 25, 13, 52, 6, 19, 24, 10, 47, 48, 41, 26, 3, 56, 160, 131, 192, 249, 94, 99, 132, 193, 197, 188")):
+									comment = "211 Sequence: 47 48 41 26 3 ... 188 min 192"
+									newmin = 192
 								elif (match.startswith("[4, 16, 28, 31, 25, 13, 52, 6, 19, 24, 10, 47, 48, 41, 26, 3, 56, 160, 131, 192, 249, 94, 99, 132, 193, 197")):
 									comment = "211 Sequence: 47 48 41 26 3 ... 197 min 202"
-									newmin = 202
-								elif (match.startswith("[4, 16, 28, 31, 25, 13, 52, 6, 19, 24, 10, 47, 48, 41, 26, 3, 56, 160, 131, 192, 249, 94, 99, 132, 188")):
-									comment = "211 Sequence: 47 48 41 26 3 ... 188 min 203"
-									newmin = 203
+									newmin = 202					
+								elif (match.startswith("[4, 16, 28, 31, 25, 13, 52, 6, 19, 24, 10, 47, 48, 41, 26, 3, 56, 160, 131, 192, 249")):
+									comment = "211 Sequence: 47 48 41 26 3 ... 249 min 205"
+									newmin = 205
+								elif (match.startswith("[4, 16, 28, 31, 25, 13, 52, 6, 19, 24, 10, 47, 48, 41, 26, 3, 56, 160")):
+									comment = "211 Sequence: 47 48 41 26 3 ... 160 min 206"
+									newmin = 206
 								elif (match.startswith("[4, 16, 28, 31, 25, 13, 52, 6, 19, 24, 10, 47, 48, 41, 26, 3")):
 									comment = "211 Sequence: 47 48 41 26 3 min 204"
 									newmin = 204
@@ -258,8 +264,8 @@ class QCleanup:
 									comment = "211 Sequence: 5 10 47 44 30 56 33 22 1 min 203"
 									newmin = 203
 								elif (match.startswith("[4, 16, 28, 31, 25, 13, 52, 5, 10, 47, 44, 30, 56, 33")):
-									comment = "211 Sequence: 5 10 47 44 30 56 33 min 199"
-									newmin = 199
+									comment = "211 Sequence: 5 10 47 44 30 56 33 min 203"
+									newmin = 203
 								elif (match.startswith("[4, 16, 28, 31, 25, 13, 52, 5, 10, 47, 44, 30, 56")):
 									comment = "211 Sequence: 5 10 47 44 30 56 min 203"
 									newmin = 203
@@ -285,8 +291,8 @@ class QCleanup:
 									comment = "211 Sequence: 5 11 15...58 51 3 32...192 min 204"
 									newmin = 204
 								elif (match.startswith("[4, 16, 28, 31, 25, 13, 52, 5, 11, 15, 8, 60, 35, 58, 51, 3, 32, 137, 105")):
-									comment = "211 Sequence: 5 11 15...58 51 3 32...105 min 201"
-									newmin = 201
+									comment = "211 Sequence: 5 11 15...58 51 3 32...105 min 204"
+									newmin = 204
 								elif (match.startswith("[4, 16, 28, 31, 25, 13, 52, 5, 11, 15, 8, 60, 35, 58, 51, 3, 32")):
 									comment = "211 Sequence: 5 11 15...58 51 3 32 min 204"
 									newmin = 204
@@ -562,15 +568,15 @@ class QCleanup:
 				result.extend(suffixWays)
 		return result
 
-#QCleanup.rangeReader(0,29,209,True)
-#QCleanup.reader(22,1,True,"[4, 16, 28, 31, 25, 13, 52, 5, 11, 15, 8, 60, 35, 58, 51, 3, 32, 137, 105, 192, 188")
+#QCleanup.rangeReader(0,30,209,True)
+#QCleanup.reader(14,1,True,"[4, 16, 28, 31, 25, 13, 52, 5, 11, 15, 8, 60, 35")
 #QCleanup.reader(15,1,True,"[4, 16, 28, 31, 25, 13, 52, 5, 10, 47, 44, 30, 56, 33")
-#QCleanup.reader(23,1,True,"[4, 16, 28, 31, 25, 13, 52, 6, 19, 24, 10, 47, 45, 7, 11, 3, 27, 72, 111, 173, 175, 244")
-#QCleanup.reader(14,1,True,"[4, 16, 28, 31, 25, 13, 52, 6, 19, 24, 10, 47, 48")
+#QCleanup.reader(29,1,True,"[4, 16, 28, 31, 25, 13, 52, 6, 19, 24, 10, 47, 45, 7, 11, 3, 27, 72, 111, 173, 175, 244, 131, 132, 193, 197, 202, 120")
+#QCleanup.reader(15,1,True,"[4, 16, 28, 31, 25, 13, 52, 6, 19, 24, 10, 47, 48, 41")
 ##QCleanup.reader(9,1,True,"[4, 16, 28, 31, 25, 13, 52, 5")
 #QCleanup.reader(88,205,True)
 #QCleanup.reader(2,1,True,"[4")
 #QCleanup.viewer()
 #QCleanup.table(180)
 # True indicates using new minimum function which only shows iterations that need updating
-QCleanup.runParser(450000,1,119,True,8295) 
+QCleanup.runParser(450000,1,119,True,8785) 
