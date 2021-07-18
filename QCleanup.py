@@ -151,7 +151,7 @@ class QCleanup:
 								longlist = next[0:].split()
 								compact.append(int(longlist[8]))
 								compact.append(int(longlist[9]))
-							if ((compact[2]>=cutoff or compact[3]>=cutoff) and count2 >= minimum):
+							if ((compact[2]>=cutoff or compact[4]>=cutoff) and count2 >= minimum):
 								print(f"{match}] {compact}")
 							count2 += 1
 						else:
@@ -333,11 +333,11 @@ class QCleanup:
 		print(f"The total count was {sum(storedCntr.values())} and the 3 most common values were {storedCntr.most_common(3)}")
 
 
-#for x in range(0,7):
-#	QCleanup.reader(x,210,True)
-#QCleanup.reader(2,1,True,"[2")
-#QCleanup.reader(6,1,True)
+#for x in range(0,8):
+#	QCleanup.reader(x,211,True)
+#QCleanup.reader(6,1,True,"[")
+#QCleanup.reader(88,205,True)
 #QCleanup.viewer()
 #QCleanup.table(180)
-QCleanup.runParser(4500000,1,379)
-#QCleanup.viewCounter(5000000)
+QCleanup.runParser(2000000,1,842)
+#QCleanup.viewCounter(3500000)
