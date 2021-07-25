@@ -11,10 +11,10 @@ class EternityStart():
     def main():
         # DECISIONS REQUIRED
         useHints = False # Use only centre tile or 4 corner hints as well
-        maxEpisodes = 100 # number of episodes to run
+        maxEpisodes = 385 # number of episodes to run
         sampleSize = 1 # number of runs/samples to take - 1 for no hints and 2 for hints typically
-        CreateTile.firstCountLimit = 1000000 # cutoff for run - normally at least 1m
-        CreateTile.terminalCountLimit = 500000000 # cutoff for final iteration at 88
+        CreateTile.firstCountLimit = 1500000 # cutoff for run - normally at least 1m
+        CreateTile.terminalCountLimit = 250000000 # cutoff for final iteration at 88
         solutionPrint = 205; # can consider 200,205 or similar
         cutoff = 96 # Point at which we move from sample check to full/5m solution
         viableMinimum = 128 # Lowest point at which iteration counts as viable
@@ -32,8 +32,10 @@ class EternityStart():
         iterationList = [] # list of all iterations
         lowIteration = [] # list of lowest iteration explored
         miniCount = 0 # Used to prevent viable iteration loop repeating
+        tempMaxList = [] # used to store greedy max for first rotation of double tile
+        secondMaxList = [] # used to store second rotation for double tile
         #Special characters seem to create issues for file locations
-        if (os.path.isfile('C:/Users/scho1/QTableMCTS/QTable.txt') == True):
+        if (os.path.isfile('C:/Users/scho1/QTableMCTS/QTable.txt') == True and Q == []):
             with open("C:/Users/scho1/QTableMCTS/QTable.txt", "r") as QTablefile:
                 Q = json.load(QTablefile)
             print(f"QTable uploaded with {len(Q)} lines")
@@ -44,7 +46,7 @@ class EternityStart():
         while episode <= maxEpisodes:
             start = time.time()
             # FILE OPENING AND SETTING UP TILE AND PATTERN SETS
-            file1 = open("MCTS.txt", "w") # detail for each episode (overwritten each time)
+            #file1 = open("MCTS.txt", "w") # detail for each episode (overwritten each time)
             file2 = open("MCTSRunSummary.txt", "a") # summary of tree and lookahead info
             MCTSList = []
             MCTSPosition = [] # Trying to use MCTS only
@@ -71,17 +73,11 @@ class EternityStart():
                 optionsCount += len(options)
                 if len(options) != len(set(options)):
                     print("There are DUPLICATE options to deal with that needs further testing\n")
-                    file1.write("There are DUPLICATE options to deal with that needs further testing\n")
+                    #file1.write("There are DUPLICATE options to deal with that needs further testing\n")
                     duplicate = True
-                if (173 in options):
-                    file1.write("ROTATION: This list contains tile 173 that may have two positions\n")
-                if (199 in options):
-                    file1.write("ROTATION: This list contains tile 199 that may have two positions\n")
-                if (233 in options):
-                    file1.write("ROTATION: This list contains tile 233 that may have two positions\n")
                 random.shuffle(options)
                 print(f"The new options would be {options} and the length is {len(options)} and cumulative {optionsCount}")
-                file1.write(f"{options}\n")
+                #file1.write(f"{options}\n")
                 if (len(options) > 1 or 173 in options or 233 in options or 199 in options):
                     for item in Q:
                         if MCTSList == item[0]: 
@@ -103,14 +99,14 @@ class EternityStart():
                         sampleMax = True
                     else:
                         print(f"GREEDY: Taking the current largest maximum value without another sample test")
-                        file1.write(f"GREEDY: Taking the current largest maximum value without another sample test\n")
+                        #file1.write(f"GREEDY: Taking the current largest maximum value without another sample test\n")
                         sampleMax = False
                     for tile in options:
                         itemFound = False
                         testList.append(tile)
                         MCTSPosition.append(CreateTile.tileList[tile].copy())
                         MCTSPosition = EternityMCTS.tileAlignmentOnLastPosition(testList, MCTSPosition)
-                        print(f"\nThe test list is {testList}")
+                        # LESS VERBOSE 1: print(f"\nThe test list is {testList}")
                         # Implicitly does not deal with tiles that can have two positions - ideally stop using this
                         #tilePositions = EternityMCTS.tileAlignment(testList)
                         # print(f"TEMP: The tile positions are {tilePositions} using rotations to CreateTile tiles")                        
@@ -118,11 +114,11 @@ class EternityStart():
                         # 250 = 2m 250k likely a day
                         if (sampleMax == True):
                             for count in range(sampleSize):
-                                # Big change to run test again if viable minimum not reached on full run count - trying while instead of if                                
+                                # Big change to run test again if viable minimum not reached on full run count - trying while instead of if                               
                                 limitedRunList, runCount, lowestItn = EternityMCTS.fullSolutionCheckWithSwap(256, countLimit, testList.copy(), MCTSPosition.copy(), useHints)
                                 miniCount = 0
                                 while (runCount == countLimit and miniCount < 5 and len(limitedRunList) < viableMinimum):
-                                    print(f"Rerunning sample once again as value reached of {len(limitedRunList)} was less than viable minimum set of {viableMinimum}")
+                                    # LESS VERBOSE 8: print(f"Rerunning sample once again as value reached of {len(limitedRunList)} was less than viable minimum set of {viableMinimum}")
                                     limitedRunList, runCount, lowestItn = EternityMCTS.fullSolutionCheckWithSwap(256, countLimit, testList.copy(), MCTSPosition.copy(), useHints)
                                     miniCount += 1
                                 if (len(limitedRunList) >= solutionPrint):                                    
@@ -147,14 +143,15 @@ class EternityStart():
                                     iterationList.append(len(limitedRunList))
                                 runLength.append(runCount)  
                                 lowIteration.append(lowestItn)
-                            print("The distribution for runs is as follows:")
-                            print(sorted(Counter(a).items())) 
-                            print(sorted(Counter(runLength).items()))
-                            print(sorted(Counter(lowIteration).items()))
+                            #LESS VERBOSE 2-5
+                            #print("The distribution for runs is as follows:")
+                            #print(sorted(Counter(a).items())) 
+                            #print(sorted(Counter(runLength).items()))
+                            #print(sorted(Counter(lowIteration).items()))
                             #file1.write(f"{Counter(a)}\n")
                             average = sum(a)/len(a)
                             maximum = max(Counter(a))
-                            print(f"The average is {average:.5f} and maximum was {maximum}")
+                            # LESS VERBOSE 6: print(f"The average is {average:.5f} and maximum was {maximum}")
                             # Extremely long section to deal with 173 and 233 edge cases of double rotation
                             # As these tiles are not rotated yet, it's taking default position which is misleading
                             # Need to force alignment first
@@ -165,10 +162,10 @@ class EternityStart():
                                 southMatch = MCTSPosition[-1][2]
                                 westMatch = MCTSPosition[-1][3]
                                 print(f"Current tile is {tile} with position {MCTSPosition[-1]}")
-                                file1.write(f"Current tile is {tile} with position {MCTSPosition[-1]}\n")
+                                #file1.write(f"Current tile is {tile} with position {MCTSPosition[-1]}\n")
                                 if (southMatch == westMatch):
                                     print("Second potential rotation needs to be tested\n")
-                                    file1.write("Second potential rotation needs to be tested\n")
+                                    #file1.write("Second potential rotation needs to be tested\n")
                                     optionDouble = True
                                     # Rotation is clockwise
                                     if (southMatch == eastMatch):
@@ -178,13 +175,18 @@ class EternityStart():
                                         CreateTile.rotatePosition(-1, MCTSPosition)
                                         CreateTile.rotatePosition(-1, MCTSPosition)
                                     print(f"The new position is {MCTSPosition[-1]}\n")
-                                    file1.write(f"The new position is {MCTSPosition[-1]}\n")
+                                    #file1.write(f"The new position is {MCTSPosition[-1]}\n")
                                     b = []
                                     runLength.clear()
                                     lowIteration.clear()
                                     for count in range(sampleSize):
                                         limitedRunList, runCount, lowestItn = EternityMCTS.fullSolutionCheckWithSwap(256, countLimit, testList.copy(), MCTSPosition.copy(), useHints)
-                                        if (len(limitedRunList) >= 205):                                    
+                                        miniCount = 0
+                                        while (runCount == countLimit and miniCount < 5 and len(limitedRunList) < viableMinimum):
+                                        # LESS VERBOSE 8: print(f"Rerunning sample once again as value reached of {len(limitedRunList)} was less than viable minimum set of {viableMinimum}")
+                                            limitedRunList, runCount, lowestItn = EternityMCTS.fullSolutionCheckWithSwap(256, countLimit, testList.copy(), MCTSPosition.copy(), useHints)
+                                            miniCount += 1
+                                        if (len(limitedRunList) >= solutionPrint):                                    
                                             print(f"{len(limitedRunList)} solution reached of \n{limitedRunList}")
                                             file2.write(f"{len(limitedRunList)} solution reached of \n{limitedRunList}\n")
                                             print(f"The solution of {len(limitedRunList)} has been used to create new Q table values in later iterations but with no visitCount\n")
@@ -210,7 +212,7 @@ class EternityStart():
                                     print(sorted(Counter(b).items())) # See if this works
                                     print(sorted(Counter(runLength).items()))
                                     print(sorted(Counter(lowIteration).items()))
-                                    file1.write(f"{Counter(b)}\n")
+                                    #file1.write(f"{Counter(b)}\n")
                                     average2 = sum(b)/len(b)
                                     maximum2 = max(Counter(b))
                                     print(f"The average is {average2:.5f} and maximum was {maximum2}")
@@ -250,7 +252,7 @@ class EternityStart():
                                     CreateTile.tileList[tile][3] = westMatch
                                     doubleOption = [northMatch, eastMatch, southMatch, westMatch]
                                     print(f"Final rotation used was {northMatch} {eastMatch} {southMatch} {westMatch}\n")
-                                    file1.write(f"Final rotation used was {northMatch} {eastMatch} {southMatch} {westMatch}\n")
+                                    #file1.write(f"Final rotation used was {northMatch} {eastMatch} {southMatch} {westMatch}\n")
                                 else:
                                     print("No further rotations need to be tested as W and S are different\n")
                             averageList.append(average)
@@ -279,15 +281,15 @@ class EternityStart():
                         runLength.clear()
                         lowIteration.clear()
                         end = time.time()
-                        print(f"Time taken so far is: {end - start:.3f} seconds")
+                        #LESS VERBOSE 7: print(f"Time taken so far is: {end - start:.3f} seconds")
                     print(f"\nFor options {options}")
                     # Choice of using average list or maximum list
                     if (sampleMax == True):
                         print(f"The averages were {averageList}, sample maxima were {maxList} and greedy maxima were {epsilonMaxList}")
-                        file1.write(f"Average List:\n{averageList}\nSample Maxima:\n{maxList}\nGreedy Maxima:\n{epsilonMaxList}\n\n")
+                        #file1.write(f"Average List:\n{averageList}\nSample Maxima:\n{maxList}\nGreedy Maxima:\n{epsilonMaxList}\n\n")
                     else:
                         print(f"GREEDY RUN: The greedy maxima were {epsilonMaxList}")
-                        file1.write(f"GREEDY RUN: Greedy Maxima:\n{epsilonMaxList}\n\n")
+                        #file1.write(f"GREEDY RUN: Greedy Maxima:\n{epsilonMaxList}\n\n")
                         greedyCount += len(epsilonMaxList)
                         print(f"The iterations skipped so far through greedy runs was {greedyCount}")
                 if (len(options) > 1 or maxList != []):                    
@@ -297,7 +299,7 @@ class EternityStart():
                         MCTSList.append(maxOption)
                         if (optionDouble == True and (maxOption == 173 or maxOption == 199 or maxOption == 233)):
                             MCTSPosition.append(doubleOption)
-                            print(f"TEMP: New double option coding used to insert config {doubleOption}")
+                            print(f"New double option coding used to insert config {doubleOption}")
                         else:
                             MCTSPosition.append(CreateTile.tileList[maxOption].copy())
                             MCTSPosition = EternityMCTS.tileAlignmentOnLastPosition(MCTSList, MCTSPosition)
@@ -306,8 +308,67 @@ class EternityStart():
                         # Double options not used in epsilon max yet
                         epsilonMaxOption = options[epsilonMaxList.index(max(epsilonMaxList))]
                         MCTSList.append(epsilonMaxOption)
-                        MCTSPosition.append(CreateTile.tileList[epsilonMaxOption].copy())
-                        MCTSPosition = EternityMCTS.tileAlignmentOnLastPosition(MCTSList, MCTSPosition)
+                        # Need to consider which of two rotations should be used
+                        if (epsilonMaxOption != 173 and epsilonMaxOption != 199 and epsilonMaxOption != 233):
+                            MCTSPosition.append(CreateTile.tileList[epsilonMaxOption].copy())
+                            MCTSPosition = EternityMCTS.tileAlignmentOnLastPosition(MCTSList, MCTSPosition)
+                        else:                            
+                            MCTSPosition.append(CreateTile.tileList[epsilonMaxOption].copy())
+                            MCTSPosition = EternityMCTS.tileAlignmentOnLastPosition(MCTSList, MCTSPosition)
+                            northMatch = MCTSPosition[-1][0]
+                            eastMatch = MCTSPosition[-1][1]
+                            southMatch = MCTSPosition[-1][2]
+                            westMatch = MCTSPosition[-1][3]
+                            print(f"NEW: Current tile is a double rotation tile {epsilonMaxOption} with position {MCTSPosition[-1]}")
+                            firstOptions = EternityMCTS.findNextPositionMatches(MCTSList,MCTSPosition, useHints)
+                            print(f"NEW: Next available options would be {firstOptions}")                           
+                            for tile in firstOptions:
+                                testList = MCTSList.copy()
+                                testList.append(tile)
+                                for item in Q:                                     
+                                    if testList == item[0]:                                        
+                                        tempMaxList.append(item[1])
+                                        break;
+                            print(f"NEW: Largest item found in first position is {max(tempMaxList)}")
+                            if (southMatch == westMatch):
+                                    print("Second potential rotation needs to be tested\n")
+                                    if (southMatch == eastMatch):
+                                        CreateTile.rotatePosition(-1, MCTSPosition)
+                                    else:
+                                        CreateTile.rotatePosition(-1, MCTSPosition)
+                                        CreateTile.rotatePosition(-1, MCTSPosition)
+                                        CreateTile.rotatePosition(-1, MCTSPosition)
+                                    print(f"The new position is {MCTSPosition[-1]}\n")
+                                    secondOptions = EternityMCTS.findNextPositionMatches(MCTSList,MCTSPosition, useHints)
+                                    print(f"NEW: Next set of available options would be {secondOptions}")                                    
+                                    for tile in secondOptions:
+                                        testList = MCTSList.copy() # Moved so this is reset each time
+                                        testList.append(tile)
+                                        for item in Q:                                     
+                                            if testList == item[0]:                                        
+                                                secondMaxList.append(item[1])
+                                                break;
+                                    print(f"NEW: Largest item found in second position is {max(secondMaxList)}")
+                                    if (max(tempMaxList) >= max(secondMaxList)):
+                                        print(f"NEW: The first rotation was better or the same and is being used")
+                                        eastMatch = MCTSPosition[-1][1]
+                                        southMatch = MCTSPosition[-1][2]                                     
+                                        if (southMatch == eastMatch):
+                                            CreateTile.rotatePosition(-1, MCTSPosition)
+                                        else:
+                                            CreateTile.rotatePosition(-1, MCTSPosition)
+                                            CreateTile.rotatePosition(-1, MCTSPosition)
+                                            CreateTile.rotatePosition(-1, MCTSPosition)
+                                    else:
+                                        print(f"NEW: The second rotation was better or the same and is being used")
+                                    northMatch = MCTSPosition[-1][0]
+                                    eastMatch = MCTSPosition[-1][1]
+                                    southMatch = MCTSPosition[-1][2]
+                                    westMatch = MCTSPosition[-1][3]
+                                    print(f"Final rotation used was {northMatch} {eastMatch} {southMatch} {westMatch}")
+                                    testList = MCTSList.copy()
+                                    tempMaxList.clear()
+                                    secondMaxList.clear()
                     for item in Q:
                         if MCTSList == item[0]:
                             item[2] = item[2] + 1 # Incremented after selection now
@@ -315,7 +376,7 @@ class EternityStart():
                     #print(f"The maximum AVERAGE was {max(averageList)} so option {maxOption} was chosen and tree search is {MCTSList}\n")
                     if (sampleMax == True):
                         print(f"The maximum VALUE using SAMPLING was {max(maxList)} so option {maxOption} was chosen with position {MCTSPosition[-1]} and tree search is {MCTSList}")
-                        file1.write(f"\nThe maximum VALUE using SAMPLING was {max(maxList)} so option {maxOption} was chosen\n")    
+                        #file1.write(f"\nThe maximum VALUE using SAMPLING was {max(maxList)} so option {maxOption} was chosen\n")    
                         # Propogate maxes up the tree (even from earlier iterations and also to single solutions)
                         earlyList = MCTSList.copy()
                         maxLength = max(maxList)
@@ -334,14 +395,16 @@ class EternityStart():
                             earlyList.pop()
                     else:
                         print(f"The maximum VALUE using GREEDY MAX was {max(epsilonMaxList)} so option {epsilonMaxOption} was chosen with position {MCTSPosition[-1]} and tree search is {MCTSList}")
-                        file1.write(f"\nThe maximum VALUE using GREEDY MAX was {max(epsilonMaxList)} so option {epsilonMaxOption} was chosen\n")                    
-                    print(f"The length of the tree search is {len(MCTSList)}\n")
-                    file1.write(f"The length of the tree search is {len(MCTSList)}\n")
-                    file1.write(f"{MCTSList}\n\n")
+                        #file1.write(f"\nThe maximum VALUE using GREEDY MAX was {max(epsilonMaxList)} so option {epsilonMaxOption} was chosen\n")                    
                     if (sampleMax == True):
                         maximaList.append(max(maxList)) # work out look ahead value
                     elif (maximaList != []):
                         maximaList.append(maximaList[-1])
+                    if maximaList!=[]:
+                        print(f"The length of the tree search is {len(MCTSList)} and maximum so far is {max(maximaList)}")
+                        print(f"Time taken so far is: {end - start:.3f} seconds\n")
+                        #file1.write(f"The length of the tree search is {len(MCTSList)} and maximum so far is {max(maximaList)}\n")
+                        #file1.write(f"{MCTSList}\n\n")
                 elif (len(options) == 1):
                     MCTSList.append(options[0])
                     MCTSPosition.append(CreateTile.tileList[options[0]].copy())
@@ -364,7 +427,7 @@ class EternityStart():
                     print(f"\nFinal tree length was {len(MCTSList)} which was \n{MCTSList}")
                     maxMCTS = MCTSList.copy() # just in case MCTS does not reach 88
                     file2.write(f"\nFinal tree length was {len(MCTSList)} which was \n{MCTSList}\n")
-                    file1.write(f"\nFinal tree length was: {len(MCTSList)}\n")
+                    #file1.write(f"\nFinal tree length was: {len(MCTSList)}\n")
                     finalLength = len(MCTSList)
                 #tilePositions = EternityMCTS.tileAlignment(testList)
                 #MCTSPosition = EternityMCTS.tileAlignmentOnPositions(MCTSList, MCTSPosition) - already done
@@ -390,11 +453,11 @@ class EternityStart():
                 file2.write(f"Final solution from {cutoff} iteration was of length {finalLength} and the solution itself was:\n{maxMCTS}\n")
             print(f"The length of the final Q-table with state, maximum, visitcount was {len(Q)}\n")
             print(f"The lookahead for each iteration for sample size {sampleSize} and count {countLimit} was {maximaList} and maximum was {max(maximaList)} with average {sum(maximaList)/len(maximaList):.3f}\n")
-            file1.write(f"The lookahead for each iteration for sample size {sampleSize} and count {countLimit} was {maximaList} and maximum was {max(maximaList)} with average {sum(maximaList)/len(maximaList):.3f}\n")
+            #file1.write(f"The lookahead for each iteration for sample size {sampleSize} and count {countLimit} was {maximaList} and maximum was {max(maximaList)} with average {sum(maximaList)/len(maximaList):.3f}\n")
             print(f"The list of viable iterations for sample size {sampleSize} and count {countLimit} was {iterationList} and maximum was {max(iterationList)} with average {sum(iterationList)/len(iterationList):.3f}\n")
             file2.write(f"The list of viable iterations for sample size {sampleSize} and count {countLimit} was {iterationList} and maximum was {max(iterationList)} with average {sum(iterationList)/len(iterationList):.3f}\n")
-            QCleanup.viableIterations(countLimit, iterationList)
-            file1.write(f"Final Q-table length: {len(Q)}\n\n\n")
+            viable = QCleanup.viableIterations(countLimit, iterationList)
+            #file1.write(f"Final Q-table length: {len(Q)}\n\n\n")
             file2.write(f"The lookahead for each iteration for sample size {sampleSize} and count {countLimit} was {maximaList} and maximum was {max(maximaList)} with average {sum(maximaList)/len(maximaList):.3f}\n")           
             end = time.time()
             file2.write(f"Time taken for the complete run was: {end - start:.3f} seconds\n")
@@ -416,10 +479,10 @@ class EternityStart():
             print(f"The final length of {finalLength} has been used to update all prior Q table values")
             print(f"The number of iterations skipped through greedy runs was {greedyCount}")
             print(f"Shortened form for information of initial, average, final and time: {max(maximaList)} {sum(maximaList)/len(maximaList):.3f} {finalLength} {end-start:.0f}")
-            print(f"Longer version including sample size, first count limit, shortened form, terminal limit and greedy run count:")
-            print(f"Long Form: {sampleSize} {countLimit} {max(maximaList)} {sum(maximaList)/len(maximaList):.3f} {finalLength} {end-start:.0f} {runCount} {greedyCount}\n\n")
+            print(f"Longer version including sample size, first count limit, shortened form, terminal limit, greedy run count and viable iterations:")
+            print(f"Long Form: {sampleSize} {countLimit} {max(maximaList)} {sum(maximaList)/len(maximaList):.3f} {finalLength} {end-start:.0f} {runCount} {greedyCount} {viable}\n\n")
             file2.write(f"Shortened Form: {max(maximaList)} {sum(maximaList)/len(maximaList):.3f} {finalLength} {end-start:.0f}\n") 
-            file2.write(f"Long Form: {sampleSize} {countLimit} {max(maximaList)} {sum(maximaList)/len(maximaList):.3f} {finalLength} {end-start:.0f} {runCount} {greedyCount}\n\n")           
+            file2.write(f"Long Form: {sampleSize} {countLimit} {max(maximaList)} {sum(maximaList)/len(maximaList):.3f} {finalLength} {end-start:.0f} {runCount} {greedyCount} {viable}\n\n")           
             # Final update for original leaf
             Q[0][1] = max(Q[0][1],finalLength)
             Q[0][2] = Q[0][2] + 1
@@ -429,7 +492,7 @@ class EternityStart():
             handler.close()             
             episode += 1    
             optionsCount = 0            
-            file1.close() #Better to close/update file for each iteration to avoid data being lost
+            #file1.close() #Better to close/update file for each iteration to avoid data being lost
             file2.close()
         print(f"\nFor the {episode - 1} episodes run with sample size {sampleSize} and count {countLimit} the longest run was {max(episodeList)}")
         print(f"\nThe longest recorded run in the Q-Table is {Q[0][1]}")

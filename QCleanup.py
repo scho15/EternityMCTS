@@ -203,8 +203,16 @@ class QCleanup:
 								timing = 3600
 							elif (size == 350000):
 								timing = 4100
+							elif (size == 1000000):
+								timing = 1500
+							elif (size == 1500000):
+								timing = 10000
+							elif (size == 2000000):
+								timing = 2000
+							elif (size == 2500000):
+								timing = 2500
 							elif (size > 350000):
-								timing = 1000
+								timing = 100000
 							if compact[5] < timing:
 								cnt3[compact[5]] += 1									
 							if (len(compact) > 6):
@@ -222,7 +230,7 @@ class QCleanup:
 			print(f"The counter of final values for {size} had an average of {sum(cnt2.elements())/sum(cnt2.values()):.2f} for {sum(cnt2.values())} runs and was:\n {sorted(cnt2.items())}")
 			print(f"Long Form Information: The length of the final iteration (normally 5m) for {sum(cnt4.values())} runs was :\n {sorted(cnt4.items())}")
 			print(f"Long Form Information: The number of greedy iterations skipped had an average of {sum(cnt5.elements())/sum(cnt5.values()):.2f} for {sum(cnt5.values())} runs:\n {sorted(cnt5.items())}")
-			print(f"Long Form Information: The number of remaining viable iterations had an average of {sum(cnt6.elements())/sum(cnt6.values()):.2f} for {sum(cnt6.values())} runs:\n{sorted(cnt6.items())}")
+			#print(f"Long Form Information: The number of remaining viable iterations had an average of {sum(cnt6.elements())/sum(cnt6.values()):.2f} for {sum(cnt6.values())} runs:\n{sorted(cnt6.items())}")
 			print(f"Time to Complete: There were {sum(cnt3.values())} entries less than {timing} seconds and the average was {sum(cnt3.elements())/sum(cnt3.values()):.2f}")
 
 			file.close()
@@ -389,5 +397,5 @@ QCleanup.rangeReader(0,8,211,True)
 #QCleanup.reader(88,205,True)
 #QCleanup.viewer()
 #QCleanup.table(180)
-#QCleanup.runParser(1000000,1,1042)
+#QCleanup.runParser(1500000,1,59,False,800)
 #QCleanup.viewCounter(3500000)
