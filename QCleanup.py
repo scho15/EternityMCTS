@@ -9,12 +9,12 @@ class QCleanup:
 		Q = []
 		a = []	
 		b = []
-		cutoff = 180
+		cutoff = 190
 		minimumIteration = 6
 		counter = 0
 		kept = 0
-		if (os.path.isfile('QTable.txt') == True):
-			with open("QTable.txt", "r") as QTablefile:
+		if (os.path.isfile('C:/Users/scho1/QTableMCTS/QTable.txt') == True):
+			with open("C:/Users/scho1/QTableMCTS/QTable.txt", "r") as QTablefile:
 				Q = json.load(QTablefile)
 				print(f"QTable uploaded with {len(Q)} lines")
 		for item in Q:
@@ -44,9 +44,9 @@ class QCleanup:
 		print(sorted(Counter(a).items()))
 		print(f"Revised maximum and average lengths are {max(b)} and {sum(b)/len(b):.5f}")
 		print(sorted(Counter(b).items()))
-		#with open("Q-table-180.txt","w") as handler:
-		#	json.dump(Q,handler) 
-		#handler.close()    
+		with open("C:/Users/scho1/QTableMCTS/QTable-190.txt","w") as handler:
+			json.dump(Q,handler) 
+		handler.close()    
 
 	def viewer():
 		#Simple method of viewing Q table without amendments
@@ -56,8 +56,8 @@ class QCleanup:
 		minimumIteration = 88
 		counter = 0
 		kept = 0
-		if (os.path.isfile('QTable.txt') == True):
-			with open("QTable.txt", "r") as QTablefile:
+		if (os.path.isfile('C:/Users/scho1/QTableMCTS/QTable.txt') == True):
+			with open("C:/Users/scho1/QTableMCTS/QTable.txt", "r") as QTablefile:
 				Q = json.load(QTablefile)
 				print(f"Q-table uploaded with {len(Q)} lines")
 		for item in Q:
@@ -74,8 +74,8 @@ class QCleanup:
 	def massedit(iteration):
 		Q = []
 		counter = 0
-		if (os.path.isfile('Q-Table.txt') == True):
-			with open("Q-table.txt", "r") as QTablefile:
+		if (os.path.isfile('C:/Users/scho1/QTableMCTS/QTable.txt') == True):
+			with open("C:/Users/scho1/QTableMCTS/QTable.txt", "r") as QTablefile:
 				Q = json.load(QTablefile)
 				print(f"Q-table uploaded with {len(Q)} lines")
 		for item in Q.copy():
@@ -83,7 +83,7 @@ class QCleanup:
 				item[2] = 0
 				counter = counter + 1
 		print(f"Number of items amended to length 0 for iteration {iteration} was {counter}")
-		with open("Q-table.txt","w") as handler:
+		with open("C:/Users/scho1/QTableMCTS/QTable.txt","w") as handler:
 			json.dump(Q,handler) 
 		handler.close()    
 
@@ -94,8 +94,8 @@ class QCleanup:
 		verbose = entries
 		QDictLength = {}
 		QDictVisits = {}
-		if (os.path.isfile('QTable.txt') == True):
-			with open("QTable.txt", "r") as QTablefile:
+		if (os.path.isfile('C:/Users/scho1/QTableMCTS/QTable.txt') == True and Q == []):
+			with open("C:/Users/scho1/QTableMCTS/QTable.txt", "r") as QTablefile:
 				Q = json.load(QTablefile)
 				print(f"Q Table uploaded with {len(Q)} lines")
 		for item in Q:
@@ -110,26 +110,54 @@ class QCleanup:
 			for element in entries:			
 				print(f"{element[0]}, {element[1]}, {QDictVisits[element[0]]}")
 
+	def rangeReader(begin, end, min,entries,start = ""):
+		Q = []
+		sum = 0
+		minimum = min
+		verbose = entries
+		QDictLength = {}
+		QDictVisits = {}
+		if (os.path.isfile('C:/Users/scho1/QTableMCTS/QTable.txt') == True and Q == []):
+			with open("C:/Users/scho1/QTableMCTS/QTable.txt", "r") as QTablefile:
+				Q = json.load(QTablefile)
+				print(f"Q Table uploaded with {len(Q)} lines")
+		for iteration in range(begin,end):
+			for item in Q:
+				length = len(item[0])
+				if (length == iteration and item[1] >= minimum and str(item[0]).startswith(start)):
+					QDictLength[str(item[0])] = item[1] # 1 for iteration and 2 for visit
+					QDictVisits[str(item[0])] = item[2]
+					sum += 1
+			print(f"Entries which are {minimum} or more of length {iteration} are {sum}")
+			if verbose == True:
+				entries = sorted(QDictLength.items(), key=lambda x: x[1], reverse=True)
+				for element in entries:			
+					print(f"{element[0]}, {element[1]}, {QDictVisits[element[0]]}")
+			QDictLength = {}
+			QDictVisits = {}
+			sum = 0
+
 	# Extract information on sample size, iteration and then "shortened" info
-	def runParser(size, cutoff, minimum):	
-		# VARIABLES TO SET
-		# clock = 3600 (not used for longer iterations)
-		limit = 30 #length of matches list to print - 50 is used on lower iterations
-		# INITIALISATION
+	def runParser(size, cutoff, length, useMin, minimum):	
 		count1 = 0
 		count2 = 0
+		newmin = 0
 		compact = list()
 		cnt1 = Counter() # initial iterations 
 		cnt2 = Counter() # final 
 		cnt3 = Counter() # time taken
 		cnt4 = Counter() # count for final iteration
 		cnt5 = Counter() # iterations skipped through greedy runs
+		cnt6 = Counter() # number of (remaining) viable iterations
+		comment = "" # classify what sequence the match falls under
 		if (os.path.isfile('MCTSRunSummary.txt') == True):
 			with open("MCTSRunSummary.txt","r") as file:
 				line = file.readline()		
 				while line != "":	
 					if line.startswith("["):
-						match = line[:limit]
+						# normally 60 but can be lengthened
+						fullmatch = line #used with starts with function to avoid length affecting cutoff
+						match = line[:length]
 					if line.startswith("The lookahead"):
 						count1 += 1
 						file.readline()
@@ -138,9 +166,9 @@ class QCleanup:
 						if nextline.startswith("Shortened"):
 							compact.append(int(line[49:50]))
 							if line[68] == "w":							
-								compact.append(int(line[60:69]))
+								compact.append(int(line[60:68]))
 							else:
-								compact.append(int(line[60:69]))
+								compact.append(int(line[60:68]))
 							shortlist = nextline[16:].split()
 							compact.append(int(shortlist[0]))
 							compact.append(float(shortlist[1]))
@@ -151,29 +179,51 @@ class QCleanup:
 								longlist = next[0:].split()
 								compact.append(int(longlist[8]))
 								compact.append(int(longlist[9]))
-							if ((compact[2]>=cutoff or compact[4]>=cutoff) and count2 >= minimum):
-								print(f"{match}] {compact}")
+								# Capturing number of viable iterations if these exist
+								if len(longlist) > 10:
+									compact.append(int(longlist[10]))
+							# Specific to longest iterations							
+							#if (fullmatch.startswith("[4, 16, 28, 31, 25, 13, 52, 5, 11, 15, 8, 60, 35, 58, 51, 3, 56, 160, 131, 192, 126, 179, 138, 66, 196, 134, 108, 120, 230, 130, 63, 27, 23")):
+							#	comment = "213 Sequence: 5 11 ... 58 51 3 ... 230 130 63 27 23 NEW AREA"
+							#	newmin = 0							
+							if (useMin == True):
+								if ((compact[2]>=cutoff or compact[4]>=cutoff) and count2 >= minimum and (compact[2]>=newmin or compact[4]>=newmin)):
+									print(f"{match}] {compact} {comment}")
+							else:
+								if ((compact[2]>=cutoff or compact[4]>=cutoff) and count2 >= minimum):
+									print(f"{match}] {compact} {comment}")
 							count2 += 1
 						else:
 							count1 = 0
 						if size in compact:
 							cnt1[compact[2]] += 1
 							cnt2[compact[4]] += 1
-							# No clock used for higher iterations
-							cnt3[compact[5]] += 1	
+							# May need tuning for higher iterations - set at 1 hr at present
+							if (size == 300000):
+								timing = 3600
+							elif (size == 350000):
+								timing = 4100
+							elif (size > 350000):
+								timing = 1000
+							if compact[5] < timing:
+								cnt3[compact[5]] += 1									
 							if (len(compact) > 6):
 								cnt4[compact[6]] += 1
 								cnt5[compact[7]] += 1
+								if (len(compact) > 8):
+									cnt6[compact[8]] += 1			
 					compact.clear()
+					comment = ""
 					line = file.readline()						
 			if (count1 != count2):
 				print("ERROR: Mismatch of counts between lookahead and shortened text lines")
-			print(f"There are {count1} shortened entries in the file but only {count1-minimum} are shown above")
-			print(f"The counter of iteration values for {size} summed to {sum(cnt1.values())} and was:\n {sorted(cnt1.items())}")
-			print(f"The counter of final values for {size} summed to {sum(cnt2.values())} and was:\n {sorted(cnt2.items())}")
+			print(f"There are {count1} shortened entries in the file with up to {count1-minimum} shown above")
+			print(f"The counter of iteration values for {size} had an average of {sum(cnt1.elements())/sum(cnt1.values()):.2f} for {sum(cnt1.values())} runs and was:\n {sorted(cnt1.items())}")
+			print(f"The counter of final values for {size} had an average of {sum(cnt2.elements())/sum(cnt2.values()):.2f} for {sum(cnt2.values())} runs and was:\n {sorted(cnt2.items())}")
 			print(f"Long Form Information: The length of the final iteration (normally 5m) for {sum(cnt4.values())} runs was :\n {sorted(cnt4.items())}")
-			print(f"Long Form Information: The number of greedy iterations skipped for {sum(cnt5.values())} runs was :\n {sorted(cnt5.items())}")
-			print(f"Time to Complete: There were {sum(cnt3.values())} entries and the average was {sum(cnt3.elements())/sum(cnt3.values()):.2f}")
+			print(f"Long Form Information: The number of greedy iterations skipped had an average of {sum(cnt5.elements())/sum(cnt5.values()):.2f} for {sum(cnt5.values())} runs:\n {sorted(cnt5.items())}")
+			print(f"Long Form Information: The number of remaining viable iterations had an average of {sum(cnt6.elements())/sum(cnt6.values()):.2f} for {sum(cnt6.values())} runs:\n{sorted(cnt6.items())}")
+			print(f"Time to Complete: There were {sum(cnt3.values())} entries less than {timing} seconds and the average was {sum(cnt3.elements())/sum(cnt3.values()):.2f}")
 
 			file.close()
 
@@ -184,8 +234,8 @@ class QCleanup:
 		output = ""
 		QDictLength = {}
 		QDictVisits = {}
-		if (os.path.isfile('QTable.txt') == True):
-			with open("QTable.txt", "r") as QTablefile:
+		if (os.path.isfile('C:/Users/scho1/QTableMCTS/QTable.txt') == True):
+			with open("C:/Users/scho1/QTableMCTS/QTable.txt", "r") as QTablefile:
 				Q = json.load(QTablefile)
 				print(f"Q Table uploaded with {len(Q)} lines")
 		print(f"Entries which are {minimum} or more for iterations 1 to 6:")
@@ -208,8 +258,8 @@ class QCleanup:
 		updateList = []
 		textInput = ""
 		errorNote = False
-		if (os.path.isfile('Q-Table.txt') == True):
-			with open("Q-table.txt", "r") as QTablefile:
+		if (os.path.isfile('C:/Users/scho1/QTableMCTS/QTable.txt') == True):
+			with open("C:/Users/scho1/QTableMCTS/QTable.txt", "r") as QTablefile:
 				Q = json.load(QTablefile)
 				print(f"Q-table uploaded with {len(Q)} lines")	
 		textInput = input("Enter the iteration to be updated in Q with brackets: ")
@@ -231,7 +281,7 @@ class QCleanup:
 			print("There was a problem on at least one update")
 		else:
 			print("All entries were updated successfully")
-		with open("Q-table.txt","w") as handler:
+		with open("C:/Users/scho1/QTableMCTS/QTable.txt","w") as handler:
 			json.dump(Q,handler) 
 		handler.close()  
 		
@@ -316,6 +366,7 @@ class QCleanup:
 		with open("Count-Distribution.txt","w") as handler:
 			json.dump(dist,handler)
 		handler.close()
+		return length # output number of viable options
 
 	def viewCounter(cutoff):
 		if (os.path.isfile('Count-Distribution.txt') == True):
@@ -333,11 +384,10 @@ class QCleanup:
 		print(f"The total count was {sum(storedCntr.values())} and the 3 most common values were {storedCntr.most_common(3)}")
 
 
-#for x in range(0,8):
-#	QCleanup.reader(x,211,True)
+QCleanup.rangeReader(0,8,211,True)
 #QCleanup.reader(6,1,True,"[")
 #QCleanup.reader(88,205,True)
 #QCleanup.viewer()
 #QCleanup.table(180)
-QCleanup.runParser(2000000,1,842)
+#QCleanup.runParser(1000000,1,1042)
 #QCleanup.viewCounter(3500000)

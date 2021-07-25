@@ -34,7 +34,6 @@
     <Content Include="MCTS Notes.txt" />
     <Content Include="MCTS.txt" />
     <Content Include="MCTSRunSummary.txt" />
-    <Content Include="QTable.txt" />
   </ItemGroup>
   <ItemGroup>
     <InterpreterReference Include="Global|VisualStudio|PpPy v7.35" />

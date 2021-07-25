@@ -13,10 +13,10 @@ class EternityStart():
         useHints = False # Use only centre tile or 4 corner hints as well
         maxEpisodes = 100 # number of episodes to run
         sampleSize = 1 # number of runs/samples to take - 1 for no hints and 2 for hints typically
-        CreateTile.firstCountLimit = 2000000 # cutoff for run - normally at least 1m
+        CreateTile.firstCountLimit = 1000000 # cutoff for run - normally at least 1m
         CreateTile.terminalCountLimit = 500000000 # cutoff for final iteration at 88
         solutionPrint = 205; # can consider 200,205 or similar
-        cutoff = 88 # Point at which we move from sample check to full/5m solution
+        cutoff = 96 # Point at which we move from sample check to full/5m solution
         viableMinimum = 128 # Lowest point at which iteration counts as viable
         # VARIABLES INITIALISATION
         #random.seed(1)
@@ -33,8 +33,8 @@ class EternityStart():
         lowIteration = [] # list of lowest iteration explored
         miniCount = 0 # Used to prevent viable iteration loop repeating
         #Special characters seem to create issues for file locations
-        if (os.path.isfile('QTable.txt') == True):
-            with open("QTable.txt", "r") as QTablefile:
+        if (os.path.isfile('C:/Users/scho1/QTableMCTS/QTable.txt') == True):
+            with open("C:/Users/scho1/QTableMCTS/QTable.txt", "r") as QTablefile:
                 Q = json.load(QTablefile)
             print(f"QTable uploaded with {len(Q)} lines")
         CreateTile.createTile()
@@ -424,7 +424,7 @@ class EternityStart():
             Q[0][1] = max(Q[0][1],finalLength)
             Q[0][2] = Q[0][2] + 1
             # Do Not Use if Testing
-            with open("QTable.txt","w") as handler:
+            with open("C:/Users/scho1/QTableMCTS/QTable.txt","w") as handler:
                 json.dump(Q,handler) 
             handler.close()             
             episode += 1    
