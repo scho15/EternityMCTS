@@ -392,10 +392,10 @@ class QCleanup:
 		print(f"The total count was {sum(storedCntr.values())} and the 3 most common values were {storedCntr.most_common(3)}")
 
 
-QCleanup.rangeReader(0,8,211,True)
+QCleanup.rangeReader(0,10,211,True)
 #QCleanup.reader(6,1,True,"[")
 #QCleanup.reader(88,205,True)
 #QCleanup.viewer()
 #QCleanup.table(180)
-#QCleanup.runParser(1500000,1,59,False,800)
+#QCleanup.runParser(1500000,1,59,False,1143)
 #QCleanup.viewCounter(3500000)
