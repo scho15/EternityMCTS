@@ -18,7 +18,7 @@ class EternityStart():
         CreateTile.terminalCountLimit = 11000000 # cutoff for final iteration at 88
         solutionPrint = 205; # can consider 200,205 or similar
         cutoff = 96 # Point at which we move from sample check to full/5m solution
-        viableMinimum = 128 # Lowest point at which iteration counts as viable
+        viableMinimum = 160 # Lowest point at which iteration counts as viable
         # VARIABLES INITIALISATION
         #random.seed(1)
         optionDouble = False # Used to work out if double tile has been used
