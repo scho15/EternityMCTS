@@ -1,6 +1,6 @@
-#from CreateTile import CreateTile
-#from EternityMCTS import EternityMCTS
-#from QCleanup import QCleanup
+from CreateTile import CreateTile
+from EternityMCTS import EternityMCTS
+from QCleanup import QCleanup
 from collections import Counter
 import time
 import random
@@ -11,7 +11,7 @@ class EternityStart():
     def main():
         # DECISIONS REQUIRED
         useHints = False # Use only centre tile or 4 corner hints as well
-        maxEpisodes = 385 # number of episodes to run
+        maxEpisodes = 500 # number of episodes to run
         sampleSize = 1 # number of runs/samples to take - 1 for no hints and 2 for hints typically
         CreateTile.firstCountLimit = 1500000 # cutoff for run - normally at least 1m
         CreateTile.terminalCountLimit = 250000000 # cutoff for final iteration at 88
