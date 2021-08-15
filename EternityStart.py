@@ -12,13 +12,13 @@ class EternityStart():
     def main():
         # DECISIONS REQUIRED
         useHints = False # Use only centre tile or 4 corner hints as well
-        maxEpisodes = 500 # number of episodes to run
+        maxEpisodes = 70 # number of episodes to run
         sampleSize = 1 # number of runs/samples to take - 1 for no hints and 2 for hints typically
         CreateTile.firstCountLimit = 550000 # cutoff for run - normally at least 1m
         CreateTile.terminalCountLimit = 11000000 # cutoff for final iteration at 88
         solutionPrint = 205; # can consider 200,205 or similar
         cutoff = 96 # Point at which we move from sample check to full/5m solution
-        viableMinimum = 160 # Lowest point at which iteration counts as viable
+        viableMinimum = 180 # Lowest point at which iteration counts as viable
         # VARIABLES INITIALISATION
         #random.seed(1)
         optionDouble = False # Used to work out if double tile has been used
@@ -349,8 +349,11 @@ class EternityStart():
                                             if testList == item[0]:                                        
                                                 secondMaxList.append(item[1])
                                                 break;
-                                    print(f"NEW: Largest item found in second position is {max(secondMaxList)}")
-                                    if (max(tempMaxList) >= max(secondMaxList)):
+                                    if (len(secondMaxList) > 0):
+                                        print(f"NEW: Largest item found in second position is {max(secondMaxList)}")
+                                    else:
+                                        print(f"NEW: The second option has not been tested yet")
+                                    if (len(secondMaxList) == 0 or (max(tempMaxList) >= max(secondMaxList))):
                                         print(f"NEW: The first rotation was better or the same and is being used")
                                         eastMatch = MCTSPosition[-1][1]
                                         southMatch = MCTSPosition[-1][2]                                     
