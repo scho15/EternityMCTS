@@ -12,10 +12,10 @@ class EternityStart():
     def main():
         # DECISIONS REQUIRED
         useHints = False # Use only centre tile or 4 corner hints as well
-        maxEpisodes = 70 # number of episodes to run
+        maxEpisodes = 500 # number of episodes to run
         sampleSize = 1 # number of runs/samples to take - 1 for no hints and 2 for hints typically
-        CreateTile.firstCountLimit = 550000 # cutoff for run - normally at least 1m
-        CreateTile.terminalCountLimit = 11000000 # cutoff for final iteration at 88
+        CreateTile.firstCountLimit = 600000 # cutoff for run - normally at least 1m
+        CreateTile.terminalCountLimit = 12000000 # cutoff for final iteration at 88
         solutionPrint = 205; # can consider 200,205 or similar
         cutoff = 96 # Point at which we move from sample check to full/5m solution
         viableMinimum = 180 # Lowest point at which iteration counts as viable
@@ -320,9 +320,9 @@ class EternityStart():
                             eastMatch = MCTSPosition[-1][1]
                             southMatch = MCTSPosition[-1][2]
                             westMatch = MCTSPosition[-1][3]
-                            print(f"NEW: Current tile is a double rotation tile {epsilonMaxOption} with position {MCTSPosition[-1]}")
+                            print(f"Current tile is a double rotation tile {epsilonMaxOption} with position {MCTSPosition[-1]}")
                             firstOptions = EternityMCTS.findNextPositionMatches(MCTSList,MCTSPosition, useHints)
-                            print(f"NEW: Next available options would be {firstOptions}")                           
+                            print(f"Next available options would be {firstOptions}")                           
                             for tile in firstOptions:
                                 testList = MCTSList.copy()
                                 testList.append(tile)
@@ -330,7 +330,10 @@ class EternityStart():
                                     if testList == item[0]:                                        
                                         tempMaxList.append(item[1])
                                         break;
-                            print(f"NEW: Largest item found in first position is {max(tempMaxList)}")
+                            if (len(tempMaxList) > 0):
+                                print(f"Largest item found in first position is {max(tempMaxList)}")
+                            else:
+                                print(f"The first option is below threshold")
                             if (southMatch == westMatch):
                                     print("Second potential rotation needs to be tested\n")
                                     if (southMatch == eastMatch):
@@ -350,11 +353,11 @@ class EternityStart():
                                                 secondMaxList.append(item[1])
                                                 break;
                                     if (len(secondMaxList) > 0):
-                                        print(f"NEW: Largest item found in second position is {max(secondMaxList)}")
+                                        print(f"Largest item found in second position is {max(secondMaxList)}")
                                     else:
-                                        print(f"NEW: The second option has not been tested yet")
+                                        print(f"The second option is below the threshold")
                                     if (len(secondMaxList) == 0 or (max(tempMaxList) >= max(secondMaxList))):
-                                        print(f"NEW: The first rotation was better or the same and is being used")
+                                        print(f"The first rotation was better or the same and is being used")
                                         eastMatch = MCTSPosition[-1][1]
                                         southMatch = MCTSPosition[-1][2]                                     
                                         if (southMatch == eastMatch):
@@ -364,7 +367,7 @@ class EternityStart():
                                             CreateTile.rotatePosition(-1, MCTSPosition)
                                             CreateTile.rotatePosition(-1, MCTSPosition)
                                     else:
-                                        print(f"NEW: The second rotation was better or the same and is being used")
+                                        print(f"The second rotation was better or the same and is being used")
                                     northMatch = MCTSPosition[-1][0]
                                     eastMatch = MCTSPosition[-1][1]
                                     southMatch = MCTSPosition[-1][2]
