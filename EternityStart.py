@@ -356,7 +356,7 @@ class EternityStart():
                                         print(f"Largest item found in second position is {max(secondMaxList)}")
                                     else:
                                         print(f"The second option is below the threshold")
-                                    if (len(secondMaxList) == 0 or (max(tempMaxList) >= max(secondMaxList))):
+                                    if (len(secondMaxList) == 0 or (len(tempMaxList) != 0 and max(tempMaxList) >= max(secondMaxList) )):
                                         print(f"The first rotation was better or the same and is being used")
                                         eastMatch = MCTSPosition[-1][1]
                                         southMatch = MCTSPosition[-1][2]                                     
