@@ -397,5 +397,5 @@ class QCleanup:
 #QCleanup.reader(88,205,True)
 #QCleanup.viewer()
 #QCleanup.table(180)
-QCleanup.runParser(1500000,1,59,False,2527)
+QCleanup.runParser(2000000,1,59,False,3027)
 #QCleanup.viewCounter(3500000)
