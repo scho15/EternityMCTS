@@ -358,8 +358,8 @@ class QCleanup:
 								comment = "217 Sequence: 5 11 ... 58 51 3 56 160 131 min 206"
 								newmin = 206
 							elif (fullmatch.startswith("[4, 16, 28, 31, 25, 13, 52, 5, 11, 15, 8, 60, 35, 58, 51, 3, 56, 160")):
-								comment = "217 Sequence: 5 11 ... 58 51 3 56 160 min 208"
-								newmin = 208
+								comment = "217 Sequence: 5 11 ... 58 51 3 56 160 min 211"
+								newmin = 211
 							elif (match.startswith("[4, 16, 28, 31, 25, 13, 52, 5, 11, 15, 8, 60, 35, 58, 51, 3")):
 								comment = "217 Sequence: 5 11 ... 58 51 3 min 207"
 								newmin = 207
@@ -672,15 +672,15 @@ class QCleanup:
 				result.extend(suffixWays)
 		return result
 
-#QCleanup.rangeReader(0,97,211,True)
+QCleanup.rangeReader(0,97,211,True)
 #QCleanup.reader(90,1,True,"[4, 16, 28, 31, 25, 13, 52, 5, 11, 15, 8, 60, 35, 58, 51, 3, 56, 160, 131, 192, 126, 179, 138, 66, 196, 134, 108, 120, 230, 130, 63, 27, 23, 203, 165, 114, 115, 110, 148, 145, 140, 172, 247, 173, 73, 69, 222, 36, 43, 226, 70, 113, 158, 123, 150, 83, 99, 175, 164, 159, 170, 154, 254, 48, 53, 227, 84, 112, 149, 111, 127, 121, 125, 176, 128, 136, 180, 255, 199, 46, 38, 214, 147, 104, 101, 243, 225, 223, 232")
 #QCleanup.reader(77,1,True,"[4, 16, 28, 31, 25, 13, 52, 5, 11, 15, 8, 60, 35, 58, 51, 3, 56, 160, 131, 192, 126, 179, 138, 66, 196, 134, 108, 120, 230, 130, 63, 27, 23, 203, 165, 114, 115, 110, 148, 145, 140, 172, 247, 173, 73, 69, 222, 36, 43, 226, 70, 113, 158, 123, 150, 83, 99, 175, 164, 159, 170, 154, 254, 48, 53, 227, 84, 112, 149, 111, 127, 121, 125, 176, 128, 136")
 #QCleanup.reader(96,205,True)
-#QCleanup.reader(3,1,True,"[4, 16")
+#QCleanup.reader(35,1,True,"[4, 16, 28, 31, 25, 13, 52, 5, 11, 15, 8, 60, 35, 58, 51, 3, 56, 160, 131, 192, 126, 179, 138, 66, 196, 134, 108, 120, 230, 130, 63, 27, 23, 203")
 #QCleanup.table(180)
 #QCleanup.viewer()
 #QCleanup.cleanser()
 #QCleanup.viewCounter(800000)
 #QCleanup.updateFrom96(217)
 # True indicates using new minimum function which only shows iterations that need updating
-QCleanup.runParser(800000,1,450,True,22741) 
+#QCleanup.runParser(800000,1,450,True,23161) 
