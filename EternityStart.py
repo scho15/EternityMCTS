@@ -12,7 +12,7 @@ class EternityStart():
     def main():
         # DECISIONS REQUIRED
         useHints = False # Use only centre tile or 4 corner hints as well
-        maxEpisodes = 339 # number of episodes to run
+        maxEpisodes = 48 # number of episodes to run
         sampleSize = 1 # number of runs/samples to take - 1 for no hints and 2 for hints typically
         CreateTile.firstCountLimit = 800000 # cutoff for run - normally at least 1m
         CreateTile.terminalCountLimit = 16000000 # cutoff for final iteration at 88
@@ -459,13 +459,16 @@ class EternityStart():
                 print(f"The solution was\n{maxMCTS}")
                 file2.write(f"Final solution from {cutoff} iteration was of length {finalLength} and the solution itself was:\n{maxMCTS}\n")
             print(f"The length of the final Q-table with state, maximum, visitcount was {len(Q)}\n")
-            print(f"The lookahead for each iteration for sample size {sampleSize} and count {countLimit} was {maximaList} and maximum was {max(maximaList)} with average {sum(maximaList)/len(maximaList):.3f}\n")
-            #file1.write(f"The lookahead for each iteration for sample size {sampleSize} and count {countLimit} was {maximaList} and maximum was {max(maximaList)} with average {sum(maximaList)/len(maximaList):.3f}\n")
-            print(f"The list of viable iterations for sample size {sampleSize} and count {countLimit} was {iterationList} and maximum was {max(iterationList)} with average {sum(iterationList)/len(iterationList):.3f}\n")
-            file2.write(f"The list of viable iterations for sample size {sampleSize} and count {countLimit} was {iterationList} and maximum was {max(iterationList)} with average {sum(iterationList)/len(iterationList):.3f}\n")
+            if maximaList != []:
+                print(f"The lookahead for each iteration for sample size {sampleSize} and count {countLimit} was {maximaList} and maximum was {max(maximaList)} with average {sum(maximaList)/len(maximaList):.3f}\n")
+                #file1.write(f"The lookahead for each iteration for sample size {sampleSize} and count {countLimit} was {maximaList} and maximum was {max(maximaList)} with average {sum(maximaList)/len(maximaList):.3f}\n")
+            if iterationList != []:
+                print(f"The list of viable iterations for sample size {sampleSize} and count {countLimit} was {iterationList} and maximum was {max(iterationList)} with average {sum(iterationList)/len(iterationList):.3f}\n")
+                file2.write(f"The list of viable iterations for sample size {sampleSize} and count {countLimit} was {iterationList} and maximum was {max(iterationList)} with average {sum(iterationList)/len(iterationList):.3f}\n")
             viable = QCleanup.viableIterations(countLimit, iterationList)
             #file1.write(f"Final Q-table length: {len(Q)}\n\n\n")
-            file2.write(f"The lookahead for each iteration for sample size {sampleSize} and count {countLimit} was {maximaList} and maximum was {max(maximaList)} with average {sum(maximaList)/len(maximaList):.3f}\n")           
+            if maximaList != []:
+                file2.write(f"The lookahead for each iteration for sample size {sampleSize} and count {countLimit} was {maximaList} and maximum was {max(maximaList)} with average {sum(maximaList)/len(maximaList):.3f}\n")           
             end = time.time()
             file2.write(f"Time taken for the complete run was: {end - start:.3f} seconds\n")
             file2.write(f"Final Q-table length: {len(Q)}\n")
@@ -485,11 +488,18 @@ class EternityStart():
                 MCTSList.pop()
             print(f"The final length of {finalLength} has been used to update all prior Q table values")
             print(f"The number of iterations skipped through greedy runs was {greedyCount}")
-            print(f"Shortened form for information of initial, average, final and time: {max(maximaList)} {sum(maximaList)/len(maximaList):.3f} {finalLength} {end-start:.0f}")
-            print(f"Longer version including sample size, first count limit, shortened form, terminal limit, greedy run count and viable iterations:")
-            print(f"Long Form: {sampleSize} {countLimit} {max(maximaList)} {sum(maximaList)/len(maximaList):.3f} {finalLength} {end-start:.0f} {runCount} {greedyCount} {viable}\n\n")
-            file2.write(f"Shortened Form: {max(maximaList)} {sum(maximaList)/len(maximaList):.3f} {finalLength} {end-start:.0f}\n") 
-            file2.write(f"Long Form: {sampleSize} {countLimit} {max(maximaList)} {sum(maximaList)/len(maximaList):.3f} {finalLength} {end-start:.0f} {runCount} {greedyCount} {viable}\n\n")           
+            if maximaList != []:
+                print(f"Shortened form for information of initial, average, final and time: {max(maximaList)} {sum(maximaList)/len(maximaList):.3f} {finalLength} {end-start:.0f}")
+                print(f"Longer version including sample size, first count limit, shortened form, terminal limit, greedy run count and viable iterations:")      
+                print(f"Long Form: {sampleSize} {countLimit} {max(maximaList)} {sum(maximaList)/len(maximaList):.3f} {finalLength} {end-start:.0f} {runCount} {greedyCount} {viable}\n\n")
+                file2.write(f"Shortened Form: {max(maximaList)} {sum(maximaList)/len(maximaList):.3f} {finalLength} {end-start:.0f}\n") 
+                file2.write(f"Long Form: {sampleSize} {countLimit} {max(maximaList)} {sum(maximaList)/len(maximaList):.3f} {finalLength} {end-start:.0f} {runCount} {greedyCount} {viable}\n\n")   
+            else:
+                print(f"Shortened form for information of initial, average, final and time: 0 0 {finalLength} {end-start:.0f}")
+                print(f"Longer version including sample size, first count limit, shortened form, terminal limit, greedy run count and viable iterations:")      
+                print(f"Long Form: {sampleSize} {countLimit} 0 0 {finalLength} {end-start:.0f} {runCount} {greedyCount} {viable}\n\n")
+                file2.write(f"Shortened Form: 0 0 {finalLength} {end-start:.0f}\n") 
+                file2.write(f"Long Form: {sampleSize} {countLimit} 0 0 {finalLength} {end-start:.0f} {runCount} {greedyCount} {viable}\n\n")   
             # Final update for original leaf
             Q[0][1] = max(Q[0][1],finalLength)
             Q[0][2] = Q[0][2] + 1
