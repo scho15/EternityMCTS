@@ -9,7 +9,7 @@ class QCleanup:
 		Q = []
 		a = []	
 		b = []
-		cutoff = 200
+		cutoff = 205
 		minimumIteration = 3
 		counter = 0
 		kept = 0
@@ -36,6 +36,7 @@ class QCleanup:
 					print(f"{counter} items have been removed and items kept is {kept}")
 			else:
 				kept += 1
+				#item[2] = 0 # Only used for 205 reset
 		for item in Q:
 			length = len(item[0])
 			a.append(length)
@@ -519,8 +520,8 @@ class QCleanup:
 		storedCntr = Counter() # Counter for a particular cutoff
 		itemFound = False # Check to see if counter has been stored for this iteration
 		textInput = 0
-		if (os.path.isfile('Count-Distribution.txt') == True):
-			with open("Count-Distribution.txt", "r") as CountDistributionfile:
+		if (os.path.isfile('C:/Users/scho1/QTableMCTS/Count-Distribution.txt') == True):
+			with open("C:/Users/scho1/QTableMCTS/Count-Distribution.txt", "r") as CountDistributionfile:
 				dist = json.load(CountDistributionfile)
 			print(f"Count distribution uploaded with {len(dist)} entries")
 		textInput1 = int(input("Enter the cutoff used for this iteration (in millions): "))
@@ -553,7 +554,7 @@ class QCleanup:
 			dist.append([textInput1,storedCntr]) # difficulty in ensuring this is int rather than txt
 			print(f"A new stored counter has been created of :\n{sorted(storedCntr.items())}")
 		print(f"The total count was {sum(storedCntr.values())} and the 5 most common values were {storedCntr.most_common(5)}")
-		with open("Count-Distribution.txt","w") as handler:
+		with open("C:/Users/scho1/QTableMCTS/Count-Distribution.txt","w") as handler:
 			json.dump(dist,handler)
 		handler.close()
 
@@ -562,8 +563,8 @@ class QCleanup:
 		storedCntr = Counter() # Counter for a particular cutoff
 		dist = [] # list containing cutoff and Counter for lengths of viable options
 		itemFound = False
-		if (os.path.isfile('Count-Distribution.txt') == True):
-			with open("Count-Distribution.txt", "r") as CountDistributionfile:
+		if (os.path.isfile('C:/Users/scho1/QTableMCTS/Count-Distribution.txt') == True):
+			with open("C:/Users/scho1/QTableMCTS/Count-Distribution.txt", "r") as CountDistributionfile:
 				dist = json.load(CountDistributionfile)
 			print(f"Count distribution uploaded with {len(dist)} entries")
 		for item in dist:
@@ -592,14 +593,14 @@ class QCleanup:
 			dist.append([cutoff,storedCntr]) # difficulty in ensuring this is int rather than txt
 			print(f"A new stored counter has been created of :\n{sorted(storedCntr.items())}")
 		print(f"The total count was {sum(storedCntr.values())} and the 3 most common values were {storedCntr.most_common(3)}")
-		with open("Count-Distribution.txt","w") as handler:
+		with open("C:/Users/scho1/QTableMCTS/Count-Distribution.txt","w") as handler:
 			json.dump(dist,handler)
 		handler.close()
 		return length # output number of viable options
 
 	def viewCounter(cutoff):
-		if (os.path.isfile('Count-Distribution.txt') == True):
-			with open("Count-Distribution.txt", "r") as CountDistributionfile:
+		if (os.path.isfile('C:/Users/scho1/QTableMCTS/Count-Distribution.txt') == True):
+			with open("C:/Users/scho1/QTableMCTS/Count-Distribution.txt", "r") as CountDistributionfile:
 				dist = json.load(CountDistributionfile)
 			print(f"Count distribution uploaded with {len(dist)} entries")
 		for item in dist:
@@ -680,11 +681,11 @@ class QCleanup:
 #QCleanup.reader(68,1,True,"[4, 16, 28, 31, 25, 13, 52, 5, 11, 15, 8, 60, 35, 58, 51, 3, 56, 160, 131, 192, 126, 179, 138, 66, 196, 134, 108, 120, 230, 130, 63, 27, 23, 203, 165, 114, 115, 110, 148, 145, 140, 172, 247, 173, 73, 69, 222, 36, 43, 226, 70, 113, 158, 123, 150, 83, 99, 175, 164, 159, 170, 154, 254, 48, 53, 227, 84")
 #QCleanup.reader(96,205,True)
 #QCleanup.reader(35,1,True,"[4, 16, 28, 31, 25, 13, 52, 5, 11, 15, 8, 60, 35, 58, 51, 3, 56, 160, 131, 192, 126, 179, 138, 66, 196, 134, 108, 120, 230, 130, 63, 27, 23, 203")
-#QCleanup.reader(2,1,True,"[1")
+#QCleanup.reader(6,1,True,"[")
 #QCleanup.table(180)
 #QCleanup.viewer()
 #QCleanup.cleanser()
 #QCleanup.viewCounter(800000)
 #QCleanup.updateFrom96(217)
 # True indicates using new minimum function which only shows iterations that need updating
-QCleanup.runParser(800000,1,450,True,23788) 
+#QCleanup.runParser(800000,1,450,True,23795) 
