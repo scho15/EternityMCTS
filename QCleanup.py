@@ -9,7 +9,7 @@ class QCleanup:
 		Q = []
 		a = []	
 		b = []
-		cutoff = 205
+		cutoff = 200
 		minimumIteration = 3
 		counter = 0
 		kept = 0
@@ -151,8 +151,8 @@ class QCleanup:
 		cnt5 = Counter() # iterations skipped through greedy runs
 		cnt6 = Counter() # number of (remaining) viable iterations
 		comment = "" # classify what sequence the match falls under
-		if (os.path.isfile('MCTSRunSummary.txt') == True):
-			with open("MCTSRunSummary.txt","r") as file:
+		if (os.path.isfile('C:/Users/scho1/QTableMCTS/MCTSRunSummary.txt') == True):
+			with open("C:/Users/scho1/QTableMCTS/MCTSRunSummary.txt","r") as file:
 				line = file.readline()		
 				while line != "":	
 					if line.startswith("["):
@@ -184,21 +184,81 @@ class QCleanup:
 								if len(longlist) > 10:
 									compact.append(int(longlist[10]))
 							# Specific to longest iterations
-							if (fullmatch.startswith("[1")):
-								comment = "Run 2: 1 min 200"
-								newmin = 200
+							if (fullmatch.startswith("[2, 42, 10, 43, 24, 6, 20, 15, 8, 59")):
+								comment = "Run 2: 2 42 10 ... 15 8 59 NEW AREA"
+								newmin = 0
+							elif (fullmatch.startswith("[2, 42, 10, 43, 24, 6, 20, 15, 8")):
+								comment = "Run 2: 2 42 10 ... 20 15 8 min 198"
+								newmin = 198
+							elif (fullmatch.startswith("[2, 42, 10, 43, 24, 6, 20, 15")):
+								comment = "Run 2: 2 42 10 43 24 6 20 15 min 205"
+								newmin = 205
+							elif (fullmatch.startswith("[2, 42, 10, 43, 24, 6, 20")):
+								comment = "Run 2: 2 42 10 43 24 6 20 min 204"
+								newmin = 204
+							elif (fullmatch.startswith("[2, 42, 10, 43, 24, 6, 18")):
+								comment = "Run 2: 2 42 10 43 24 6 + 18 min 203"
+								newmin = 203
+							elif (fullmatch.startswith("[2, 42, 10, 43, 24, 6")):
+								comment = "Run 2: 2 42 10 43 24 6 min 204"
+								newmin = 204
+							elif (fullmatch.startswith("[2, 42, 10, 43, 24")):
+								comment = "Run 2: 2 42 10 43 24 min 205"
+								newmin = 205
+							elif (fullmatch.startswith("[2, 42, 10, 43, 19")):
+								comment = "Run 2: 2 42 10 43 + 19 min 204"
+								newmin = 204
+							elif (fullmatch.startswith("[2, 42, 10, 43")):
+								comment = "Run 2: 2 42 10 43 min 205"
+								newmin = 205
+							elif (fullmatch.startswith("[2, 42, 10, 40")):
+								comment = "Run 2: 2 42 10 + 40 min 205"
+								newmin = 205
+							elif (fullmatch.startswith("[2, 42, 10, 46")):
+								comment = "Run 2: 2 42 10 + 46 min 205"
+								newmin = 205
+							elif (fullmatch.startswith("[2, 42, 10")):
+								comment = "Run 2: 2 42 10 min 206"
+								newmin = 206
+							elif (fullmatch.startswith("[2, 42, 6")):
+								comment = "Run 2: 2 42 + 6 min 205"
+								newmin = 205
+							elif (fullmatch.startswith("[2, 42")):
+								comment = "Run 2: 2 42 min 206"
+								newmin = 206
+							elif (fullmatch.startswith("[2, 38")):
+								comment = "Run 2: 2 + 38 min 205"
+								newmin = 205
+							elif (fullmatch.startswith("[2, 46")):
+								comment = "Run 2: 2 + 46 min 204"
+								newmin = 204
 							elif (fullmatch.startswith("[2")):
-								comment = "Run 2: 2 min 200"
-								newmin = 200	
-							elif (fullmatch.startswith("[3")):
-								comment = "Run 2: 3 min 200"
-								newmin = 200
-							elif (fullmatch.startswith("[4")):
-								comment = "Run 2: 4 min 200"
-								newmin = 200	
+								comment = "Run 2: 2 min 206"
+								newmin = 206
+							elif (fullmatch.startswith("[1, 28")):
+								comment = "Run 2: 1 28 min 198"
+								newmin = 198
+							elif (fullmatch.startswith("[1, 30")):
+								comment = "Run 2: 1 30 min 198"
+								newmin = 198
+							elif (fullmatch.startswith("[1, 27")):
+								comment = "Run 2: 1 27 min 204"
+								newmin = 204
+							elif (fullmatch.startswith("[1, 33")):
+								comment = "Run 2: 1 33 min 204"
+								newmin = 204
+							elif (fullmatch.startswith("[3, 29")):
+								comment = "Run 2: 3 29 min 204"
+								newmin = 204
+							elif (fullmatch.startswith("[4, 25")):
+								comment = "Run 2: 4 25 min 202"
+								newmin = 202
+							elif (fullmatch.startswith("[4, 23")):
+								comment = "Run 2: 4 23 min 204"
+								newmin = 204
 							else:
-								comment = "Run 2: Below 200"
-								newmin = 195
+								comment = "Run 2: Non 2 min 205"
+								newmin = 205
 							if (useMin == True):
 								if ((compact[2]>=cutoff or compact[4]>=cutoff) and count2 >= minimum and (compact[2]>=newmin or compact[4]>=newmin)):
 									print(f"{match}] {compact} {comment}")
@@ -466,16 +526,13 @@ class QCleanup:
 				result.extend(suffixWays)
 		return result
 
-#QCleanup.rangeReader(0,97,211,True)
-#QCleanup.reader(90,1,True,"[4, 16, 28, 31, 25, 13, 52, 5, 11, 15, 8, 60, 35, 58, 51, 3, 56, 160, 131, 192, 126, 179, 138, 66, 196, 134, 108, 120, 230, 130, 63, 27, 23, 203, 165, 114, 115, 110, 148, 145, 140, 172, 247, 173, 73, 69, 222, 36, 43, 226, 70, 113, 158, 123, 150, 83, 99, 175, 164, 159, 170, 154, 254, 48, 53, 227, 84, 112, 149, 111, 127, 121, 125, 176, 128, 136, 180, 255, 199, 46, 38, 214, 147, 104, 101, 243, 225, 223, 86")
-#QCleanup.reader(68,1,True,"[4, 16, 28, 31, 25, 13, 52, 5, 11, 15, 8, 60, 35, 58, 51, 3, 56, 160, 131, 192, 126, 179, 138, 66, 196, 134, 108, 120, 230, 130, 63, 27, 23, 203, 165, 114, 115, 110, 148, 145, 140, 172, 247, 173, 73, 69, 222, 36, 43, 226, 70, 113, 158, 123, 150, 83, 99, 175, 164, 159, 170, 154, 254, 48, 53, 227, 84")
+#QCleanup.rangeReader(0,12,211,True)
 #QCleanup.reader(96,205,True)
-#QCleanup.reader(35,1,True,"[4, 16, 28, 31, 25, 13, 52, 5, 11, 15, 8, 60, 35, 58, 51, 3, 56, 160, 131, 192, 126, 179, 138, 66, 196, 134, 108, 120, 230, 130, 63, 27, 23, 203")
-#QCleanup.reader(6,1,True,"[")
-#QCleanup.table(180)
+#QCleanup.reader(8,1,True,"[2, 42, 10, 43, 24, 6, 20")
+#QCleanup.table(200)
 #QCleanup.viewer()
 #QCleanup.cleanser()
-#QCleanup.viewCounter(800000)
+#QCleanup.viewCounter(400000)
 #QCleanup.updateFrom96(217)
 # True indicates using new minimum function which only shows iterations that need updating
-#QCleanup.runParser(800000,1,450,True,23795) 
+QCleanup.runParser(400000,1,65,True,1921) 
