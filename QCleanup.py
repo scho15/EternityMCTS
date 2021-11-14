@@ -9,7 +9,7 @@ class QCleanup:
 		Q = []
 		a = []	
 		b = []
-		cutoff = 190
+		cutoff = 200
 		minimumIteration = 6
 		counter = 0
 		kept = 0
@@ -44,7 +44,7 @@ class QCleanup:
 		print(sorted(Counter(a).items()))
 		print(f"Revised maximum and average lengths are {max(b)} and {sum(b)/len(b):.5f}")
 		print(sorted(Counter(b).items()))
-		with open("C:/Users/scho1/QTableMCTS/QTable-190.txt","w") as handler:
+		with open("C:/Users/scho1/QTableMCTS/QTable-200.txt","w") as handler:
 			json.dump(Q,handler) 
 		handler.close()    
 
@@ -392,10 +392,11 @@ class QCleanup:
 		print(f"The total count was {sum(storedCntr.values())} and the 3 most common values were {storedCntr.most_common(3)}")
 
 
-#QCleanup.rangeReader(0,11,212,True)
+#QCleanup.rangeReader(0,32,212,True)
 #QCleanup.reader(6,1,True,"[")
 #QCleanup.reader(88,205,True)
 #QCleanup.viewer()
+#QCleanup.cleanser()
 #QCleanup.table(180)
-QCleanup.runParser(2000000,1,59,False,3027)
+#QCleanup.runParser(2000000,1,59,False,5469)
 #QCleanup.viewCounter(3500000)
