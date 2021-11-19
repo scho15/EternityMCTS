@@ -184,75 +184,87 @@ class QCleanup:
 								if len(longlist) > 10:
 									compact.append(int(longlist[10]))
 							# Specific to longest iterations
-							if (fullmatch.startswith("[2, 42, 10, 43, 24, 6, 20, 15, 8, 59, 21, 45, 12, 44")):
-								comment = "15: 2 42 10 ... 45 12 44 NEW AREA"
+							if (fullmatch.startswith("[2, 42, 10, 43, 24, 6, 20, 15, 8, 59, 21, 45, 12, 44, 27, 4, 52, 173, 243, 174")):
+								comment = "21: 2 42 10 ... 52 173 243 174 NEW AREA"
 								newmin = 0
-							elif (fullmatch.startswith("[2, 42, 10, 43, 24, 6, 20, 15, 8, 59, 21, 45, 12, 48")):
-								comment = "14: 2 42 10 ... 21 45 12 + 48 min 203"
-								newmin = 203
-							elif (fullmatch.startswith("[2, 42, 10, 43, 24, 6, 20, 15, 8, 59, 21, 45, 12, 38")):
-								comment = "14: 2 42 10 ... 21 45 12 + 38 min 203"
-								newmin = 203
-							elif (fullmatch.startswith("[2, 42, 10, 43, 24, 6, 20, 15, 8, 59, 21, 45, 12, 47")):
-								comment = "14: 2 42 10 ... 21 45 12 + 47 min 202"
+							elif (fullmatch.startswith("[2, 42, 10, 43, 24, 6, 20, 15, 8, 59, 21, 45, 12, 44, 27, 4, 52, 173, 243")):
+								comment = "20: 2 42 10 ... 52 173 243 min 202"
 								newmin = 202
-							elif (fullmatch.startswith("[2, 42, 10, 43, 24, 6, 20, 15, 8, 59, 21, 45, 12, 39")):
-								comment = "14: 2 42 10 ... 21 45 12 + 39 min 202"
-								newmin = 202
-							elif (fullmatch.startswith("[2, 42, 10, 43, 24, 6, 20, 15, 8, 59, 21, 45, 12")):
-								comment = "14: 2 42 10 ... 21 45 12 min 204"
+							elif (fullmatch.startswith("[2, 42, 10, 43, 24, 6, 20, 15, 8, 59, 21, 45, 12, 44, 27, 4, 52, 173")):
+								comment = "19: 2 42 10 ... 44 27 4 52 173 min 204"
 								newmin = 204
-							elif (fullmatch.startswith("[2, 42, 10, 43, 24, 6, 20, 15, 8, 59, 21, 45, 9")):
-								comment = "13: 2 42 10 ... 59 21 45 + 9 min 203"
-								newmin = 203
+							elif (fullmatch.startswith("[2, 42, 10, 43, 24, 6, 20, 15, 8, 59, 21, 45, 12, 44, 27, 4, 52")):
+								comment = "18: 2 42 10 ... 44 27 4 52 min 206"
+								newmin = 206
+							elif (fullmatch.startswith("[2, 42, 10, 43, 24, 6, 20, 15, 8, 59, 21, 45, 12, 44, 27, 4")):
+								comment = "17: 2 42 10 ... 44 27 4 min 204"
+								newmin = 204
+							elif (fullmatch.startswith("[2, 42, 10, 43, 24, 6, 20, 15, 8, 59, 21, 45, 12, 44, 29")):
+								comment = "15: 2 42 10 ... 45 12 44 + 29 min 205"
+								newmin = 205
+							elif (fullmatch.startswith("[2, 42, 10, 43, 24, 6, 20, 15, 8, 59, 21, 45, 12, 44, 32")):
+								comment = "15: 2 42 10 ... 45 12 44 + 32 min 205"
+								newmin = 205
+							elif (fullmatch.startswith("[2, 42, 10, 43, 24, 6, 20, 15, 8, 59, 21, 45, 12, 44, 26")):
+								comment = "15: 2 42 10 ... 45 12 44 + 26 min 204"
+								newmin = 204
+							elif (fullmatch.startswith("[2, 42, 10, 43, 24, 6, 20, 15, 8, 59, 21, 45, 12, 44")):
+								comment = "15: 2 42 10 ... 45 12 44 min 206"
+								newmin = 206
+							elif (fullmatch.startswith("[2, 42, 10, 43, 24, 6, 20, 15, 8, 59, 21, 45, 12, 40")):
+								comment = "14: 2 42 10 ... 21 45 12 + 40 min 205"
+								newmin = 205
+							elif (fullmatch.startswith("[2, 42, 10, 43, 24, 6, 20, 15, 8, 59, 21, 45, 12, 46")):
+								comment = "14: 2 42 10 ... 21 45 12 + 46 min 205"
+								newmin = 205
+							elif (fullmatch.startswith("[2, 42, 10, 43, 24, 6, 20, 15, 8, 59, 21, 45, 12, 48")):
+								comment = "14: 2 42 10 ... 21 45 12 + 48 min 205"
+								newmin = 205
+							elif (fullmatch.startswith("[2, 42, 10, 43, 24, 6, 20, 15, 8, 59, 21, 45, 12, 39")):
+								comment = "14: 2 42 10 ... 21 45 12 + 39 min 204"
+								newmin = 204
+							elif (fullmatch.startswith("[2, 42, 10, 43, 24, 6, 20, 15, 8, 59, 21, 45, 12")):
+								comment = "14: 2 42 10 ... 21 45 12 min 206"
+								newmin = 206
 							elif (fullmatch.startswith("[2, 42, 10, 43, 24, 6, 20, 15, 8, 59, 21, 45")):
 								comment = "13: 2 42 10 ... 59 21 45 min 205"
 								newmin = 205
-							elif (fullmatch.startswith("[2, 42, 10, 43, 24, 6, 20, 15, 8, 59, 21, 40")):
-								comment = "12: 2 42 10 ... 8 59 21 + 40 min 204"
-								newmin = 204
-							elif (fullmatch.startswith("[2, 42, 10, 43, 24, 6, 20, 15, 8, 59, 21, 41")):
-								comment = "12: 2 42 10 ... 8 59 21 + 41 min 204"
-								newmin = 204
+							elif (fullmatch.startswith("[2, 42, 10, 43, 24, 6, 20, 15, 8, 59, 21, 46")):
+								comment = "12: 2 42 10 ... 8 59 21 + 46 min 205"
+								newmin = 205
+							elif (fullmatch.startswith("[2, 42, 10, 43, 24, 6, 20, 15, 8, 59, 21, 48")):
+								comment = "12: 2 42 10 ... 8 59 21 + 48 min 205"
+								newmin = 205
 							elif (fullmatch.startswith("[2, 42, 10, 43, 24, 6, 20, 15, 8, 59, 21, 44")):
-								comment = "12: 2 42 10 ... 8 59 21 + 44 min 202"
-								newmin = 202
+								comment = "12: 2 42 10 ... 8 59 21 + 44 min 204"
+								newmin = 204
 							elif (fullmatch.startswith("[2, 42, 10, 43, 24, 6, 20, 15, 8, 59, 21")):
 								comment = "12: 2 42 10 ... 8 59 21 min 205"
-								newmin = 205
-							elif (fullmatch.startswith("[2, 42, 10, 43, 24, 6, 20, 15, 8, 59, 16")):
-								comment = "11: 2 42 10 ... 15 8 59 + 16 min 204"
-								newmin = 204
+								newmin = 206
 							elif (fullmatch.startswith("[2, 42, 10, 43, 24, 6, 20, 15, 8, 59, 23")):
 								comment = "11: 2 42 10 ... 15 8 59 + 23 min 205"
 								newmin = 205
 							elif (fullmatch.startswith("[2, 42, 10, 43, 24, 6, 20, 15, 8, 59")):
 								comment = "11: 2 42 10 ... 15 8 59 min 206"
 								newmin = 206
-							elif (fullmatch.startswith("[2, 42, 10, 43, 24, 6, 20, 15, 8, 56")):
-								comment = "10: 2 42 10 ... 20 15 8 + 56 min 203"
-								newmin = 203
-							elif (fullmatch.startswith("[2, 42, 10, 43, 24, 6, 20, 15, 8")):
-								comment = "10: 2 42 10 ... 20 15 8 min 204"
+							elif (fullmatch.startswith("[2, 42, 10, 43, 24, 6, 20, 15, 8, 58")):
+								comment = "10: 2 42 10 ... 20 15 8 + 58 min 204"
 								newmin = 204
+							elif (fullmatch.startswith("[2, 42, 10, 43, 24, 6, 20, 15, 8")):
+								comment = "10: 2 42 10 ... 20 15 8 min 205"
+								newmin = 205
 							elif (fullmatch.startswith("[2, 42, 10, 43, 24, 6, 20, 15")):
 								comment = "9: 2 42 10 43 24 6 20 15 min 206"
 								newmin = 206
 							elif (fullmatch.startswith("[2, 42, 10, 43, 24, 6, 20")):
 								comment = "8: 2 42 10 43 24 6 20 min 205"
 								newmin = 205
-							elif (fullmatch.startswith("[2, 42, 10, 43, 24, 6, 25")):
-								comment = "7: 2 42 10 43 24 6 + 25 min 204"
-								newmin = 204
 							elif (fullmatch.startswith("[2, 42, 10, 43, 24, 6")):
 								comment = "7: 2 42 10 43 24 6 min 205"
 								newmin = 205
 							elif (fullmatch.startswith("[2, 42, 10, 43, 24")):
 								comment = "6: 2 42 10 43 24 min 206"
 								newmin = 206
-							elif (fullmatch.startswith("[2, 42, 10, 43, 19")):
-								comment = "5: 2 42 10 43 + 19 min 204"
-								newmin = 204
 							elif (fullmatch.startswith("[2, 42, 10, 43")):
 								comment = "5: 2 42 10 43 min 205"
 								newmin = 205
@@ -271,12 +283,6 @@ class QCleanup:
 							elif (fullmatch.startswith("[2, 42")):
 								comment = "3: 2 42 min 206"
 								newmin = 206
-							elif (fullmatch.startswith("[2, 38")):
-								comment = "2: 2 + 38 min 205"
-								newmin = 205
-							elif (fullmatch.startswith("[2, 46")):
-								comment = "2: 2 + 46 min 205"
-								newmin = 205
 							elif (fullmatch.startswith("[2")):
 								comment = "2: 2 min 206"
 								newmin = 206
@@ -284,8 +290,8 @@ class QCleanup:
 								comment = "1: 1 28 min 198"
 								newmin = 198
 							elif (fullmatch.startswith("[1, 30")):
-								comment = "1: 1 30 min 198"
-								newmin = 198
+								comment = "1: 1 30 min 201"
+								newmin = 201
 							elif (fullmatch.startswith("[1, 27")):
 								comment = "1: 1 27 min 204"
 								newmin = 204
@@ -573,11 +579,11 @@ class QCleanup:
 
 #QCleanup.rangeReader(0,16,211,True)
 #QCleanup.reader(16,205,True)
-#QCleanup.reader(6,1,True,"[")
+QCleanup.reader(20,1,True,"[2, 42, 10, 43, 24, 6, 20, 15, 8, 59, 21, 45, 12, 44, 27, 4, 52, 173, 243")
 #QCleanup.table(180)
 #QCleanup.viewer()
-QCleanup.cleanser(200, 6)
+#QCleanup.cleanser(200, 6)
 #QCleanup.viewCounter(400000)
 #QCleanup.updateFrom96(217)
 # True indicates using new minimum function which only shows iterations that need updating
-#QCleanup.runParser(400000,1,65,True,2995) 
+#QCleanup.runParser(450000,1,65,True,3997) 
