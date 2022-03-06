@@ -36,7 +36,7 @@ class QCleanup:
 					print(f"{counter} items have been removed and items kept is {kept}")
 			else:
 				kept += 1
-				item[2] = 0 # Only used for 205 reset
+				#item[2] = 0 # Only used for 205 reset
 		for item in Q:
 			length = len(item[0])
 			a.append(length)
@@ -72,6 +72,68 @@ class QCleanup:
 		print(sorted(Counter(b).items()))
 		b.clear()
 
+	def qCombine():
+		identical = 0
+		different = 0
+		found = False
+		Q1 = []
+		Q2 = []
+		location1 = 'C:/Users/scho1/QTableMCTS/Run 1/QTableCombined.txt'
+		location2 = 'C:/Users/scho1/QTableMCTS/QTable.txt'
+		Q1 = QCleanup.qTableViewer(location1)
+		Q2 = QCleanup.qTableViewer(location2)
+		for item2 in Q2.copy():
+			for item1 in Q1.copy():
+				if (item1[0] == item2[0]):
+					identical += 1
+					found = True
+					print(f"{item1[0]} appears in both tables with maxes {item1[1]} and {item2[1]}")
+					item1[1] = max(item1[1],item2[1])
+			if (found == False):
+				different += 1	
+				Q1.append(item2)
+				if (different%1000 == 0):
+					print(f"{different} items appended")
+			found = False
+		print(f"The Q Tables had {identical} matches and {different} items not found")
+		a = []	
+		b = []
+		for item in Q1:
+			length = len(item[0])
+			a.append(length)
+			b.append(item[1])
+		print(f"Maximum and average iterations are now {max(a)} and {sum(a)/len(a):.5f}")
+		print(sorted(Counter(a).items()))
+		a.clear()
+		print(f"Maximum and average lengths are now {max(b)} and {sum(b)/len(b):.5f}")
+		print(sorted(Counter(b).items()))
+		b.clear()
+		#with open("C:/Users/scho1/QTableMCTS/Run 1/QTableNEWCombined.txt","w") as handler:
+		#	json.dump(Q1,handler) 
+		#handler.close()   
+
+	def qTableViewer(fileLoc):
+		#Simple method of viewing Q table without amendments
+		Q = []
+		a = []	
+		b = []
+		counter = 0
+		if (os.path.isfile(fileLoc) == True):
+			with open(fileLoc, "r") as QTablefile:
+				Q = json.load(QTablefile)
+				print(f"Q-table uploaded with {len(Q)} lines")
+		for item in Q:
+			length = len(item[0])
+			a.append(length)
+			b.append(item[1])
+		print(f"Maximum and average iterations are {max(a)} and {sum(a)/len(a):.5f}")
+		print(sorted(Counter(a).items()))
+		a.clear()
+		print(f"Maximum and average lengths are {max(b)} and {sum(b)/len(b):.5f}")
+		print(sorted(Counter(b).items()))
+		b.clear()
+		return Q
+
 	def massedit(iteration):
 		Q = []
 		counter = 0
@@ -88,15 +150,15 @@ class QCleanup:
 			json.dump(Q,handler) 
 		handler.close()    
 
-	def reader(iteration,min,entries,start = ""):
+	def reader(iteration,min,entries,start = "",loc = 'C:/Users/scho1/QTableMCTS/QTable.txt'):
 		Q = []
 		sum = 0
 		minimum = min
 		verbose = entries
 		QDictLength = {}
 		QDictVisits = {}
-		if (os.path.isfile('C:/Users/scho1/QTableMCTS/QTable.txt') == True and Q == []):
-			with open("C:/Users/scho1/QTableMCTS/QTable.txt", "r") as QTablefile:
+		if (os.path.isfile(loc) == True and Q == []):
+			with open(loc, "r") as QTablefile:
 				Q = json.load(QTablefile)
 				print(f"Q Table uploaded with {len(Q)} lines")
 		for item in Q:
@@ -184,12 +246,108 @@ class QCleanup:
 								if len(longlist) > 10:
 									compact.append(int(longlist[10]))
 							# Specific to longest iterations
-							#if (fullmatch.startswith("[2")):
-							#	comment = "2: 2 min 206"
-							#	newmin = 206
-							#elif (fullmatch.startswith("[1, 28")):
-							#	comment = "1: 1 28 min 204"
-							#	newmin = 204
+							if (fullmatch.startswith("[4, 18, 51, 15, 6, 19, 16, 27")):
+								comment = "9: 4 18...15 6 19 16 27 NEW AREA"
+								newmin = 0
+							elif (fullmatch.startswith("[4, 18, 51, 15, 6, 19, 16, 30")):
+								comment = "8+: 4 18 51 15 6 19 16 + 30 min 202"
+								newmin = 202
+							elif (fullmatch.startswith("[4, 18, 51, 15, 6, 19, 16, 36")):
+								comment = "8+: 4 18 51 15 6 19 16 + 36 min 202"
+								newmin = 202
+							elif (fullmatch.startswith("[4, 18, 51, 15, 6, 19, 16, 26")):
+								comment = "8+: 4 18 51 15 6 19 16 + 26 min 203"
+								newmin = 203
+							elif (fullmatch.startswith("[4, 18, 51, 15, 6, 19, 16, 29")):
+								comment = "8+: 4 18 51 15 6 19 16 + 29 min 203"
+								newmin = 203
+							elif (fullmatch.startswith("[4, 18, 51, 15, 6, 19, 16")):
+								comment = "8: 4 18 51 15 6 19 16 min 204"
+								newmin = 204
+							elif (fullmatch.startswith("[4, 18, 51, 15, 6, 19, 25")):
+								comment = "7+: 4 18 51 15 6 19 + 25 min 203"
+								newmin = 203
+							elif (fullmatch.startswith("[4, 18, 51, 15, 6, 19")):
+								comment = "7: 4 18 51 15 6 19 min 204"
+								newmin = 204
+							elif (fullmatch.startswith("[4, 18, 51, 15, 6")):
+								comment = "6: 4 18 51 15 6 min 205"
+								newmin = 205
+							elif (fullmatch.startswith("[4, 18, 51, 15, 7")):
+								comment = "5+: 4 18 51 15 + 7 min 204"
+								newmin = 204
+							elif (fullmatch.startswith("[4, 18, 51, 15, 8")):
+								comment = "5+: 4 18 51 15 + 8 min 204"
+								newmin = 204
+							elif (fullmatch.startswith("[4, 18, 51, 15")):
+								comment = "5: 4 18 51 15 min 205"
+								newmin = 205
+							elif (fullmatch.startswith("[4, 18, 51, 19")):
+								comment = "4+: 4 18 51 + 19 min 204"
+								newmin = 204
+							elif (fullmatch.startswith("[4, 18, 51")):
+								comment = "4: 4 18 51 min 205"
+								newmin = 205
+							elif (fullmatch.startswith("[4, 18, 58")):
+								comment = "3+: 4 18 + 58 min 204"
+								newmin = 204
+							elif (fullmatch.startswith("[4, 18, 49")):
+								comment = "3+: 4 18 + 49 min 204"
+								newmin = 204
+							elif (fullmatch.startswith("[4, 18, 56")):
+								comment = "3+: 4 18 + 56 min 204"
+								newmin = 204
+							elif (fullmatch.startswith("[4, 18")):
+								comment = "3: 4 18 min 205"
+								newmin = 205
+							elif (fullmatch.startswith("[4, 25")):
+								comment = "2+: 4 + 25 min 205"
+								newmin = 205
+							elif (fullmatch.startswith("[4, 19")):
+								comment = "2+: 4 + 19 min 205"
+								newmin = 205
+							elif (fullmatch.startswith("[4, 20")):
+								comment = "2+: 4 + 20 min 204"
+								newmin = 204
+							elif (fullmatch.startswith("[4")):
+								comment = "2: 4 min 207"
+								newmin = 207
+							elif (fullmatch.startswith("[1, 29")):
+								comment = "Non 4: 1 29 min 203"
+								newmin = 203
+							elif (fullmatch.startswith("[1, 35")):
+								comment = "Non 4: 1 35 min 203"
+								newmin = 203
+							elif (fullmatch.startswith("[1, 26")):
+								comment = "Non 4: 1 26 min 203"
+								newmin = 203
+							elif (fullmatch.startswith("[1")):
+								comment = "Non 4: 1 min 204"
+								newmin = 204
+							elif (fullmatch.startswith("[2, 45")):
+								comment = "Non 4: 2 45 min 203"
+								newmin = 203
+							elif (fullmatch.startswith("[2, 47")):
+								comment = "Non 4: 2 47 min 203"
+								newmin = 203
+							elif (fullmatch.startswith("[2")):
+								comment = "Non 4: 2 min 204"
+								newmin = 204
+							elif (fullmatch.startswith("[3, 36")):
+								comment = "Non 4: 3 36 min 203"
+								newmin = 203
+							elif (fullmatch.startswith("[3, 29")):
+								comment = "Non 4: 3 29 min 203"
+								newmin = 203
+							elif (fullmatch.startswith("[3, 32")):
+								comment = "Non 4: 3 32 min 202"
+								newmin = 202
+							elif (fullmatch.startswith("[3")):
+								comment = "Non 4: 3 min 204"
+								newmin = 204
+							elif (fullmatch.startswith("[")):
+								comment = "Error - should not reach this statement"
+								newmin = 0
 							if (useMin == True):
 								if ((compact[2]>=cutoff or compact[4]>=cutoff) and count2 >= minimum and (compact[2]>=newmin or compact[4]>=newmin)):
 									print(f"{match}] {compact} {comment}")
@@ -457,15 +615,16 @@ class QCleanup:
 				result.extend(suffixWays)
 		return result
 
-#QCleanup.rangeReader(0,97,211,True)
+#QCleanup.cleanser(200, 6)
+#QCleanup.qCombine() # Used very rarely!
+#QCleanup.reader(4,1,True,"[","C:/Users/scho1/QTableMCTS/Run 1/QTableCombined.txt")
+#QCleanup.rangeReader(0,1,205,True)
+#QCleanup.rangeReader(1,11,211,True)
 #QCleanup.reader(96,205,True)
-#QCleanup.reader(82,1,True,"[2, 42, 10, 43, 24, 6, 20, 15, 8, 59, 21, 45, 12, 44, 27, 4, 52, 173, 243, 174, 68, 105, 247, 104, 127, 206, 151, 235, 244, 192, 81, 16, 18, 237, 249, 240, 77, 248, 203, 85, 119, 182, 138, 219, 226, 123, 239, 36, 31, 108, 165, 212, 210, 83, 84, 64, 126, 168, 141, 160, 246, 135, 211, 48, 28, 102, 201, 230, 171, 177, 185, 76, 250, 109, 128, 200, 162, 82, 70, 38, 29")
-#QCleanup.reader(58,1,True,"[2, 42, 10, 43, 24, 6, 20, 15, 8, 59, 21, 45, 12, 44, 27, 4, 52, 173, 243, 174, 68, 105, 247, 104, 127, 206, 151, 235, 244, 192, 81, 16, 18, 237, 249, 240, 77, 248, 203, 85, 119, 182, 138, 219, 226, 123, 239, 36, 31, 108, 165, 212, 210, 83, 84, 64, 126")
-#QCleanup.reader(6,1,True,"[")
+#QCleanup.reader(7,1,True,"[4, 18, 51, 15, 6, 19")
 #QCleanup.table(180)
 #QCleanup.viewer()
-#QCleanup.cleanser(205, 1)
-#QCleanup.viewCounter(650000)
+#QCleanup.viewCounter(400000)
 #QCleanup.updateFrom96(217)
 # True indicates using new minimum function which only shows iterations that need updating
-#QCleanup.runParser(650000,1,440,True,17999) 
+QCleanup.runParser(400000,1,35,True,1000) 
