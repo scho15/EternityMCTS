@@ -246,30 +246,75 @@ class QCleanup:
 								if len(longlist) > 10:
 									compact.append(int(longlist[10]))
 							# Specific to longest iterations
-							if (fullmatch.startswith("[4, 18, 51, 15, 6, 19, 16, 27")):
-								comment = "9: 4 18...15 6 19 16 27 NEW AREA"
-								newmin = 0
-							elif (fullmatch.startswith("[4, 18, 51, 15, 6, 19, 16, 30")):
-								comment = "8+: 4 18 51 15 6 19 16 + 30 min 202"
+							if (fullmatch.startswith("[4, 18, 51, 15, 6, 19, 16, 27, 28, 33, 21, 48")):
+								comment = "13: 4 18...27 28 33 21 48 NEW AREA"
+								newmin = 205
+							elif (fullmatch.startswith("[4, 18, 51, 15, 6, 19, 16, 27, 28, 33, 21, 40")):
+								comment = "12+: 4 15...16 27 28 33 21 + 40 min 203"
+								newmin = 203
+							elif (fullmatch.startswith("[4, 18, 51, 15, 6, 19, 16, 27, 28, 33, 21, 38")):
+								comment = "12+: 4 15...16 27 28 33 21 + 38 min 203"
+								newmin = 203
+							elif (fullmatch.startswith("[4, 18, 51, 15, 6, 19, 16, 27, 28, 33, 21, 45")):
+								comment = "12+: 4 15...16 27 28 33 21 + 45 min 202"
 								newmin = 202
-							elif (fullmatch.startswith("[4, 18, 51, 15, 6, 19, 16, 36")):
-								comment = "8+: 4 18 51 15 6 19 16 + 36 min 202"
+							elif (fullmatch.startswith("[4, 18, 51, 15, 6, 19, 16, 27, 28, 33, 21, 39")):
+								comment = "12+: 4 15...16 27 28 33 21 + 39 min 202"
 								newmin = 202
+							elif (fullmatch.startswith("[4, 18, 51, 15, 6, 19, 16, 27, 28, 33, 21, 43")):
+								comment = "12+: 4 15...16 27 28 33 21 + 43 min 199"
+								newmin = 199
+							elif (fullmatch.startswith("[4, 18, 51, 15, 6, 19, 16, 27, 28, 33, 21")):
+								comment = "12: 4 15...16 27 28 33 21 min 204"
+								newmin = 204
+							elif (fullmatch.startswith("[4, 18, 51, 15, 6, 19, 16, 27, 28, 33, 17")):
+								comment = "11+: 4 15...19 16 27 28 33 + 17 min 205"
+								newmin = 205
+							elif (fullmatch.startswith("[4, 18, 51, 15, 6, 19, 16, 27, 28, 33, 22")):
+								comment = "11+: 4 15...19 16 27 28 33 + 22 min 204"
+								newmin = 204
+							elif (fullmatch.startswith("[4, 18, 51, 15, 6, 19, 16, 27, 28, 33")):
+								comment = "11: 4 15...19 16 27 28 33 min 206"
+								newmin = 206
+							elif (fullmatch.startswith("[4, 18, 51, 15, 6, 19, 16, 27, 28, 31")):
+								comment = "10+: 4 15...6 19 16 27 28 + 31 min 205"
+								newmin = 205
+							elif (fullmatch.startswith("[4, 18, 51, 15, 6, 19, 16, 27, 28, 32")):
+								comment = "10+: 4 15...6 19 16 27 28 + 32 min 205"
+								newmin = 205
+							elif (fullmatch.startswith("[4, 18, 51, 15, 6, 19, 16, 27, 28, 26")):
+								comment = "10+: 4 15...6 19 16 27 28 + 26 min 204"
+								newmin = 204
+							elif (fullmatch.startswith("[4, 18, 51, 15, 6, 19, 16, 27, 28, 30")):
+								comment = "10+: 4 15...6 19 16 27 28 + 30 min 204"
+								newmin = 204
+							elif (fullmatch.startswith("[4, 18, 51, 15, 6, 19, 16, 27, 28")):
+								comment = "10: 4 15...6 19 16 27 28 min 206"
+								newmin = 206
+							elif (fullmatch.startswith("[4, 18, 51, 15, 6, 19, 16, 27, 32")):
+								comment = "9+: 4 15...15 6 19 16 27 + 32 min 205"
+								newmin = 205
+							elif (fullmatch.startswith("[4, 18, 51, 15, 6, 19, 16, 27, 35")):
+								comment = "9+: 4 15...15 6 19 16 27 + 35 min 205"
+								newmin = 205
+							elif (fullmatch.startswith("[4, 18, 51, 15, 6, 19, 16, 27, 31")):
+								comment = "9+: 4 15...15 6 19 16 27 + 31 min 204"
+								newmin = 204
+							elif (fullmatch.startswith("[4, 18, 51, 15, 6, 19, 16, 27")):
+								comment = "9: 4 15...15 6 19 16 27 min 206"
+								newmin = 206
 							elif (fullmatch.startswith("[4, 18, 51, 15, 6, 19, 16, 26")):
-								comment = "8+: 4 18 51 15 6 19 16 + 26 min 203"
-								newmin = 203
-							elif (fullmatch.startswith("[4, 18, 51, 15, 6, 19, 16, 29")):
-								comment = "8+: 4 18 51 15 6 19 16 + 29 min 203"
-								newmin = 203
+								comment = "8+: 4 18 51 15 6 19 16 + 26 min 204"
+								newmin = 204
 							elif (fullmatch.startswith("[4, 18, 51, 15, 6, 19, 16")):
-								comment = "8: 4 18 51 15 6 19 16 min 204"
-								newmin = 204
-							elif (fullmatch.startswith("[4, 18, 51, 15, 6, 19, 25")):
-								comment = "7+: 4 18 51 15 6 19 + 25 min 203"
-								newmin = 203
+								comment = "8: 4 18 51 15 6 19 16 min 205"
+								newmin = 205
+							elif (fullmatch.startswith("[4, 18, 51, 15, 6, 19, 20")):
+								comment = "7+: 4 18 51 15 6 19 + 20 min 205"
+								newmin = 205
 							elif (fullmatch.startswith("[4, 18, 51, 15, 6, 19")):
-								comment = "7: 4 18 51 15 6 19 min 204"
-								newmin = 204
+								comment = "7: 4 18 51 15 6 19 min 206"
+								newmin = 206
 							elif (fullmatch.startswith("[4, 18, 51, 15, 6")):
 								comment = "6: 4 18 51 15 6 min 205"
 								newmin = 205
@@ -282,9 +327,53 @@ class QCleanup:
 							elif (fullmatch.startswith("[4, 18, 51, 15")):
 								comment = "5: 4 18 51 15 min 205"
 								newmin = 205
+							# 16 route
+							elif (fullmatch.startswith("[4, 18, 51, 16, 28, 32")):
+								comment = "7: 4 18 51 16 28 32 NEW AREA"
+								newmin = 0
+							elif (fullmatch.startswith("[4, 18, 51, 16, 28, 31")):
+								comment = "6+: 4 18 51 16 28 + 31 min 203"
+								newmin = 203
+							elif (fullmatch.startswith("[4, 18, 51, 16, 28, 26")):
+								comment = "6+: 4 18 51 16 28 + 26 min 202"
+								newmin = 202
+							elif (fullmatch.startswith("[4, 18, 51, 16, 28, 29")):
+								comment = "6+: 4 18 51 16 28 + 29 min 200"
+								newmin = 200
+							elif (fullmatch.startswith("[4, 18, 51, 16, 28, 33")):
+								comment = "6+: 4 18 51 16 28 + 33 min 200"
+								newmin = 200
+							elif (fullmatch.startswith("[4, 18, 51, 16, 28, 35")):
+								comment = "6+: 4 18 51 16 28 + 35 min 196"
+								newmin = 196
+							elif (fullmatch.startswith("[4, 18, 51, 16, 28, 34")):
+								comment = "6+: 4 18 51 16 28 + 34 min 192"
+								newmin = 192
+							elif (fullmatch.startswith("[4, 18, 51, 16, 28")):
+								comment = "6: 4 18 51 16 28 min 204"
+								newmin = 204
+							elif (fullmatch.startswith("[4, 18, 51, 16, 35")):
+								comment = "5+: 4 18 51 16 + 35 min 203"
+								newmin = 203
+							elif (fullmatch.startswith("[4, 18, 51, 16, 33")):
+								comment = "5+: 4 18 51 16 + 33 min 203"
+								newmin = 203
+							elif (fullmatch.startswith("[4, 18, 51, 16, 31")):
+								comment = "5+: 4 18 51 16 + 31 min 202"
+								newmin = 202
+							elif (fullmatch.startswith("[4, 18, 51, 16, 27")):
+								comment = "5+: 4 18 51 16 + 27 min 202"
+								newmin = 202
+							elif (fullmatch.startswith("[4, 18, 51, 16, 34")):
+								comment = "5+: 4 18 51 16 + 34 min 200"
+								newmin = 200
+							elif (fullmatch.startswith("[4, 18, 51, 16")):
+								comment = "5: 4 18 51 16 min 204"
+								newmin = 204
+							# Both 15 and 16 routes
 							elif (fullmatch.startswith("[4, 18, 51, 19")):
 								comment = "4+: 4 18 51 + 19 min 204"
-								newmin = 204
+								newmin = 204							
 							elif (fullmatch.startswith("[4, 18, 51")):
 								comment = "4: 4 18 51 min 205"
 								newmin = 205
@@ -306,9 +395,6 @@ class QCleanup:
 							elif (fullmatch.startswith("[4, 19")):
 								comment = "2+: 4 + 19 min 205"
 								newmin = 205
-							elif (fullmatch.startswith("[4, 20")):
-								comment = "2+: 4 + 20 min 204"
-								newmin = 204
 							elif (fullmatch.startswith("[4")):
 								comment = "2: 4 min 207"
 								newmin = 207
@@ -336,12 +422,6 @@ class QCleanup:
 							elif (fullmatch.startswith("[3, 36")):
 								comment = "Non 4: 3 36 min 203"
 								newmin = 203
-							elif (fullmatch.startswith("[3, 29")):
-								comment = "Non 4: 3 29 min 203"
-								newmin = 203
-							elif (fullmatch.startswith("[3, 32")):
-								comment = "Non 4: 3 32 min 202"
-								newmin = 202
 							elif (fullmatch.startswith("[3")):
 								comment = "Non 4: 3 min 204"
 								newmin = 204
@@ -619,12 +699,13 @@ class QCleanup:
 #QCleanup.qCombine() # Used very rarely!
 #QCleanup.reader(4,1,True,"[","C:/Users/scho1/QTableMCTS/Run 1/QTableCombined.txt")
 #QCleanup.rangeReader(0,1,205,True)
-#QCleanup.rangeReader(1,11,211,True)
+#QCleanup.rangeReader(14,97,211,True)
 #QCleanup.reader(96,205,True)
-#QCleanup.reader(7,1,True,"[4, 18, 51, 15, 6, 19")
+#QCleanup.reader(12,1,True,"[4, 18, 51, 15, 6, 19, 16, 27, 28, 33, 21")
+#QCleanup.reader(6,1,True,"[4, 18, 51, 16, 28")
 #QCleanup.table(180)
 #QCleanup.viewer()
 #QCleanup.viewCounter(400000)
 #QCleanup.updateFrom96(217)
 # True indicates using new minimum function which only shows iterations that need updating
-QCleanup.runParser(400000,1,35,True,1000) 
+QCleanup.runParser(400000,1,45,True,1997)
