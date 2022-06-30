@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>b88bb04f-e7c1-4874-b30a-3cce56071ee1</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>EternityStart.py</StartupFile>
+    <StartupFile>QCleanup.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
