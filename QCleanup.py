@@ -9,8 +9,8 @@ class QCleanup:
 		Q = []
 		a = []	
 		b = []
-		cutoff = 200
-		minimumIteration = 6
+		cutoff = 203
+		minimumIteration = 3
 		counter = 0
 		kept = 0
 		if (os.path.isfile('C:/Users/scho1/QTableMCTS/QTable.txt') == True):
@@ -36,6 +36,7 @@ class QCleanup:
 					print(f"{counter} items have been removed and items kept is {kept}")
 			else:
 				kept += 1
+				item[2] = 0 # Only for reset
 		for item in Q:
 			length = len(item[0])
 			a.append(length)
@@ -44,7 +45,7 @@ class QCleanup:
 		print(sorted(Counter(a).items()))
 		print(f"Revised maximum and average lengths are {max(b)} and {sum(b)/len(b):.5f}")
 		print(sorted(Counter(b).items()))
-		with open("C:/Users/scho1/QTableMCTS/QTable-200.txt","w") as handler:
+		with open("C:/Users/scho1/QTableMCTS/QTable-203.txt","w") as handler:
 			json.dump(Q,handler) 
 		handler.close()    
 
@@ -392,11 +393,11 @@ class QCleanup:
 		print(f"The total count was {sum(storedCntr.values())} and the 3 most common values were {storedCntr.most_common(3)}")
 
 
-QCleanup.rangeReader(80,97,215,True)
+#QCleanup.rangeReader(80,97,211,True)
 #QCleanup.reader(6,1,True,"[")
-#QCleanup.reader(88,205,True)
+#QCleanup.reader(96,211,True)
 #QCleanup.viewer()
-#QCleanup.cleanser()
-#QCleanup.table(205)
-#QCleanup.runParser(2000000,1,59,False,17192)
-#QCleanup.viewCounter(3500000)
+QCleanup.cleanser()
+#QCleanup.table(180)
+#QCleanup.runParser(2000000,1,59,False,18369)
+#QCleanup.viewCounter(2000000)
