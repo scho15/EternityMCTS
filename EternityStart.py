@@ -12,7 +12,7 @@ class EternityStart():
     def main():
         # DECISIONS REQUIRED
         useHints = False # Use only centre tile or 4 corner hints as well
-        maxEpisodes = 1000 # number of episodes to run
+        maxEpisodes = 10 # number of episodes to run
         sampleSize = 1 # number of runs/samples to take - 1 for no hints and 2 for hints typically
         CreateTile.firstCountLimit = 700000 # cutoff for run - normally at least 1m
         CreateTile.terminalCountLimit = 20 * CreateTile.firstCountLimit # cutoff for final iteration at 88
@@ -41,8 +41,8 @@ class EternityStart():
                 Q = json.load(QTablefile)
             print(f"QTable uploaded with {len(Q)} lines")
         CreateTile.createTile()
-        CreateTile.findPatternMatches() 
-        CreateTile.findThreePatternMatches()
+        CreateTile.findPatternMatches([]) 
+        CreateTile.findThreePatternMatches([])
         # MAIN BODY FOR EACH EPISODE
         while episode <= maxEpisodes:
             start = time.time()
@@ -70,16 +70,12 @@ class EternityStart():
             terminalState = False
             countLimit = CreateTile.firstCountLimit
             while (len(MCTSList) < cutoff and terminalState == False):
-                options = EternityMCTS.findNextPositionMatches(MCTSList,MCTSPosition, useHints)
+                options = EternityMCTS.findNextPositionMatches(MCTSList,MCTSPosition, useHints) # returning string of tile + posn
                 optionsCount += len(options)
-                if len(options) != len(set(options)):
-                    print("There are DUPLICATE options to deal with that needs further testing\n")
-                    #file1.write("There are DUPLICATE options to deal with that needs further testing\n")
-                    duplicate = True
                 random.shuffle(options)
                 print(f"The new options would be {options} and the length is {len(options)} and cumulative {optionsCount}")
                 #file1.write(f"{options}\n")
-                if (len(options) > 1 or 173 in options or 233 in options or 199 in options):
+                if (len(options) > 1):
                     for item in Q:
                         if MCTSList == item[0]: 
                             #print(f"MCTS is {MCTSList} and item[0] is {item[0]}\n")
@@ -104,9 +100,11 @@ class EternityStart():
                         sampleMax = False
                     for tile in options:
                         itemFound = False
-                        testList.append(tile)
-                        MCTSPosition.append(CreateTile.tileList[tile].copy())
-                        MCTSPosition = EternityMCTS.tileAlignmentOnLastPosition(testList, MCTSPosition)
+                        testList.append(int(tile[0:3]))
+                        MCTSPosition.append([int(tile[3:5]), int(tile[5:7]), int(tile[7:9]),int(tile[9:11])])
+                        #print(f"TEMP:MCTSPosition is {MCTSPosition}")
+                        # Is this still needed?
+                        #MCTSPosition = EternityMCTS.tileAlignmentOnLastPosition(testList, MCTSPosition)
                         # LESS VERBOSE 1: print(f"\nThe test list is {testList}")
                         # Implicitly does not deal with tiles that can have two positions - ideally stop using this
                         #tilePositions = EternityMCTS.tileAlignment(testList)
@@ -297,21 +295,23 @@ class EternityStart():
                     #maxOption = options[averageList.index(max(averageList))]
                     if (sampleMax == True):
                         maxOption = options[maxList.index(max(maxList))]
-                        MCTSList.append(maxOption)
+                        #print(f"TEMP:maxOption is {maxOption}")
+                        MCTSList.append(int(maxOption[0:3]))
                         if (optionDouble == True and (maxOption == 173 or maxOption == 199 or maxOption == 233)):
                             MCTSPosition.append(doubleOption)
                             print(f"New double option coding used to insert config {doubleOption}")
                         else:
-                            MCTSPosition.append(CreateTile.tileList[maxOption].copy())
-                            MCTSPosition = EternityMCTS.tileAlignmentOnLastPosition(MCTSList, MCTSPosition)
+                            MCTSPosition.append([int(maxOption[3:5]),int(maxOption[5:7]),int(maxOption[7:9]),int(maxOption[9:11])])
+                            #MCTSPosition = EternityMCTS.tileAlignmentOnLastPosition(MCTSList, MCTSPosition)
                         optionDouble = False
                     else:
                         # Double options not used in epsilon max yet
                         epsilonMaxOption = options[epsilonMaxList.index(max(epsilonMaxList))]
-                        MCTSList.append(epsilonMaxOption)
+                        MCTSList.append(int(epsilonMaxOption[0:3]))
                         # Need to consider which of two rotations should be used
                         if (epsilonMaxOption != 173 and epsilonMaxOption != 199 and epsilonMaxOption != 233):
-                            MCTSPosition.append(CreateTile.tileList[epsilonMaxOption].copy())
+                            
+                            MCTSPosition.append([int(epsilonMaxOption[3:5]),int(epsilonMaxOption[5:7]),int(epsilonMaxOption[7:9]),int(epsilonMaxOption[9:11])])
                             MCTSPosition = EternityMCTS.tileAlignmentOnLastPosition(MCTSList, MCTSPosition)
                         else:                            
                             MCTSPosition.append(CreateTile.tileList[epsilonMaxOption].copy())
@@ -413,9 +413,9 @@ class EternityStart():
                         #file1.write(f"The length of the tree search is {len(MCTSList)} and maximum so far is {max(maximaList)}\n")
                         #file1.write(f"{MCTSList}\n\n")
                 elif (len(options) == 1):
-                    MCTSList.append(options[0])
-                    MCTSPosition.append(CreateTile.tileList[options[0]].copy())
-                    MCTSPosition = EternityMCTS.tileAlignmentOnLastPosition(MCTSList, MCTSPosition)
+                    MCTSList.append(int(options[0][0:3]))
+                    MCTSPosition.append([int(options[0][3:5]),int(options[0][5:7]),int(options[0][7:9]),int(options[0][9:11])])
+                    #MCTSPosition = EternityMCTS.tileAlignmentOnLastPosition(MCTSList, MCTSPosition)
                     print(f"Only a single option {options[0]} so no random samples undertaken and position was {MCTSPosition[-1]}\n")
                     #print(f"TEMP Line 267: testPosition for single option with alignment is: {testPosition}")
                     if (maximaList != []):

@@ -1,20 +1,31 @@
 import random
 
 class CreateTile():
-    TILE_SET_SIZE = 256
-    EDGE_SET_SIZE = 60
-    PATTERN_TYPES = 22
+    # Reduced tile list also produced taking into account used tiles
     tileList = [] # Create list of tiles with index tilenumber and edges as 4 properties
-    tilePatternList = [] # List of tiles with tile patterns
+
+    PATTERN_TYPES = 22
+    TILE_SET_SIZE = 256
     tilePatternSet = set()
-    twoTilePatternList = []
+    tilePatternList = [] # List of tiles with tile patterns    
     twoTilePatternSet = set()
+    twoTilePatternList = []
     twoPatternList = []
-    detailedPatternList = []    
+    detailedPatternList = []  
+    
+    reducedSet = set() # set without input tiles
+    reducedList = [] # list without input tiles
+    twoReducedTileSet = set()
+    twoReducedTileList = []
+    twoReducedList = []
+    detailedReducedList = []
+    
     detailedThreePatternList = []
-    doubleRotation = [False, False, False]
-    firstCountLimit = 0
-    terminalCountLimit = 0
+    detailedThreeReducedList = []
+
+    #doubleRotation = [False, False, False]
+    #firstCountLimit = 0
+    #terminalCountLimit = 0
 
     def createTile():       
         # 0: Grey edge tile
@@ -301,73 +312,119 @@ class CreateTile():
         CreateTile.tileList.insert( 255,  [8,  7,  9,  7 ]) # posn C14 (so 222 and NE) with 8 W side
         CreateTile.tileList.insert( 256, [15,  7,  6,  7 ])
 
-    def findPatternMatches():
+        #print(f"tileList created with {len(CreateTile.tileList)} entries")
+
+    def findPatternMatches(input):
         for x in range(CreateTile.PATTERN_TYPES + 1):
             for y in range(CreateTile.TILE_SET_SIZE + 1):
                 for z in range( 4 ):
                     if(CreateTile.tileList[y][z] == x):
-                        CreateTile.tilePatternSet.add(y)
+                        tileStr = str(y).zfill(3) + str(CreateTile.tileList[y][0]).zfill(2) + str(CreateTile.tileList[y][1]).zfill(2) + str(CreateTile.tileList[y][2]).zfill(2) + str(CreateTile.tileList[y][3]).zfill(2)
+                        CreateTile.tilePatternSet.add(tileStr)
+                        if y not in input:
+                            CreateTile.reducedSet.add(tileStr)
             CreateTile.tilePatternList.append(CreateTile.tilePatternSet.copy())
+            CreateTile.reducedList.append(CreateTile.reducedSet.copy())
             CreateTile.tilePatternSet.clear()
-            #print(f"Set of tiles with tile pattern {x} is {CreateTile.tilePatternList[x]} and length {len(CreateTile.tilePatternList[x])}")
-       # Using set rather than list to avoid duplicates (normally 173, 199 and 233 which are now specifically catered for) 
+            CreateTile.reducedSet.clear()
+            #print(f"Set of tiles with tile pattern {x} is {CreateTile.tilePatternList[x]} and length {len(CreateTile.tilePatternList[x])}") 
         for w in range(CreateTile.PATTERN_TYPES + 1):
             for x in range(CreateTile.PATTERN_TYPES + 1):
                 for y in range(CreateTile.TILE_SET_SIZE + 1):
                     for z in range( 4 ):
                         if(CreateTile.tileList[y][z] == w and CreateTile.tileList[y][(z+1)%4] == x):
-                            CreateTile.twoTilePatternSet.add(y)
+                            tileStr = str(y).zfill(3) + str(CreateTile.tileList[y][(z+2)%4]).zfill(2) + str(CreateTile.tileList[y][(z+3)%4]).zfill(2) + str(CreateTile.tileList[y][z]).zfill(2) + str(CreateTile.tileList[y][(z+1)%4]).zfill(2)
+                            CreateTile.twoTilePatternSet.add(tileStr)
+                            if y not in input:
+                                CreateTile.twoReducedTileSet.add(tileStr)
                 CreateTile.twoTilePatternList.extend(CreateTile.twoTilePatternSet.copy())
+                CreateTile.twoReducedTileList.extend(CreateTile.twoReducedTileSet.copy())
                 CreateTile.twoPatternList.append(CreateTile.twoTilePatternList.copy())
+                CreateTile.twoReducedList.append(CreateTile.twoReducedTileList.copy())
                 CreateTile.twoTilePatternSet.clear()
+                CreateTile.twoReducedTileSet.clear()
                 CreateTile.twoTilePatternList.clear()
+                CreateTile.twoReducedTileList.clear()
             CreateTile.detailedPatternList.append(CreateTile.twoPatternList.copy())
+            CreateTile.detailedReducedList.append(CreateTile.twoReducedList.copy())
             CreateTile.twoPatternList.clear()
+            CreateTile.twoReducedList.clear()
         #print(f"Set of tiles with tile pattern {0} is {CreateTile.detailedPatternList[0]} and length {len(CreateTile.detailedPatternList[0])}\n")
-        #print(f"Test example for patterns 0 and 4 would be [0][4] {CreateTile.detailedPatternList[0][4]}")
+        print(f"Test example for patterns 9 and 9 would be [9][9] {CreateTile.detailedPatternList[9][9]}")
+        #print(f"REDUCED Set of tiles with tile pattern {0} is {CreateTile.detailedReducedList[0]} and length {len(CreateTile.detailedReducedList[0])}\n")
+        #print(f"Test example for REDUCED patterns 9 and 9 would be [9][9] {CreateTile.detailedReducedList[9][9]}")
 
     # May be able to greatly simplify to return CreateTile.detailedPatternList[x][y]
     def findConsecutivePatternMatches(x, y):
             output = CreateTile.detailedPatternList[x][y].copy()            
             return output
 
-    def findThreePatternMatches():
+    def findConsecutiveReducedMatches(x, y):
+            output = CreateTile.detailedReducedList[x][y].copy()            
+            return output
+
+    def findThreePatternMatches(input):
         threeTilePatternList = []
         nextPatternList = []
         threeTilePatternSet = set()
         threePatternList = []
+        # new to deal with tiles already used in input
+        threeTileReducedList = []
+        nextReducedList = []
+        threeTileReducedSet = set()
+        threeReducedList = []
+
         for a in range(CreateTile.PATTERN_TYPES + 1):
             for b in range(CreateTile.PATTERN_TYPES + 1):
                 for c in range(CreateTile.PATTERN_TYPES + 1):
                     for d in range(CreateTile.TILE_SET_SIZE + 1):
                         for e in range( 4 ):
+                            # rotation needs to be SWN for 104 rather than ESW
                             if(CreateTile.tileList[d][e] == a and CreateTile.tileList[d][(e+1)%4] == b and CreateTile.tileList[d][(e+2)%4] == c):
-                                threeTilePatternSet.add(d)
+                                tileStr = str(d).zfill(3) + str(CreateTile.tileList[d][(e+3)%4]).zfill(2) + str(CreateTile.tileList[d][(e+0)%4]).zfill(2) + str(CreateTile.tileList[d][(e+1)%4]).zfill(2) + str(CreateTile.tileList[d][(e+2)%4]).zfill(2)                            
+                                threeTilePatternSet.add(tileStr)
+                                if d not in input:
+                                    threeTileReducedSet.add(tileStr)
                     threeTilePatternList.extend(threeTilePatternSet.copy())
                     threePatternList.append(threeTilePatternList.copy())
                     threeTilePatternSet.clear()
                     threeTilePatternList.clear()
+                    threeTileReducedList.extend(threeTileReducedSet.copy())
+                    threeReducedList.append(threeTileReducedList.copy())
+                    threeTileReducedSet.clear()
+                    threeTileReducedList.clear()
                 nextPatternList.append(threePatternList.copy())
                 threePatternList.clear()
+                nextReducedList.append(threeReducedList.copy())
+                threeReducedList.clear()
             CreateTile.detailedThreePatternList.append(nextPatternList.copy())
             nextPatternList.clear()
+            CreateTile.detailedThreeReducedList.append(nextReducedList.copy())
+            nextReducedList.clear()
         #print(f"TEST: detailedThreePatternList[0] is {CreateTile.detailedThreePatternList[0]} and length {len(CreateTile.detailedThreePatternList[0])}")
         #print(f"TEST: Set of tiles with tile pattern 0,0 is {CreateTile.detailedThreePatternList[0][0]} and length {len(CreateTile.detailedThreePatternList[0][0])}\n")
-        #print(f"TEST: Example for patterns 0,0,1 would be {CreateTile.detailedThreePatternList[0][0][1]}")
+        print(f"Example for patterns 17,17,10 would be {CreateTile.detailedThreePatternList[17][17][10]}")
+        print(f"Example for patterns 19,17,17 would be {CreateTile.detailedThreePatternList[19][17][17]}")       
+        print(f"Reduced example for patterns 10,8,17 would be {CreateTile.detailedThreeReducedList[10][8][17]}")
 
     def findThreeConsecutivePatternMatches(x, y, z):
             output = CreateTile.detailedThreePatternList[x][y][z].copy()            
             return output
 
-    ## Tiles must be in clockwise order
-    #def findThreeConsecutivePatternMatches(x, y, z):
-    #        threePatterns = []
-    #        for a in range(CreateTile.TILE_SET_SIZE + 1):
-    #            for b in range( 4 ):
-    #                if(CreateTile.tileList[a][b] == x and CreateTile.tileList[a][(b+1)%4] == y and CreateTile.tileList[a][(b+2)%4] == z):
-    #                    threePatterns.append(a)
-    #        #print(f"Set of tiles with three consecutive tile patterns {x} {y} and {z} is {threePatterns}")
-    #        return threePatterns
+    # used for iteration 104 to rotate output
+    def findThreeSWNPatternMatches(x, y, z):
+            output = CreateTile.detailedThreePatternList[x][y][z].copy()  
+            newoutput = []
+            #print(f"TEMP 417: Output is {output}")
+            if (output != []):
+                for tile in output:
+                    newoutput.append(tile[0:3] + tile[9:11] + tile[3:5] + tile[5:7] + tile[7:9])
+            #print(f"TEMP 421: Revised output is {newoutput}")
+            return newoutput
+
+    def findThreeConsecutiveReducedMatches(x, y, z):
+            output = CreateTile.detailedThreeReducedList[x][y][z].copy()       
+            return output
 
     def findTileMatches():
         for x in range(TILE_SET_SIZE):
@@ -390,6 +447,15 @@ class CreateTile():
         position[x][3] = position[x][2]
         position[x][2] = position[x][1]
         position[x][1] = temp
+
+    #New for file version
+    def rotatePosition(position):
+        temp = position[0]
+        position[0] = position[3]
+        position[3] = position[2]
+        position[2] = position[1]
+        position[1] = temp
+        return position
 
     def swapPosition(x):
         temp = CreateTile.tileList[x][0]

@@ -49,6 +49,57 @@ class QCleanup:
 			json.dump(Q,handler) 
 		handler.close()    
 
+	def truncateToBestSoln(trunc,soln):
+		Q = []
+		a = []	
+		b = []
+		cutoff = 0
+		kept = 0
+		remove = 0
+		# same as viewer although may want to specify file location
+		if (os.path.isfile('C:/Users/scho1/QTableMCTS/QTable.txt') == True):
+			with open("C:/Users/scho1/QTableMCTS/QTable.txt", "r") as QTablefile:
+				Q = json.load(QTablefile)
+				print(f"Q-table uploaded with {len(Q)} lines")
+		for item in Q:
+			length = len(item[0])
+			a.append(length)
+			b.append(item[1])
+		print(f"Maximum and average iterations are {max(a)} and {sum(a)/len(a):.5f}")
+		print(sorted(Counter(a).items()))
+		a.clear()
+		print(f"Maximum and average lengths are {max(b)} and {sum(b)/len(b):.5f}")
+		print(sorted(Counter(b).items()))
+		b.clear()
+		# new operation
+		print(f"\nFinding iterations that are {trunc} away from best solution so far")
+		print(f"The following match the solution:\n{soln}")
+		for item in Q.copy():
+			if len(item[0]) - trunc <= 0:
+				#print(f"{item[0]} cutoff")
+				cutoff += 1
+			elif (item[0][0:len(item[0])-trunc+1] == soln[0:len(item[0])-trunc+1] and len(item[0]) <= 96):
+				#print(f"{item[0]} kept")
+				kept += 1
+			else:
+				Q.remove(item)
+				remove += 1
+				if (remove%10000 == 0):
+					print(f"{remove} items have been removed and items kept is {kept+cutoff}")
+		print(f"Those below cutoff were {cutoff} and those above threshold were {kept}")
+
+		for item in Q:
+			length = len(item[0])
+			a.append(length)
+			b.append(item[1])
+		print(f"Revised maximum and average are {max(a)} and {sum(a)/len(a):.5f} and length is {len(Q)}\n")
+		print(sorted(Counter(a).items()))
+		print(f"Revised maximum and average lengths are {max(b)} and {sum(b)/len(b):.5f}")
+		print(sorted(Counter(b).items()))
+		with open("C:/Users/scho1/QTableMCTS/QTable-Trunc.txt","w") as handler:
+			json.dump(Q,handler) 
+		handler.close()    
+
 	def viewer():
 		#Simple method of viewing Q table without amendments
 		Q = []
@@ -854,16 +905,17 @@ class QCleanup:
 #QCleanup.qTableViewer("C:/Users/scho1/QTableMCTS/Run 1/QTableFINALRun1.txt")
 #QCleanup.reader(6,1,True,"[4, 18, 51, 15, 6","C:/Users/scho1/QTableMCTS/Run 1/QTableCombined.txt")
 #Combination of runs 1,2 and 4 already has 430186 lines with 205 cutoff
-#QCleanup.rangeReader(0,97,211,True)
+#QCleanup.rangeReader(96,97,205,True)
 #QCleanup.reader(48,205,True)
 #QCleanup.reader(96,1,True,"[4, 18, 51, 15, 6, 19, 16, 27, 28, 35, 53, 45, 9, 34, 37, 2, 32, 240, 120, 136, 124, 243, 146, 71, 102, 113, 236, 251, 75, 98, 158, 48, 56, 201, 253, 143, 89, 77, 151, 154, 164, 213, 228, 135, 129, 97, 70, 38, 39, 186, 159, 137, 157, 93, 170, 180, 104, 107, 153, 210, 128, 123, 205, 57, 10, 244, 177, 90, 82, 69, 179, 225, 115, 176, 150, 224, 182, 68, 160, 14, 5, 92, 183, 162, 145, 208, 200, 194, 246, 229, 161, 171, 227, 85, 198")
 #QCleanup.reader(81,1,True,"[4, 18, 51, 15, 6, 19, 16, 27, 28, 35, 53, 45, 9, 34, 37, 2, 32, 240, 120, 136, 124, 243, 146, 71, 102, 113, 236, 251, 75, 98, 158, 48, 56, 201, 253, 143, 89, 77, 151, 154, 164, 213, 228, 135, 129, 97, 70, 38, 39, 186, 159, 137, 157, 93, 170, 180, 104, 107, 153, 210, 128, 123, 205, 57, 10, 244, 177, 90, 82, 69, 179, 225, 115, 176, 150, 224, 182, 68, 160, 14")
 #QCleanup.reader(69,1,True,"[4, 18, 51, 15, 6, 19, 16, 27, 28, 35, 53, 45, 9, 34, 37, 2, 32, 240, 120, 136, 124, 243, 146, 71, 102, 113, 236, 251, 75, 98, 158, 48, 56, 201, 253, 143, 89, 77, 151, 154, 164, 213, 228, 135, 129, 97, 70, 38, 39, 186, 159, 137, 157, 93, 170, 180, 104, 107, 153, 210, 128, 123, 205, 57, 10, 244, 177, 90")
 #QCleanup.reader(12,1,True,"[4, 18, 51, 15, 6, 19, 16, 27, 28, 35, 53")
-#QCleanup.reader(4,1,True,"[4, 18, 51")
+#QCleanup.reader(4,1,True,"[")
 #QCleanup.table(180)
 #QCleanup.lowest()
 #QCleanup.viewer()
+#QCleanup.truncateToBestSoln(6, [2, 43, 21, 45, 5, 7, 6, 16, 31, 15, 10, 37, 14, 38, 51, 3, 50, 105, 251, 213, 70, 171, 129, 147, 239, 123, 226, 67, 100, 222, 136, 32, 13, 160, 206, 126, 135, 90, 93, 84, 185, 186, 120, 101, 196, 132, 117, 36, 25, 96, 95, 174, 104, 122, 166, 83, 193, 244, 255, 178, 200, 145, 152, 39, 33, 106, 159, 124, 103, 236, 189, 208, 167, 173, 247, 144, 81, 248, 156, 55, 56, 125, 69, 74, 130, 114, 205, 154, 210, 237, 149, 216, 99, 177, 66, 49])
 #QCleanup.viewCounter(600000)
 # True indicates using new minimum function which only shows iterations that need updating
-QCleanup.runParser(700000,1,440,True,20000) 
+#QCleanup.runParser(700000,1,40,False,1) 
