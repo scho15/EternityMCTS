@@ -12,13 +12,14 @@ class EternityStart():
     def main():
         # DECISIONS REQUIRED
         useHints = False # Use only centre tile or 4 corner hints as well
-        maxEpisodes = 10 # number of episodes to run
+        maxEpisodes = 1000 # number of episodes to run
         sampleSize = 1 # number of runs/samples to take - 1 for no hints and 2 for hints typically
-        CreateTile.firstCountLimit = 700000 # cutoff for run - normally at least 1m
+        CreateTile.firstCountLimit = 1000000 # cutoff for run - normally at least 1m
         CreateTile.terminalCountLimit = 20 * CreateTile.firstCountLimit # cutoff for final iteration at 88
         solutionPrint = 205; # can consider 200,205 or similar
         cutoff = 96 # Point at which we move from sample check to full/5m solution
-        viableMinimum = 180 # Lowest point at which iteration counts as viable
+        viableMinimum = 185 # Lowest point at which iteration counts as viable
+        epsFactor = 250; # epsilon changed to 250 factor rather than 100
         # VARIABLES INITIALISATION
         #random.seed(1)
         optionDouble = False # Used to work out if double tile has been used
@@ -85,7 +86,7 @@ class EternityStart():
                     #    epsilon = 0.0
                     #else:
                     #    epsilon = 1.0
-                    epsilon = 100/ (100 + currentVisitCount)	
+                    epsilon = epsFactor/ (epsFactor + currentVisitCount)	
                     number = random.random()
                     print(f"Epsilon is set at {epsilon:.5f} and visitCount at {currentVisitCount + 1} with random number at {number:.5f}")
                     currentVisitCount = 0
