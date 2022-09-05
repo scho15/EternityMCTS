@@ -442,15 +442,19 @@ class QCleanup:
 		kept = 0 # items kept in truncated table
 		unused = 0 # items not used in table
 		a = [] # list of lengths
+		identical = 0 # used when comparing tables 
+		different = 0 # used when comparing tables
+		addition = 0 # used when comparing tables
+		found = False # used when comparing tables
 		# Upload Q Table
-		if (os.path.isfile('C:/Users/scho1/QTableMCTS/QTable - Copy.txt') == True):
-			with open("C:/Users/scho1/QTableMCTS/QTable - Copy.txt", "r") as QTablefile:
+		if (os.path.isfile('C:/Users/scho1/QTableMCTS/QTable.txt') == True):
+			with open("C:/Users/scho1/QTableMCTS/QTable.txt", "r") as QTablefile:
 				Q = json.load(QTablefile)
 				print(f"Q Table uploaded with {len(Q)} lines")
 		if (os.path.isfile('C:/Users/scho1/QTableMCTS/QTruncated.txt') == True):
 			with open("C:/Users/scho1/QTableMCTS/QTruncated.txt", "r") as QTruncatedfile:
 				OldTruncQ = json.load(QTruncatedfile)
-				print(f"QTable uploaded with {len(OldTruncQ)} lines")
+				print(f"Truncated Q Table uploaded with {len(OldTruncQ)} lines")
 		# Determine highest length at 96
 		for item in Q:
 			length = len(item[0])
@@ -478,7 +482,7 @@ class QCleanup:
 					TruncQ.append(item)
 				else:
 					unused += 1
-			print(f"Below Cutoff: {cutoff}\tKept: {kept}\tUnused: {unused}")
+			print(f"Non {best[0][0]} Iterations: {cutoff}\t{best[0][0]} Iterations: {kept}\tUnused: {unused}")
 			print(f"Truncated table has {len(TruncQ)} entries")
 			for item in TruncQ:
 				if len(item[0]) == 2 and item[0][0] == 1:
@@ -501,40 +505,93 @@ class QCleanup:
 			print(f"4 iteration: {sorted(Counter(a).items())}")
 			a.clear()
 			for item in TruncQ:
+				if len(item[0]) <= 1:
+					a.append(item[1])
+			print(f"First Element 1 2 3 4: {sorted(Counter(a).items())}")
+			QCleanup.counting(a)
+			a.clear()
+			for item in TruncQ:
 				if item[0][0] == best[0][0] and len(item[0]) <= 16:
 					a.append(item[1])
 			print(f"{best[0][0]} iterations:")
 			print(f"1 - 16: {sorted(Counter(a).items())}")
+			QCleanup.counting(a)
 			a.clear()
 			for item in TruncQ:
 				if item[0][0] == best[0][0] and len(item[0]) >= 17 and len(item[0]) <= 32:
 					a.append(item[1])
 			print(f"17 - 32: {sorted(Counter(a).items())}")
+			QCleanup.counting(a)
 			a.clear()
 			for item in TruncQ:
 				if item[0][0] == best[0][0] and len(item[0]) >= 33 and len(item[0]) <= 48:
 					a.append(item[1])
 			print(f"33 - 48: {sorted(Counter(a).items())}")
+			QCleanup.counting(a)
 			a.clear()
 			for item in TruncQ:
 				if item[0][0] == best[0][0] and len(item[0]) >= 49 and len(item[0]) <= 64:
 					a.append(item[1])
 			print(f"49 - 64: {sorted(Counter(a).items())}")
+			QCleanup.counting(a)
 			a.clear()
 			for item in TruncQ:
 				if item[0][0] == best[0][0] and len(item[0]) >= 65 and len(item[0]) <= 80:
 					a.append(item[1])
 			print(f"65 - 80: {sorted(Counter(a).items())}")
+			QCleanup.counting(a)
 			a.clear()
 			for item in TruncQ:
 				if item[0][0] == best[0][0] and len(item[0]) >= 81 and len(item[0]) <= 96:
 					a.append(item[1])
 			print(f"81 - 96: {sorted(Counter(a).items())}")
+			QCleanup.counting(a)
 			a.clear()
-			with open("C:/Users/scho1/QTruncated.txt","w") as handler:
+			for item in TruncQ:
+				if (item[0][0] == best[0][0] and len(item[0]) <= 96) or (len(item[0]) == 1 and item[0][0] != best[0][0]):
+					a.append(item[1])
+			print(f"{best[0][0]} iterations totals:\n{sorted(Counter(a).items())}")
+			QCleanup.counting(a)
+			a.clear()
+			with open("C:/Users/scho1//QTableMCTS/QTruncated.txt","w") as handler:
 				json.dump(TruncQ,handler) 
 			handler.close()   
+		# Comparing to previous version of truncated file
+		for item2 in TruncQ.copy():
+			for item1 in OldTruncQ.copy():
+				if (item1[0] == item2[0]):
+					found = True
+					#print(f"{item1[0]} appears in both tables with maxes {item1[1]} and {item2[1]}")
+					if (item1[0] == item2[0]):
+						identical += 1
+					else:
+						different += 1
+						print(f"item1[0] went from {item1[1]} to {item2[1]}")
+			if (found == False):
+				addition += 1
+				print(f"item2[0] with length {item2[1]} is a new addition")
+			found = False
+		print(f"The Q Tables had {identical} matches, {different} matches and {addition} new additions")
 
+	def counting(a):
+		sum205 = 0
+		sum204 = 0
+		sum203 = 0
+		sum202 = 0
+		nonvbl = 0
+		b = a.copy()
+		for elt in b:
+			if elt >= 205:
+				sum205 += 1
+			elif elt == 204:
+				sum204 += 1
+			elif elt == 203:
+				sum203 += 1
+			elif elt > 185:
+				sum202 += 1
+			else:
+				nonvbl += 1
+		print(f"205+: {sum205}\t204: {sum204}\t\t203: {sum203}\t\t202- {sum202}\t\t Non Viable: {nonvbl}\t\tTotal: {sum205+sum204+sum203+sum202+nonvbl}")
 
 	# Can be used to insert newly found solution with max being length of solution
 	def updateFrom96(max):
