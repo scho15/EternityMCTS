@@ -4,14 +4,14 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>b88bb04f-e7c1-4874-b30a-3cce56071ee1</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>EternityStart.py</StartupFile>
+    <StartupFile>QCleanup.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <Name>EternityMCTS</Name>
     <RootNamespace>EternityMCTS</RootNamespace>
-    <InterpreterId>Global|VisualStudio|PpPy v7.35</InterpreterId>
+    <InterpreterId>Global|VisualStudio|PyPy v7.35</InterpreterId>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,7 +31,7 @@
   </ItemGroup>
   <ItemGroup>
     <InterpreterReference Include="Global|PythonCore|3.7" />
-    <InterpreterReference Include="Global|VisualStudio|PpPy v7.35" />
+    <InterpreterReference Include="Global|VisualStudio|PyPy v7.35" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

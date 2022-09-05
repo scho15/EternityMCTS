@@ -8,23 +8,24 @@ import random
 import json
 import os.path
 
+
 class EternityStart():
     def main():
         # DECISIONS REQUIRED
         useHints = False # Use only centre tile or 4 corner hints as well
-        maxEpisodes = 1000 # number of episodes to run
+        maxEpisodes = 500 # number of episodes to run
         sampleSize = 1 # number of runs/samples to take - 1 for no hints and 2 for hints typically
-        CreateTile.firstCountLimit = 1000000 # cutoff for run - normally at least 1m
+        CreateTile.firstCountLimit = 700000 # cutoff for run - normally at least 1m
         CreateTile.terminalCountLimit = 20 * CreateTile.firstCountLimit # cutoff for final iteration at 88
         solutionPrint = 205; # can consider 200,205 or similar
         cutoff = 96 # Point at which we move from sample check to full/5m solution
         viableMinimum = 185 # Lowest point at which iteration counts as viable
-        epsFactor = 250; # epsilon changed to 250 factor rather than 100
+        epsFactor = 100; # epsilon changed to 250 factor rather than 100
         # VARIABLES INITIALISATION
         #random.seed(1)
         optionDouble = False # Used to work out if double tile has been used
         optionsCount = 0
-        greedyCount = 0 # Counting number of iterations skipped through greedy option 
+        greedyCount = 0 # Counting number of iterations skipped through greedy option        
         episode = 1
         Q = [] # Q list table with state and maximum amount for that state [1] and number of visits [2]
         currentVisitCount = 0
@@ -33,9 +34,7 @@ class EternityStart():
         maximaList = [] # list of maxima at each iteration 
         iterationList = [] # list of all iterations
         lowIteration = [] # list of lowest iteration explored
-        miniCount = 0 # Used to prevent viable iteration loop repeating
-        tempMaxList = [] # used to store greedy max for first rotation of double tile
-        secondMaxList = [] # used to store second rotation for double tile
+        miniCount = 0 # Used to prevent viable iteration loop repeating        
         #Special characters seem to create issues for file locations
         if (os.path.isfile('C:/Users/scho1/QTableMCTS/QTable.txt') == True and Q == []):
             with open("C:/Users/scho1/QTableMCTS/QTable.txt", "r") as QTablefile:
@@ -52,6 +51,8 @@ class EternityStart():
             file2 = open("C:/Users/scho1/QTableMCTS/MCTSRunSummary.txt", "a") # summary of tree and lookahead info
             MCTSList = []
             MCTSPosition = [] # Trying to use MCTS only
+            tempMaxList = [] # used to store greedy max for first rotation of double tile
+            secondMaxList = [] # used to store second rotation for double tile
             testList = []
             #testPosition = [] # What worries me a little is whether double rotation gets overwritten if only testPosition is aligned
             averageList = []
@@ -69,6 +70,9 @@ class EternityStart():
             lowestItn = 0
             greedyCount = 0
             terminalState = False
+            maximum2 = 0
+            maxDble1 = 0 # used in double tile situation
+            maxDble2 = 0 # used in double tile situation
             countLimit = CreateTile.firstCountLimit
             while (len(MCTSList) < cutoff and terminalState == False):
                 options = EternityMCTS.findNextPositionMatches(MCTSList,MCTSPosition, useHints) # returning string of tile + posn
@@ -310,70 +314,53 @@ class EternityStart():
                         epsilonMaxOption = options[epsilonMaxList.index(max(epsilonMaxList))]
                         MCTSList.append(int(epsilonMaxOption[0:3]))
                         # Need to consider which of two rotations should be used
-                        if (epsilonMaxOption != 173 and epsilonMaxOption != 199 and epsilonMaxOption != 233):
-                            
+                        if (int(epsilonMaxOption[0:3]) != 173 and int(epsilonMaxOption[0:3]) != 199 and int(epsilonMaxOption[0:3]) != 233):                           
                             MCTSPosition.append([int(epsilonMaxOption[3:5]),int(epsilonMaxOption[5:7]),int(epsilonMaxOption[7:9]),int(epsilonMaxOption[9:11])])
-                            MCTSPosition = EternityMCTS.tileAlignmentOnLastPosition(MCTSList, MCTSPosition)
                         else:                            
-                            MCTSPosition.append(CreateTile.tileList[epsilonMaxOption].copy())
-                            MCTSPosition = EternityMCTS.tileAlignmentOnLastPosition(MCTSList, MCTSPosition)
-                            northMatch = MCTSPosition[-1][0]
-                            eastMatch = MCTSPosition[-1][1]
-                            southMatch = MCTSPosition[-1][2]
-                            westMatch = MCTSPosition[-1][3]
+                            MCTSPosition.append([int(epsilonMaxOption[3:5]),int(epsilonMaxOption[5:7]),int(epsilonMaxOption[7:9]),int(epsilonMaxOption[9:11])])
                             print(f"Current tile is a double rotation tile {epsilonMaxOption} with position {MCTSPosition[-1]}")
                             firstOptions = EternityMCTS.findNextPositionMatches(MCTSList,MCTSPosition, useHints)
                             print(f"Next available options would be {firstOptions}")                           
                             for tile in firstOptions:
                                 testList = MCTSList.copy()
-                                testList.append(tile)
+                                testList.append(int(tile[0:3]))
                                 for item in Q:                                     
                                     if testList == item[0]:                                        
                                         tempMaxList.append(item[1])
                                         break;
                             if (len(tempMaxList) > 0):
-                                print(f"Largest item found in first position is {max(tempMaxList)}")
+                                maxDble1 = max(tempMaxList)
+                                print(f"Largest item found in first position is {maxDble1} in {tempMaxList}")
                             else:
                                 print(f"The first option is below threshold")
-                            if (southMatch == westMatch):
+                                maxDble1 = 0
+                            if (int(epsilonMaxOption[7:9]) == int(epsilonMaxOption[9:11])):
                                     print("Second potential rotation needs to be tested\n")
-                                    if (southMatch == eastMatch):
-                                        CreateTile.rotatePosition(-1, MCTSPosition)
-                                    else:
-                                        CreateTile.rotatePosition(-1, MCTSPosition)
-                                        CreateTile.rotatePosition(-1, MCTSPosition)
-                                        CreateTile.rotatePosition(-1, MCTSPosition)
+                                    MCTSPosition.pop()
+                                    MCTSPosition.append([int(epsilonMaxOption[5:7]),int(epsilonMaxOption[3:5]),int(epsilonMaxOption[7:9]),int(epsilonMaxOption[9:11])])
                                     print(f"The new position is {MCTSPosition[-1]}\n")
                                     secondOptions = EternityMCTS.findNextPositionMatches(MCTSList,MCTSPosition, useHints)
                                     print(f"NEW: Next set of available options would be {secondOptions}")                                    
                                     for tile in secondOptions:
                                         testList = MCTSList.copy() # Moved so this is reset each time
-                                        testList.append(tile)
+                                        testList.append(int(tile[0:3]))
                                         for item in Q:                                     
                                             if testList == item[0]:                                        
                                                 secondMaxList.append(item[1])
                                                 break;
                                     if (len(secondMaxList) > 0):
-                                        print(f"Largest item found in second position is {max(secondMaxList)}")
+                                        maxDble2 = max(secondMaxList)
+                                        print(f"Largest item found in second position is {maxDble2} in {secondMaxList}")
                                     else:
                                         print(f"The second option is below the threshold")
-                                    if (len(secondMaxList) == 0 or (len(tempMaxList) != 0 and max(tempMaxList) >= max(secondMaxList) )):
+                                        maxDble2 = 0
+                                    if (len(secondMaxList) == 0 or (len(tempMaxList) != 0 and maxDble1 >= maxDble2 )):
                                         print(f"The first rotation was better or the same and is being used")
-                                        eastMatch = MCTSPosition[-1][1]
-                                        southMatch = MCTSPosition[-1][2]                                     
-                                        if (southMatch == eastMatch):
-                                            CreateTile.rotatePosition(-1, MCTSPosition)
-                                        else:
-                                            CreateTile.rotatePosition(-1, MCTSPosition)
-                                            CreateTile.rotatePosition(-1, MCTSPosition)
-                                            CreateTile.rotatePosition(-1, MCTSPosition)
+                                        MCTSPosition.pop()
+                                        MCTSPosition.append([int(epsilonMaxOption[3:5]),int(epsilonMaxOption[5:7]),int(epsilonMaxOption[7:9]),int(epsilonMaxOption[9:11])])
                                     else:
                                         print(f"The second rotation was better or the same and is being used")
-                                    northMatch = MCTSPosition[-1][0]
-                                    eastMatch = MCTSPosition[-1][1]
-                                    southMatch = MCTSPosition[-1][2]
-                                    westMatch = MCTSPosition[-1][3]
-                                    print(f"Final rotation used was {northMatch} {eastMatch} {southMatch} {westMatch}")
+                                    print(f"Final rotation used was {MCTSPosition[-1]}")
                                     testList = MCTSList.copy()
                                     tempMaxList.clear()
                                     secondMaxList.clear()
