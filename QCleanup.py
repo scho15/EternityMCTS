@@ -562,16 +562,16 @@ class QCleanup:
 				if (item1[0] == item2[0]):
 					found = True
 					#print(f"{item1[0]} appears in both tables with maxes {item1[1]} and {item2[1]}")
-					if (item1[0] == item2[0]):
+					if (item1[1] == item2[1]):
 						identical += 1
 					else:
 						different += 1
-						print(f"item1[0] went from {item1[1]} to {item2[1]}")
+						print(f"{item1[0]} went from {item1[1]} to {item2[1]}")
 			if (found == False):
 				addition += 1
-				print(f"item2[0] with length {item2[1]} is a new addition")
+				print(f"{item2[0]} with length {item2[1]} is a new addition")
 			found = False
-		print(f"The Q Tables had {identical} matches, {different} matches and {addition} new additions")
+		print(f"The Q Tables had {identical} matches, {different} updates and {addition} new additions")
 
 	def counting(a):
 		sum205 = 0
@@ -587,11 +587,11 @@ class QCleanup:
 				sum204 += 1
 			elif elt == 203:
 				sum203 += 1
-			elif elt > 185:
+			elif elt >= 185:
 				sum202 += 1
 			else:
 				nonvbl += 1
-		print(f"205+: {sum205}\t204: {sum204}\t\t203: {sum203}\t\t202- {sum202}\t\t Non Viable: {nonvbl}\t\tTotal: {sum205+sum204+sum203+sum202+nonvbl}")
+		print(f"205+: {sum205}\t\t204: {sum204}\t\t203: {sum203}\t\t202-: {sum202}\t\t Non Viable: {nonvbl}\t\tTotal: {sum205+sum204+sum203+sum202+nonvbl}")
 
 	# Can be used to insert newly found solution with max being length of solution
 	def updateFrom96(max):
