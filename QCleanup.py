@@ -296,7 +296,7 @@ class QCleanup:
 								if len(longlist) > 10:
 									compact.append(int(longlist[10]))
 							# Specific to longest iterations
-													if (fullmatch.startswith("[4, 16, 28, 34")):
+							if (fullmatch.startswith("[4, 16, 28, 34")):
 								comment = "5: 4 16 28 34 min 206"
 								newmin = 206
 							elif (fullmatch.startswith("[4, 16, 28, 35")):
