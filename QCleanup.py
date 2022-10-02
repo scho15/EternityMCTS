@@ -296,39 +296,18 @@ class QCleanup:
 								if len(longlist) > 10:
 									compact.append(int(longlist[10]))
 							# Specific to longest iterations
-							if (fullmatch.startswith("[4, 16, 28, 34")):
-								comment = "5: 4 16 28 34 min 206"
-								newmin = 206
-							elif (fullmatch.startswith("[4, 16, 28, 35")):
-								comment = "4+: 4 16 28 + 35 min 206"
-								newmin = 206
-							elif (fullmatch.startswith("[4, 16, 28, 27")):
-								comment = "4+: 4 16 28 + 27 min 206"
-								newmin = 206
-							elif (fullmatch.startswith("[4, 16, 28")):
-								comment = "4: 4 16 28 min 207"
-								newmin = 207
-							elif (fullmatch.startswith("[4, 16")):
-								comment = "3: 4 16 min 206"
-								newmin = 206
-							elif (fullmatch.startswith("[4")):
-								comment = "2: 4 min 206"
-								newmin = 206
+							if (fullmatch.startswith("[3")):
+								comment = "2: 3 min 211"
+								newmin = 211
 							elif (fullmatch.startswith("[1")):
-								comment = "Non 4: 1 min 205"
+								comment = "Non 3: 1 min 205"
 								newmin = 205
-							elif (fullmatch.startswith("[2, 37")):
-								comment = "Non 4+: 2 + 37 min 204"
-								newmin = 204
 							elif (fullmatch.startswith("[2")):
-								comment = "Non 4: 2 min 205"
-								newmin = 205
-							elif (fullmatch.startswith("[3, 27")):
-								comment = "Non 4+: 3 + 27 min 205"
-								newmin = 205		
-							elif (fullmatch.startswith("[3")):
-								comment = "Non 4: 3 min 206"
-								newmin = 206							
+								comment = "Non 3: 2 min 205"
+								newmin = 205	
+							elif (fullmatch.startswith("[4")):
+								comment = "Non 3: 4 min 205"
+								newmin = 205						
 							elif (fullmatch.startswith("[")):
 								comment = "Error - should not reach this statement"
 								newmin = 0
@@ -401,7 +380,7 @@ class QCleanup:
 		#for i in range(1,6):
 		#	QCleanup.reader(i, min, False)
 
-	def lowest():
+	def lowest(num):
 		Q = []
 		lowest = 256
 		output = ""
@@ -424,7 +403,7 @@ class QCleanup:
 		for iteration in range(1,7):
 			for item in Q:
 				length = len(item[0])
-				if (length == iteration and item[1] < lowest and item[0][0] == 4):					
+				if (length == iteration and item[1] < lowest and item[0][0] == num):					
 					lowest = item[1]
 					#print(item[0])
 			output += str(lowest) + " "
@@ -434,6 +413,7 @@ class QCleanup:
 	def progress():
 		Q = [] # uploaded Q Table
 		OldTruncQ = [] # uploaded truncated table
+		run = 0 # number of runs
 		TruncQ = [] # truncated table with required solutions
 		best = [] # list of best entries at 96
 		highest = 0 # length of highest solution
@@ -454,12 +434,15 @@ class QCleanup:
 		if (os.path.isfile('C:/Users/scho1/QTableMCTS/QTruncated.txt') == True):
 			with open("C:/Users/scho1/QTableMCTS/QTruncated.txt", "r") as QTruncatedfile:
 				OldTruncQ = json.load(QTruncatedfile)
-				print(f"Truncated Q Table uploaded with {len(OldTruncQ)} lines")
+				print(f"Old truncated Q Table uploaded with {len(OldTruncQ)} lines")
 		# Determine highest length at 96
 		for item in Q:
 			length = len(item[0])
 			if (length == 96 and item[1] >= highest):					
 				highest = item[1]
+			if (length == 0):
+				run = item[2]
+		print(f"Number of runs so far is: {run}")
 		# Determine entries with this highest length
 		for item in Q:
 			length = len(item[0])
@@ -470,20 +453,23 @@ class QCleanup:
 			print(entry)
 		# Finding truncated solutions
 		for entry in best:
-			print(f"\nFinding iterations that are {trunc} away from best solutions so far")
+			print(f"\nFinding iterations that are {trunc} away from best solutions so far:")
+			print(entry)
 			for item in Q.copy():
 				if len(item[0]) == 2 and item[0][0] != best[0][0]:
 					#print(f"{item[0]} cutoff")
 					cutoff += 1
-					TruncQ.append(item)
+					if item not in TruncQ:
+						TruncQ.append(item)
 				elif (item[0][0:len(item[0])-trunc] == entry[0:len(item[0])-trunc] and len(item[0]) <= 96):
 					#print(f"{item[0]} kept")
 					kept += 1
-					TruncQ.append(item)
+					if item not in TruncQ:
+						TruncQ.append(item)
 				else:
 					unused += 1
 			print(f"Non {best[0][0]} Iterations: {cutoff}\t{best[0][0]} Iterations: {kept}\tUnused: {unused}")
-			print(f"Truncated table has {len(TruncQ)} entries")
+			print(f"Truncated table has {len(TruncQ)} entries from all best solutions so far")
 			for item in TruncQ:
 				if len(item[0]) == 2 and item[0][0] == 1:
 					a.append(item[1])
@@ -511,51 +497,54 @@ class QCleanup:
 			QCleanup.counting(a)
 			a.clear()
 			for item in TruncQ:
-				if item[0][0] == best[0][0] and len(item[0]) <= 16:
+				if item[0][0] == best[0][0] and len(item[0]) <= 16 and item[0][0:len(item[0])-trunc] == entry[0:len(item[0])-trunc]:
 					a.append(item[1])
 			print(f"{best[0][0]} iterations:")
 			print(f"1 - 16: {sorted(Counter(a).items())}")
 			QCleanup.counting(a)
 			a.clear()
 			for item in TruncQ:
-				if item[0][0] == best[0][0] and len(item[0]) >= 17 and len(item[0]) <= 32:
+				if item[0][0] == best[0][0] and len(item[0]) >= 17 and len(item[0]) <= 32 and item[0][0:len(item[0])-trunc] == entry[0:len(item[0])-trunc]:
 					a.append(item[1])
 			print(f"17 - 32: {sorted(Counter(a).items())}")
 			QCleanup.counting(a)
 			a.clear()
 			for item in TruncQ:
-				if item[0][0] == best[0][0] and len(item[0]) >= 33 and len(item[0]) <= 48:
+				if item[0][0] == best[0][0] and len(item[0]) >= 33 and len(item[0]) <= 48 and item[0][0:len(item[0])-trunc] == entry[0:len(item[0])-trunc]:
 					a.append(item[1])
 			print(f"33 - 48: {sorted(Counter(a).items())}")
 			QCleanup.counting(a)
 			a.clear()
 			for item in TruncQ:
-				if item[0][0] == best[0][0] and len(item[0]) >= 49 and len(item[0]) <= 64:
+				if item[0][0] == best[0][0] and len(item[0]) >= 49 and len(item[0]) <= 64 and item[0][0:len(item[0])-trunc] == entry[0:len(item[0])-trunc]:
 					a.append(item[1])
 			print(f"49 - 64: {sorted(Counter(a).items())}")
 			QCleanup.counting(a)
 			a.clear()
 			for item in TruncQ:
-				if item[0][0] == best[0][0] and len(item[0]) >= 65 and len(item[0]) <= 80:
+				if item[0][0] == best[0][0] and len(item[0]) >= 65 and len(item[0]) <= 80 and item[0][0:len(item[0])-trunc] == entry[0:len(item[0])-trunc]:
 					a.append(item[1])
 			print(f"65 - 80: {sorted(Counter(a).items())}")
 			QCleanup.counting(a)
 			a.clear()
 			for item in TruncQ:
-				if item[0][0] == best[0][0] and len(item[0]) >= 81 and len(item[0]) <= 96:
+				if item[0][0] == best[0][0] and len(item[0]) >= 81 and len(item[0]) <= 96 and item[0][0:len(item[0])-trunc] == entry[0:len(item[0])-trunc]:
 					a.append(item[1])
 			print(f"81 - 96: {sorted(Counter(a).items())}")
 			QCleanup.counting(a)
 			a.clear()
 			for item in TruncQ:
-				if (item[0][0] == best[0][0] and len(item[0]) <= 96) or (len(item[0]) == 1 and item[0][0] != best[0][0]):
+				if (item[0][0] == best[0][0] and len(item[0]) <= 96 and item[0][0:len(item[0])-trunc] == entry[0:len(item[0])-trunc]) or (len(item[0]) == 1 and item[0][0] != best[0][0]):
 					a.append(item[1])
 			print(f"{best[0][0]} iterations totals:\n{sorted(Counter(a).items())}")
 			QCleanup.counting(a)
 			a.clear()
-			with open("C:/Users/scho1//QTableMCTS/QTruncated.txt","w") as handler:
-				json.dump(TruncQ,handler) 
-			handler.close()   
+			cutoff = 0 # entries of length below trunc
+			kept = 0 # items kept in truncated table
+			unused = 0 # items not used in table
+		with open("C:/Users/scho1//QTableMCTS/QTruncated.txt","w") as handler:
+			json.dump(TruncQ,handler) 
+		handler.close()   
 		# Comparing to previous version of truncated file
 		for item2 in TruncQ.copy():
 			for item1 in OldTruncQ.copy():
@@ -571,7 +560,7 @@ class QCleanup:
 				addition += 1
 				print(f"{item2[0]} with length {item2[1]} is a new addition")
 			found = False
-		print(f"The Q Tables had {identical} matches, {different} updates and {addition} new additions")
+		print(f"The truncated tables had {identical} matches, {different} updates and {addition} new additions")
 
 	def counting(a):
 		sum205 = 0
@@ -808,18 +797,19 @@ class QCleanup:
 				result.extend(suffixWays)
 		return result
 
-#QCleanup.cleanser(203, 6)
-QCleanup.progress()
+#QCleanup.cleanser(200, 6)
 #QCleanup.qCombine() # Used very rarely!
 #QCleanup.qTableViewer("C:/Users/scho1/QTableMCTS/Run 1/QTableFINALRun1.txt")
 #QCleanup.reader(6,1,True,"[4, 18, 51, 15, 6","C:/Users/scho1/QTableMCTS/Run 1/QTableCombined.txt")
 #Combination of runs 1,2 and 4 already has 430186 lines with 205 cutoff
 #QCleanup.reader(96,205,True)
-#QCleanup.reader(5,1,True,"[")
+#QCleanup.reader(27,1,True,"[3, 27, 35, 51, 21, 48, 40, 16, 28, 33, 19, 20, 18, 50, 7, 1, 59, 96, 212, 113, 90, 253, 198, 158, 129, 75")
+#QCleanup.reader(4,1,True,"[3")
 #QCleanup.viewer()
-#QCleanup.table(203)
-#QCleanup.lowest()
+#QCleanup.table(185)
+#QCleanup.lowest(3)
 #QCleanup.truncateToBestSoln(6, [4, 16, 28, 31, 25, 13, 52, 5, 11, 15, 8, 60, 35, 58, 51, 3, 56, 160, 131, 192, 126, 179, 138, 66, 196, 134, 108, 120, 230, 130, 63, 27, 23, 203, 165, 114, 115, 110, 148, 145, 140, 172, 247, 173, 73, 69, 222, 36, 43, 226, 70, 113, 158, 123, 150, 83, 99, 175, 164, 159, 170, 154, 254, 48, 53, 227, 84, 112, 149, 111, 127, 121, 125, 176, 128, 136, 180, 255, 199, 46, 38, 214, 147, 104, 101, 243, 225, 223, 232, 153, 144, 221, 189, 197, 186, 47])
-#QCleanup.viewCounter(700000)
-#QCleanup.rangeReader(0,97,211,True)
-#QCleanup.runParser(700000,1,400,True,18500)
+#QCleanup.viewCounter(450000)
+#QCleanup.rangeReader(0,28,211,True)
+#QCleanup.runParser(450000,1,50,True,4829)
+QCleanup.progress()
