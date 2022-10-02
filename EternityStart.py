@@ -7,12 +7,14 @@ import time
 import random
 import json
 import os.path
+import playsound # play a sound if long solution found
 
 class EternityStart():
     def main():
         # DECISIONS REQUIRED
+        from playsound import playsound
         useHints = False # Use only centre tile or 4 corner hints as well
-        maxEpisodes = 1000 # number of episodes to run
+        maxEpisodes = 3000 # number of episodes to run
         sampleSize = 1 # number of runs/samples to take - 1 for no hints and 2 for hints typically
         CreateTile.firstCountLimit = 1000000 # cutoff for run - normally at least 1m
         CreateTile.terminalCountLimit = 20 * CreateTile.firstCountLimit # cutoff for final iteration at 88
@@ -309,24 +311,17 @@ class EternityStart():
                         # Double options not used in epsilon max yet
                         epsilonMaxOption = options[epsilonMaxList.index(max(epsilonMaxList))]
                         MCTSList.append(int(epsilonMaxOption[0:3]))
-                        # Need to consider which of two rotations should be used
-                        if (epsilonMaxOption != 173 and epsilonMaxOption != 199 and epsilonMaxOption != 233):
-                            
+                        # Need to consider which of two rotations should be used                                                # Need to consider which of two rotations should be used
+                        if (int(epsilonMaxOption[0:3]) != 173 and int(epsilonMaxOption[0:3]) != 199 and int(epsilonMaxOption[0:3]) != 233):                           
                             MCTSPosition.append([int(epsilonMaxOption[3:5]),int(epsilonMaxOption[5:7]),int(epsilonMaxOption[7:9]),int(epsilonMaxOption[9:11])])
-                            MCTSPosition = EternityMCTS.tileAlignmentOnLastPosition(MCTSList, MCTSPosition)
                         else:                            
-                            MCTSPosition.append(CreateTile.tileList[epsilonMaxOption].copy())
-                            MCTSPosition = EternityMCTS.tileAlignmentOnLastPosition(MCTSList, MCTSPosition)
-                            northMatch = MCTSPosition[-1][0]
-                            eastMatch = MCTSPosition[-1][1]
-                            southMatch = MCTSPosition[-1][2]
-                            westMatch = MCTSPosition[-1][3]
+                            MCTSPosition.append([int(epsilonMaxOption[3:5]),int(epsilonMaxOption[5:7]),int(epsilonMaxOption[7:9]),int(epsilonMaxOption[9:11])])
                             print(f"Current tile is a double rotation tile {epsilonMaxOption} with position {MCTSPosition[-1]}")
                             firstOptions = EternityMCTS.findNextPositionMatches(MCTSList,MCTSPosition, useHints)
                             print(f"Next available options would be {firstOptions}")                           
                             for tile in firstOptions:
                                 testList = MCTSList.copy()
-                                testList.append(tile)
+                                testList.append(int(tile[0:3]))
                                 for item in Q:                                     
                                     if testList == item[0]:                                        
                                         tempMaxList.append(item[1])
@@ -335,20 +330,16 @@ class EternityStart():
                                 print(f"Largest item found in first position is {max(tempMaxList)}")
                             else:
                                 print(f"The first option is below threshold")
-                            if (southMatch == westMatch):
+                            if (int(epsilonMaxOption[7:9]) == int(epsilonMaxOption[9:11])):
                                     print("Second potential rotation needs to be tested\n")
-                                    if (southMatch == eastMatch):
-                                        CreateTile.rotatePosition(-1, MCTSPosition)
-                                    else:
-                                        CreateTile.rotatePosition(-1, MCTSPosition)
-                                        CreateTile.rotatePosition(-1, MCTSPosition)
-                                        CreateTile.rotatePosition(-1, MCTSPosition)
+                                    MCTSPosition.pop()
+                                    MCTSPosition.append([int(epsilonMaxOption[5:7]),int(epsilonMaxOption[3:5]),int(epsilonMaxOption[7:9]),int(epsilonMaxOption[9:11])])
                                     print(f"The new position is {MCTSPosition[-1]}\n")
                                     secondOptions = EternityMCTS.findNextPositionMatches(MCTSList,MCTSPosition, useHints)
                                     print(f"NEW: Next set of available options would be {secondOptions}")                                    
                                     for tile in secondOptions:
                                         testList = MCTSList.copy() # Moved so this is reset each time
-                                        testList.append(tile)
+                                        testList.append(int(tile[0:3]))
                                         for item in Q:                                     
                                             if testList == item[0]:                                        
                                                 secondMaxList.append(item[1])
@@ -359,21 +350,11 @@ class EternityStart():
                                         print(f"The second option is below the threshold")
                                     if (len(secondMaxList) == 0 or (len(tempMaxList) != 0 and max(tempMaxList) >= max(secondMaxList) )):
                                         print(f"The first rotation was better or the same and is being used")
-                                        eastMatch = MCTSPosition[-1][1]
-                                        southMatch = MCTSPosition[-1][2]                                     
-                                        if (southMatch == eastMatch):
-                                            CreateTile.rotatePosition(-1, MCTSPosition)
-                                        else:
-                                            CreateTile.rotatePosition(-1, MCTSPosition)
-                                            CreateTile.rotatePosition(-1, MCTSPosition)
-                                            CreateTile.rotatePosition(-1, MCTSPosition)
+                                        MCTSPosition.pop()
+                                        MCTSPosition.append([int(epsilonMaxOption[3:5]),int(epsilonMaxOption[5:7]),int(epsilonMaxOption[7:9]),int(epsilonMaxOption[9:11])])
                                     else:
                                         print(f"The second rotation was better or the same and is being used")
-                                    northMatch = MCTSPosition[-1][0]
-                                    eastMatch = MCTSPosition[-1][1]
-                                    southMatch = MCTSPosition[-1][2]
-                                    westMatch = MCTSPosition[-1][3]
-                                    print(f"Final rotation used was {northMatch} {eastMatch} {southMatch} {westMatch}")
+                                    print(f"Final rotation used was {MCTSPosition[-1]}")
                                     testList = MCTSList.copy()
                                     tempMaxList.clear()
                                     secondMaxList.clear()
@@ -495,6 +476,8 @@ class EternityStart():
                 print(f"Long Form: {sampleSize} {countLimit} {max(maximaList)} {sum(maximaList)/len(maximaList):.3f} {finalLength} {end-start:.0f} {runCount} {greedyCount} {viable}\n\n")
                 file2.write(f"Shortened Form: {max(maximaList)} {sum(maximaList)/len(maximaList):.3f} {finalLength} {end-start:.0f}\n") 
                 file2.write(f"Long Form: {sampleSize} {countLimit} {max(maximaList)} {sum(maximaList)/len(maximaList):.3f} {finalLength} {end-start:.0f} {runCount} {greedyCount} {viable}\n\n")   
+                if (max(maximaList) >= 208 or finalLength >= 208):
+                    playsound("C:\Windows\Media\Alarm01.wav")
             else:
                 print(f"Shortened form for information of initial, average, final and time: 0 0 {finalLength} {end-start:.0f}")
                 print(f"Longer version including sample size, first count limit, shortened form, terminal limit, greedy run count and viable iterations:")      
