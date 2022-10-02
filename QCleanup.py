@@ -566,7 +566,7 @@ class QCleanup:
 		#for i in range(1,6):
 		#	QCleanup.reader(i, min, False)
 
-	def lowest():
+	def lowest(num):
 		Q = []
 		lowest = 256
 		output = ""
@@ -589,7 +589,7 @@ class QCleanup:
 		for iteration in range(1,7):
 			for item in Q:
 				length = len(item[0])
-				if (length == iteration and item[1] < lowest and item[0][0] == 4):					
+				if (length == iteration and item[1] < lowest and item[0][0] == num):					
 					lowest = item[1]
 					#print(item[0])
 			output += str(lowest) + " "

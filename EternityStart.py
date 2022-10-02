@@ -35,9 +35,7 @@ class EternityStart():
         maximaList = [] # list of maxima at each iteration 
         iterationList = [] # list of all iterations
         lowIteration = [] # list of lowest iteration explored
-        miniCount = 0 # Used to prevent viable iteration loop repeating
-        tempMaxList = [] # used to store greedy max for first rotation of double tile
-        secondMaxList = [] # used to store second rotation for double tile
+        miniCount = 0 # Used to prevent viable iteration loop repeating        
         #Special characters seem to create issues for file locations
         if (os.path.isfile('C:/Users/scho1/QTableMCTS/QTable.txt') == True and Q == []):
             with open("C:/Users/scho1/QTableMCTS/QTable.txt", "r") as QTablefile:
@@ -54,6 +52,8 @@ class EternityStart():
             file2 = open("C:/Users/scho1/QTableMCTS/MCTSRunSummary.txt", "a") # summary of tree and lookahead info
             MCTSList = []
             MCTSPosition = [] # Trying to use MCTS only
+            tempMaxList = [] # used to store greedy max for first rotation of double tile
+            secondMaxList = [] # used to store second rotation for double tile
             testList = []
             #testPosition = [] # What worries me a little is whether double rotation gets overwritten if only testPosition is aligned
             averageList = []
@@ -71,6 +71,9 @@ class EternityStart():
             lowestItn = 0
             greedyCount = 0
             terminalState = False
+            maximum2 = 0
+            maxDble1 = 0 # used in double tile situation
+            maxDble2 = 0 # used in double tile situation
             countLimit = CreateTile.firstCountLimit
             while (len(MCTSList) < cutoff and terminalState == False):
                 options = EternityMCTS.findNextPositionMatches(MCTSList,MCTSPosition, useHints) # returning string of tile + posn
@@ -311,7 +314,7 @@ class EternityStart():
                         # Double options not used in epsilon max yet
                         epsilonMaxOption = options[epsilonMaxList.index(max(epsilonMaxList))]
                         MCTSList.append(int(epsilonMaxOption[0:3]))
-                        # Need to consider which of two rotations should be used                                                # Need to consider which of two rotations should be used
+                        # Need to consider which of two rotations should be used
                         if (int(epsilonMaxOption[0:3]) != 173 and int(epsilonMaxOption[0:3]) != 199 and int(epsilonMaxOption[0:3]) != 233):                           
                             MCTSPosition.append([int(epsilonMaxOption[3:5]),int(epsilonMaxOption[5:7]),int(epsilonMaxOption[7:9]),int(epsilonMaxOption[9:11])])
                         else:                            
@@ -327,9 +330,11 @@ class EternityStart():
                                         tempMaxList.append(item[1])
                                         break;
                             if (len(tempMaxList) > 0):
-                                print(f"Largest item found in first position is {max(tempMaxList)}")
+                                maxDble1 = max(tempMaxList)
+                                print(f"Largest item found in first position is {maxDble1} in {tempMaxList}")
                             else:
                                 print(f"The first option is below threshold")
+                                maxDble1 = 0
                             if (int(epsilonMaxOption[7:9]) == int(epsilonMaxOption[9:11])):
                                     print("Second potential rotation needs to be tested\n")
                                     MCTSPosition.pop()
@@ -345,10 +350,12 @@ class EternityStart():
                                                 secondMaxList.append(item[1])
                                                 break;
                                     if (len(secondMaxList) > 0):
-                                        print(f"Largest item found in second position is {max(secondMaxList)}")
+                                        maxDble2 = max(secondMaxList)
+                                        print(f"Largest item found in second position is {maxDble2} in {secondMaxList}")
                                     else:
                                         print(f"The second option is below the threshold")
-                                    if (len(secondMaxList) == 0 or (len(tempMaxList) != 0 and max(tempMaxList) >= max(secondMaxList) )):
+                                        maxDble2 = 0
+                                    if (len(secondMaxList) == 0 or (len(tempMaxList) != 0 and maxDble1 >= maxDble2 )):
                                         print(f"The first rotation was better or the same and is being used")
                                         MCTSPosition.pop()
                                         MCTSPosition.append([int(epsilonMaxOption[3:5]),int(epsilonMaxOption[5:7]),int(epsilonMaxOption[7:9]),int(epsilonMaxOption[9:11])])
