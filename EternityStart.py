@@ -16,12 +16,12 @@ class EternityStart():
         useHints = False # Use only centre tile or 4 corner hints as well
         maxEpisodes = 3000 # number of episodes to run
         sampleSize = 1 # number of runs/samples to take - 1 for no hints and 2 for hints typically
-        CreateTile.firstCountLimit = 1000000 # cutoff for run - normally at least 1m
+        CreateTile.firstCountLimit = 2000000 # cutoff for run - normally at least 1m
         CreateTile.terminalCountLimit = 20 * CreateTile.firstCountLimit # cutoff for final iteration at 88
         solutionPrint = 205; # can consider 200,205 or similar
         cutoff = 96 # Point at which we move from sample check to full/5m solution
-        viableMinimum = 185 # Lowest point at which iteration counts as viable
-        epsFactor = 250; # epsilon changed to 250 factor rather than 100
+        viableMinimum = 190 # Lowest point at which iteration counts as viable - normally 185
+        epsFactor = 125; # epsilon changed to 250 factor for Run A rather than 100
         # VARIABLES INITIALISATION
         #random.seed(1)
         optionDouble = False # Used to work out if double tile has been used
@@ -57,8 +57,7 @@ class EternityStart():
             testList = []
             #testPosition = [] # What worries me a little is whether double rotation gets overwritten if only testPosition is aligned
             averageList = []
-            maxList = []
-            maximum = 0 # Used to work out maximum of various lists
+            maxList = []            
             epsilonMaxList = []
             maximaList = [] # depth of lookahead at each iteration - changed to iteration length
             iterationList = [] # list of viable iterations
@@ -70,12 +69,14 @@ class EternityStart():
             runCount = 0
             lowestItn = 0
             greedyCount = 0
-            terminalState = False
-            maximum2 = 0
-            maxDble1 = 0 # used in double tile situation
-            maxDble2 = 0 # used in double tile situation
+            terminalState = False           
             countLimit = CreateTile.firstCountLimit
             while (len(MCTSList) < cutoff and terminalState == False):
+                # Moved max settings below to see if this solves examples of non-viable itns having viable values
+                maximum = 0 # Used to work out maximum of various lists
+                maximum2 = 0
+                maxDble1 = 0 # used in double tile situation
+                maxDble2 = 0 # used in double tile situation
                 options = EternityMCTS.findNextPositionMatches(MCTSList,MCTSPosition, useHints) # returning string of tile + posn
                 optionsCount += len(options)
                 random.shuffle(options)
@@ -483,7 +484,7 @@ class EternityStart():
                 print(f"Long Form: {sampleSize} {countLimit} {max(maximaList)} {sum(maximaList)/len(maximaList):.3f} {finalLength} {end-start:.0f} {runCount} {greedyCount} {viable}\n\n")
                 file2.write(f"Shortened Form: {max(maximaList)} {sum(maximaList)/len(maximaList):.3f} {finalLength} {end-start:.0f}\n") 
                 file2.write(f"Long Form: {sampleSize} {countLimit} {max(maximaList)} {sum(maximaList)/len(maximaList):.3f} {finalLength} {end-start:.0f} {runCount} {greedyCount} {viable}\n\n")   
-                if (max(maximaList) >= 208 or finalLength >= 208):
+                if (max(maximaList) >= 212 or finalLength >= 212):
                     playsound("C:\Windows\Media\Alarm01.wav")
             else:
                 print(f"Shortened form for information of initial, average, final and time: 0 0 {finalLength} {end-start:.0f}")
